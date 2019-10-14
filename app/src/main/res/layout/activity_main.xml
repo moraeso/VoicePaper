@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".activity.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+    <ImageView
+        android:id="@+id/iv_logo_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_top" />
+
+    <RelativeLayout
+        android:id="@+id/layout_topMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_logo_top"
+        android:layout_marginTop="2dp">
+
+        <RelativeLayout
+            android:id="@+id/layout_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_profile"
+                android:layout_marginLeft="10dp"
+                android:text="User님 반갑습니다.\n목소리를공 유해 보세요!" />
+        </RelativeLayout>
+
+
+        <ImageButton
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="#00FFFFFF"
+            app:srcCompat="@mipmap/ic_setting" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_roomGrid"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_below="@id/layout_topMenu">
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_createRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_roomGrid"
+        android:layout_centerHorizontal="true"
+        android:text="그룹 생성하기" />
+
+    <Button
+        android:id="@+id/btn_enterRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_createRoom"
+        android:layout_centerHorizontal="true"
+        android:text="그룹 참여하기" />
 
 </RelativeLayout>
