@@ -32,8 +32,8 @@ public class RoomGridFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_room_gridview, container, false);
 
         roomItems.add(new Room(1, "Room1", AppManager.getInstance().getBitmap(R.drawable.img_android1), ".jpg","hi",1));
-        roomItems.add(new Room(2, "Room2", AppManager.getInstance().getBitmap(R.drawable.img_android2),".jpg","hi",1));
-        roomItems.add(new Room(3, "Room3", AppManager.getInstance().getBitmap(R.drawable.img_android3),".jpg","hi",1));
+        roomItems.add(new Room(2, "Room2", AppManager.getInstance().getBitmap(R.drawable.img_android1),".jpg","hi",1));
+        roomItems.add(new Room(3, "Room3", AppManager.getInstance().getBitmap(R.drawable.img_android1),".jpg","hi",1));
         roomItems.add(new Room(4, "Room4", AppManager.getInstance().getBitmap(R.drawable.img_android1),".jpg","hi",1));
         roomItems.add(new Room(5, "Room5", AppManager.getInstance().getBitmap(R.drawable.img_android2),".jpg","hi",1));
         roomItems.add(new Room(6, "Room6", AppManager.getInstance().getBitmap(R.drawable.img_android3),".jpg","hi",1));

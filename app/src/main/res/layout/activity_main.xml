@@ -5,31 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
+
     <ImageView
         android:id="@+id/iv_logo_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/logo_top" />
+
+    <LinearLayout
+        android:id="@+id/layout_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/iv_logo_top"
+        android:background="@drawable/custom_gradient"
+        android:orientation="vertical" />
 
     <RelativeLayout
         android:id="@+id/layout_topMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/iv_logo_top"
-        android:layout_marginTop="2dp">
+        android:layout_height="70dp"
+        android:layout_below="@id/layout_gradient"
+        android:layout_marginTop="20dp">
 
         <RelativeLayout
             android:id="@+id/layout_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/custom_border">
 
             <ImageView
                 android:id="@+id/iv_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_centerVertical="true"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/img_user" />
 
             <TextView
                 android:id="@+id/tv_intro"
@@ -38,15 +49,16 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/iv_profile"
                 android:layout_marginLeft="10dp"
-                android:text="User님 반갑습니다.\n목소리를공 유해 보세요!" />
+                android:text="User님 반갑습니다.\n목소리를 공유해 보세요!" />
         </RelativeLayout>
 
 
         <ImageButton
             android:id="@+id/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:background="#00FFFFFF"
             app:srcCompat="@mipmap/ic_setting" />
     </RelativeLayout>
@@ -54,24 +66,35 @@
     <FrameLayout
         android:id="@+id/fragment_roomGrid"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_below="@id/layout_topMenu">
+        android:layout_height="270dp"
+        android:layout_below="@id/layout_topMenu"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
     </FrameLayout>
 
     <Button
         android:id="@+id/btn_createRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:layout_below="@id/fragment_roomGrid"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#086df1"
+        android:textColor="@color/colorWhite"
         android:text="그룹 생성하기" />
 
     <Button
         android:id="@+id/btn_enterRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:layout_below="@id/btn_createRoom"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="#086df1"
+        android:textColor="@color/colorWhite"
         android:text="그룹 참여하기" />
 
 </RelativeLayout>
