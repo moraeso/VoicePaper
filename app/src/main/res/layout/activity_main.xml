@@ -60,28 +60,35 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:background="#00FFFFFF"
-            app:srcCompat="@mipmap/ic_setting" />
+            app:srcCompat="@drawable/img_setting" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/fragment_roomGrid"
-        android:layout_width="wrap_content"
-        android:layout_height="270dp"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/roomViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
         android:layout_below="@id/layout_topMenu"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-    </FrameLayout>
+        android:background="#01c7de">
+
+        <!-- Add as a direct child of your ViewPager -->
+        <com.itsronald.widget.ViewPagerIndicator
+            android:id="@+id/view_pager_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:paddingBottom="15dp"
+            android:gravity="center_vertical"/>
+
+    </androidx.viewpager.widget.ViewPager>
 
     <Button
         android:id="@+id/btn_createRoom"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:layout_below="@id/fragment_roomGrid"
+        android:layout_below="@id/roomViewPager"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="#086df1"
         android:textColor="@color/colorWhite"
         android:text="그룹 생성하기" />
@@ -96,5 +103,6 @@
         android:background="#086df1"
         android:textColor="@color/colorWhite"
         android:text="그룹 참여하기" />
+
 
 </RelativeLayout>
