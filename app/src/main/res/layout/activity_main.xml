@@ -104,5 +104,4 @@
         android:textColor="@color/colorWhite"
         android:text="방 참여하기" />
 
-
 </RelativeLayout>
