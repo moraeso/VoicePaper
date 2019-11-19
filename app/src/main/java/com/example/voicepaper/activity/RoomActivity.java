@@ -18,4 +18,5 @@ public class RoomActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_room);
     }
+
 }
