@@ -63,3 +63,4 @@ public class SignUpFragment extends Fragment implements Button.OnClickListener {
         }
     }
 }
+

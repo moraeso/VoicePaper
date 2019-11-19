@@ -81,3 +81,13 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# server
+server/config/
+server/javascripts/config.js
+server/node_modules/
+server/.ftpconfig
+server/testmusic1.mp3
+server/testmusic2.mp3
+server/testmusic3.mp3
+server/testmusic4.mp3
