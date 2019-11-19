@@ -18,7 +18,6 @@ public class MusicPlayer extends AsyncTask<Void, Void, Void> {
         String url = "http://15011066.iptime.org:8123/static/testmusic4.mp3"; // your URL here
 
         m_MediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
         try {
             m_MediaPlayer.setDataSource(url);
         } catch (IOException e) {

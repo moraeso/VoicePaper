@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.login.SignUpFragment">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/iv_userImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_user_main"
+        android:layout_marginTop="70dp"/>
+
+    <Button
+        android:id="@+id/btn_userIamgeSet"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_userImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="이미지 등록"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/iv_userImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:hint=" 이름을 입력해주세요."/>
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:hint="ID를 입력해주세요." />
+    <EditText
+        android:id="@+id/et_pw"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:hint="비밀번호를 입력해주세요." />
+
+    <EditText
+        android:id="@+id/et_rePw"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_pw"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:hint="비밀번호 확인" />
+
+    <Button
+        android:id="@+id/btn_signUp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_rePw"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="회원 가입"
+        android:textSize="15sp"/>
+
+</RelativeLayout>
