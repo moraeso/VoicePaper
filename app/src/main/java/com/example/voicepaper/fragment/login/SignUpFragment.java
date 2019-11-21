@@ -72,6 +72,16 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
+       initView(view);
+
+        //btn listener
+        btn_imageSet.setOnClickListener(this);
+        btn_signUp.setOnClickListener(this);
+
+        return view;
+    }
+
+    public void initView(View view){
         //view
         iv_userImage = view.findViewById(R.id.iv_userImage);
 
@@ -82,18 +92,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
 
         btn_imageSet = view.findViewById(R.id.btn_userIamgeSet);
         btn_signUp = view.findViewById(R.id.btn_signUp);
-        //btn listener
-        btn_imageSet.setOnClickListener(this);
-        btn_signUp.setOnClickListener(this);
-
-        return view;
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        getDialog().getWindow().setLayout(1000, 1000);
-//    }
 
     @Override
     public void onClick(View view) {
