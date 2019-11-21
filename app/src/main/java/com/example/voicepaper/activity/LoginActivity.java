@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.fragment.login.SignUpFragment;
+import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.SignInTask;
 
@@ -54,10 +55,14 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         switch (view.getId()){
             case R.id.btn_signIn:
                 //아이디 비밀번호를 받아와 서버와 통신
-                Intent intent = new Intent(this, MainActivity.class);
+//                Intent intent = new Intent(this, MainActivity.class);
+//
+//                startActivity(intent);
+//                finish();
 
-                startActivity(intent);
-                finish();
+                RecordFragment recordFragment = RecordFragment.newInstance();
+                recordFragment.show(getSupportFragmentManager(),null);
+                
                 break;
             case R.id.btn_signUp:
                 //회원가입 화면 띄우기
