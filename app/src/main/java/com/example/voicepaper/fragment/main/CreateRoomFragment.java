@@ -37,6 +37,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     private EditText roomNameEt, roomTextEt;
     private ImageButton roomProfileIb;
     private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
+    private Bitmap roomProfile;
 
     private int voicePermission;
 
@@ -79,8 +80,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         publicVoiceBtn.setOnClickListener(this);
         roomProfileIb.setOnClickListener(this);
         createRoomBtn.setOnClickListener(this);
-
-
 
         return view;
     }
@@ -128,6 +127,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("sssong:CRFragment", "requestCode : " + requestCode);
+        Log.d("sssong:CRFragment", "RESULTCODE : " + ((Activity)AppManager.getInstance().getContext()).RESULT_OK);
 
         if (resultCode == ((Activity)AppManager.getInstance().getContext()).RESULT_OK) {
 
@@ -137,6 +138,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 roomProfileUri = uri;
                 ExifInterface exif = null;
                 String imagePath = getRealPathFromURI(uri);
+                Log.d("sssong:CRFragment", imagePath);
+
                 try {
                     exif = new ExifInterface(imagePath);
                 } catch (IOException e) {
@@ -145,8 +148,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 exifDegree = exifOrientationToDegrees(exifOrientation);
                 roomProfileIb.setBackgroundColor(Color.WHITE);
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                roomProfileIb.setImageBitmap(rotate(bitmap, exifDegree));
+                roomProfile = BitmapFactory.decodeFile(imagePath);
+                roomProfileIb.setImageBitmap(rotate(roomProfile, exifDegree));
             }
         }
     }
@@ -158,7 +161,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         cursor.moveToFirst();
         column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-        Log.d("smh:getRealPathFromURI", cursor.getString(column_index));
+        Log.d("sssong:getPathFromURI", cursor.getString(column_index));
         return cursor.getString(column_index);
     }
 

@@ -10,10 +10,10 @@ public class Room {
     private Bitmap profileImage;
     private String profileString;
     private String comment;
-    private int hostID;
+    private String hostID;
     // private ArrayList<RoomMember> roomMemberItems;
 
-    public Room(int id, String name, Bitmap profileImage, String profileString, String comment, int hostID) {
+    public Room(int id, String name, Bitmap profileImage, String profileString, String comment, String hostID) {
         this.id = id;
         this.name = name;
         this.profileImage = profileImage;
@@ -62,11 +62,11 @@ public class Room {
         this.comment = comment;
     }
 
-    public int getHostID() {
+    public String getHostID() {
         return hostID;
     }
 
-    public void setHostID(int hostID) {
+    public void setHostID(String hostID) {
         this.hostID = hostID;
     }
 }

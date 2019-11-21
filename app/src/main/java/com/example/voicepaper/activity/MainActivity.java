@@ -4,6 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,16 +23,22 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.RoomSlidePagerAdapter;
+import com.example.voicepaper.data.Room;
+import com.example.voicepaper.data.User;
 import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.manager.AppManager;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager roomPager;
-    private PagerAdapter roomPagerAdapter;
+    private RoomSlidePagerAdapter roomPagerAdapter;
     private Button createRoomBtn, enterRoomBtn;
+
+    private ArrayList<Room> roomList;
 
     private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
 
@@ -42,14 +51,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
+        ///////////////// 임시 유저 ////////////////////////
+        User user = new User();
+        AppManager.getInstance().setUser(user);
+        AppManager.getInstance().getUser().setID("user1");
+        ////////////////////////////////////////////////////
+
+        initView();
+        initListener();
+        initMyRoomList();
+        initRoomPagerAdapter();
+
+
+        // 앨범 접근 허용(나중에 옮기기)
+        checkPermission();
+    }
+
+    void initView() {
         roomPager = (ViewPager) findViewById(R.id.roomViewPager);
-        roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager());
-        roomPager.setAdapter(roomPagerAdapter);
 
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
-        createRoomBtn.setOnClickListener(this);
+    }
 
-        checkPermission();
+    void initListener() {
+        createRoomBtn.setOnClickListener(this);
+    }
+
+    void initMyRoomList() {
+        roomList = new ArrayList<>();
+
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+
+        roomList.add(new Room(1001, "1Room", bitmap, "abc.url", "ㅎㅇ",
+                        AppManager.getInstance().getUser().getID()));
+
+        roomList.add(new Room(1001, "2Room", bitmap, "abc.url", "ㅂㅇ",
+                        AppManager.getInstance().getUser().getID()));
+
+        roomList.add(new Room(1001, "3Room", bitmap, "abc.url", "ㅂㅇ",
+                        AppManager.getInstance().getUser().getID()));
+
+        roomList.add(new Room(1001, "4Room", bitmap, "abc.url", "ㅂㅇ",
+                        AppManager.getInstance().getUser().getID()));
+
+        roomList.add(new Room(1001, "5Room", bitmap, "abc.url", "ㅂㅇ",
+                        AppManager.getInstance().getUser().getID()));
+
+        roomList.add(new Room(1001, "6Room", bitmap, "abc.url", "ㅂㅇ",
+                        AppManager.getInstance().getUser().getID()));
+    }
+
+
+    void initRoomPagerAdapter() {
+        roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager(), roomList);
+        roomPagerAdapter.setNumPages(roomList.size()/4 + 1);
+
+        roomPager.setAdapter(roomPagerAdapter);
     }
 
     @Override
@@ -68,8 +126,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // CreateRoomFragment에서 앨범에서 사진 받아왔을 때
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
