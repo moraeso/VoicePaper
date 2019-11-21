@@ -20,12 +20,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.manager.AppManager;
 
 import java.io.File;
 import java.io.IOException;
+
+
+/*
+음성파일 전송 작업
+재생버튼 start and stop 할때 소리
+ */
 
 public class RecordFragment extends DialogFragment implements Button.OnClickListener{
     //view
@@ -61,7 +68,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         state = RECODE_START;
 
         fileName = getActivity().getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.3gp";
+        fileName += "/audiorecordtest.mp3";
 
         Log.d("smh:file path",fileName);
     }//프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
@@ -94,6 +101,8 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         btn_record.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+
+        tv_content.setText("목소리를 녹음할게요.\n 버튼을 눌러 시작해 주세요.");
     }
 
     public void permissinCheck(){
@@ -110,25 +119,26 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             case R.id.btn_record:
                 if(state == RECODE_START){
                     onRecord(true);
-                    state = RECODE_STOP;
                 }
                 else if(state == RECODE_STOP){
                     onRecord(false);
-                    state = PLAY_START;
                 }
                 else if(state == PLAY_START){
                     onPlay(true);
-                    state = PLAY_STOP;
                 }
                 else if(state == PLAY_STOP){
                     onPlay(false);
-                    state = PLAY_START;
                 }
 
                 break;
             case R.id.btn_cancel:
+                dismiss();//취소시 프레그먼트 종료
                 break;
             case R.id.btn_submit:
+                /*
+                여기부근에 통신 넣어야합니다.
+                 */
+
                 break;
 
         }
@@ -157,6 +167,16 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             player.setDataSource(fileName);
             player.prepare();
             player.start();
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    stopPlaying();
+                }
+            });
+
+            btn_record.setImageResource(R.drawable.ic_stop);
+            state = PLAY_STOP;
+
         } catch (IOException e) {
             Log.e("smh:record", "prepare() failed");
         }
@@ -165,6 +185,8 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private void stopPlaying() {
         player.release();
         player = null;
+        btn_record.setImageResource(R.drawable.ic_playing);
+        state = PLAY_START;
     }
 
     private void startRecording() {
@@ -176,12 +198,15 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-
         try {
             recorder.prepare();
         } catch (IOException e) {
             Log.d("smh:record", "prepare() failed");
         }
+
+        //이미지 변경
+        btn_record.setImageResource(R.drawable.ic_stop2);
+        state = RECODE_STOP;
 
         recorder.start();
     }
@@ -190,6 +215,8 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         recorder.stop();
         recorder.release();
         recorder = null;
+        btn_record.setImageResource(R.drawable.ic_playing);
+        state = PLAY_START;
     }
 
     //프레그먼트 종료할때, 캐시저장해야하나? 모르겠다... 잘..
