@@ -45,9 +45,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
     private static final int PICK_FROM_ALBUM = 1;
 
-    private CreateRoomFragment() {
-
-    }
+    private CreateRoomFragment() {    }
 
     public static CreateRoomFragment newInstance() {
         CreateRoomFragment fragment = new CreateRoomFragment();
@@ -79,8 +77,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         publicVoiceBtn.setOnClickListener(this);
         roomProfileIb.setOnClickListener(this);
         createRoomBtn.setOnClickListener(this);
-
-
 
         return view;
     }
