@@ -6,22 +6,24 @@ public class Room {
     // Room(id, name, profileString, comment, hostID, [RoomMember<List>])
 
     private int id;
-    private String name;
+    private String title;
     private Bitmap profileImage;
     private String profileString;
     private String comment;
     private int permission;
     private String hostID;
+    private String code;
     // private ArrayList<RoomMember> roomMemberItems;
 
-    public Room(int id, String name, Bitmap profileImage, String profileString, int permission, String comment, String hostID) {
+    public Room(int id, String title, Bitmap profileImage, String profileString, int permission, String comment, String hostID, String code) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.profileImage = profileImage;
         this.profileString = profileString;
         this.permission = permission;
         this.comment = comment;
         this.hostID = hostID;
+        this.code = code;
     }
 
     public Bitmap getProfileImage() {
@@ -32,20 +34,20 @@ public class Room {
         this.profileImage = profileImage;
     }
 
-    public int getID() {
+    public int getId() {
         return id;
     }
 
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getProfileString() {
@@ -74,5 +76,13 @@ public class Room {
 
     public void setHostID(String hostID) {
         this.hostID = hostID;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

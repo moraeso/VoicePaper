@@ -1,6 +1,5 @@
 package com.example.voicepaper.activity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +8,10 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
-import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.fragment.login.SignUpFragment;
-import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.manager.AppManager;
-import com.example.voicepaper.network.SignInTask;
 
 public class LoginActivity extends AppCompatActivity implements Button.OnClickListener {
     Button btn_signUp;

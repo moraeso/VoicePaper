@@ -236,7 +236,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         // 임시 추가
         Room newRoom = new Room(1, roomNameEt.getText().toString(), roomProfile,
                 "image.url", voicePermission, roomCommentEt.getText().toString(),
-                AppManager.getInstance().getUser().getID());
+                AppManager.getInstance().getUser().getID(), "123");
 
         AppManager.getInstance().getRoomList().add(newRoom);
 

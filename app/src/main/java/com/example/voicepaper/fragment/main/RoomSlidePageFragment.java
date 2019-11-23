@@ -85,7 +85,7 @@ public class RoomSlidePageFragment extends Fragment {
         for (int i = 0; i < roomNum; i++) {
 
             roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
-            roomNameTv[i].setText(curRooms.get(i).getName());
+            roomNameTv[i].setText(curRooms.get(i).getTitle());
         }
 
         Log.d("sssong:RoomSlideFrgmt", "page : " + page);

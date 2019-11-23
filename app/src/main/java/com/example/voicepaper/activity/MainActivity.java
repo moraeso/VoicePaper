@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ViewPager roomPager;
     private RoomSlidePagerAdapter roomPagerAdapter;
-    private Button createRoomBtn, enterRoomBtn;
+    private Button createRoomBtn, inputRoomCodeBtn;
 
     private ConfirmDialog confirmDialog;
     private int selectedRoomPos;
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roomPager = (ViewPager) findViewById(R.id.roomViewPager);
 
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
+        inputRoomCodeBtn = (Button) findViewById(R.id.btn_inputRoomCode);
 
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }
@@ -88,31 +89,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
         rooms.add(new Room(1001, "1Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅎㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅎㅇ", AppManager.getInstance().getUser().getID(), "456"));
 
         rooms.add(new Room(1001, "2Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "3Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "4Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "5Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "6Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "7Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "8Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         rooms.add(new Room(1001, "9Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID()));
+                Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
 
         AppManager.getInstance().setRoomList(rooms);
     }
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 createRoomFragment.show(getSupportFragmentManager(), "CreateRoom");
                 getSupportFragmentManager().executePendingTransactions();
                 break;
-            case R.id.btn_enterRoom:
+            case R.id.btn_inputRoomCode:
                 break;
             case R.id.btn_setting:
                 break;
@@ -234,15 +235,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void enterRoomAt(int pos) {
-        Toast.makeText(AppManager.getInstance().getContext(),
-                "Enter Room : " + AppManager.getInstance().getRoomList().get(pos).getName(),
-                Toast.LENGTH_SHORT).show();
-        Log.d("sssong:MainActivity", "enter room number : " + pos);
+        //Toast.makeText(AppManager.getInstance().getContext(),
+        //        "Enter Room : " + AppManager.getInstance().getRoomList().get(pos).getName(),
+        //        Toast.LENGTH_SHORT).show();
+
+        //아이디 비밀번호를 받아와 서버와 통신
+        Intent intent = new Intent(this, RoomActivity.class);
+
+        intent.putExtra("code", AppManager.getInstance().getRoomList().get(pos).getCode());
+
+        startActivity(intent);
+
     }
 
     private void showDeleteRoomDialog() {
         confirmDialog.setMessage("방을 삭제하시겠습니까?\n"
-                + "[" + AppManager.getInstance().getRoomList().get(selectedRoomPos).getName() + "]");
+                + "[" + AppManager.getInstance().getRoomList().get(selectedRoomPos).getTitle() + "]");
         confirmDialog.show();
     }
 
