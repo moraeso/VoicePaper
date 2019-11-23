@@ -10,14 +10,16 @@ public class Room {
     private Bitmap profileImage;
     private String profileString;
     private String comment;
+    private int permission;
     private String hostID;
     // private ArrayList<RoomMember> roomMemberItems;
 
-    public Room(int id, String name, Bitmap profileImage, String profileString, String comment, String hostID) {
+    public Room(int id, String name, Bitmap profileImage, String profileString, int permission, String comment, String hostID) {
         this.id = id;
         this.name = name;
         this.profileImage = profileImage;
         this.profileString = profileString;
+        this.permission = permission;
         this.comment = comment;
         this.hostID = hostID;
     }
@@ -61,6 +63,10 @@ public class Room {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public int getPermission() { return permission; }
+
+    public void setPermission(int permission) { this.permission = permission; }
 
     public String getHostID() {
         return hostID;

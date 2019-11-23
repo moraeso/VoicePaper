@@ -3,6 +3,7 @@ package com.example.voicepaper.fragment.main;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
@@ -34,7 +38,7 @@ import java.io.IOException;
 
 public class CreateRoomFragment extends DialogFragment implements View.OnClickListener {
 
-    private EditText roomNameEt, roomTextEt;
+    private EditText roomNameEt, roomCommentEt;
     private ImageButton roomProfileIb;
     private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
     private Bitmap roomProfile;
@@ -71,10 +75,13 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         roomProfileIb = (ImageButton) view.findViewById(R.id.ib_roomProfile);
         privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
         publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
-        roomTextEt = (EditText) view.findViewById(R.id.et_roomText);
+        roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
         createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
 
-        voicePermission = Constants.VOICE_PRIVATE;
+        publicVoiceBtn.setBackgroundColor(Color.LTGRAY);
+        privateVoiceBtn.setBackgroundColor(Color.LTGRAY);
+
+        voicePermission = Constants.SELECTED_NONE;
 
         privateVoiceBtn.setOnClickListener(this);
         publicVoiceBtn.setOnClickListener(this);
@@ -94,20 +101,22 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_privateVoice :
+            case R.id.btn_privateVoice:
                 voicePermission = Constants.VOICE_PRIVATE;
                 privateVoiceBtn.setBackgroundColor(Color.CYAN);
                 publicVoiceBtn.setBackgroundColor(Color.LTGRAY);
                 break;
-            case R.id.btn_publicVoice :
+            case R.id.btn_publicVoice:
                 voicePermission = Constants.VOICE_PUBLIC;
                 privateVoiceBtn.setBackgroundColor(Color.LTGRAY);
                 publicVoiceBtn.setBackgroundColor(Color.CYAN);
                 break;
-            case R.id.ib_roomProfile :
-                pushImageButton();
+            case R.id.ib_roomProfile:
+                doTakeAlbumAction();
                 break;
-            case R.id.btn_createRoom :
+            case R.id.btn_createRoom:
+
+                addRoomInList();
                 dismiss(); //  임시 여기서 서버 호출해서 방 생성
                 break;
         }
@@ -128,11 +137,11 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("sssong:CRFragment", "requestCode : " + requestCode);
-        Log.d("sssong:CRFragment", "RESULTCODE : " + ((Activity)AppManager.getInstance().getContext()).RESULT_OK);
+        Log.d("sssong:CRFragment", "RESULTCODE : " + ((Activity) AppManager.getInstance().getContext()).RESULT_OK);
 
-        if (resultCode == ((Activity)AppManager.getInstance().getContext()).RESULT_OK) {
+        if (resultCode == ((Activity) AppManager.getInstance().getContext()).RESULT_OK) {
 
-            if (requestCode == PICK_FROM_ALBUM)  {
+            if (requestCode == PICK_FROM_ALBUM) {
                 //앨범 선택
                 Uri uri = data.getData();
                 roomProfileUri = uri;
@@ -154,8 +163,15 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    private boolean verifyEnteredInfo() {
+        boolean check = true;
+
+
+        return check;
+    }
+
     private String getRealPathFromURI(Uri contentUri) {
-        int column_index=0;
+        int column_index = 0;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
         cursor.moveToFirst();
@@ -173,24 +189,59 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
     }
 
+    // 이미지 각도 조절
     private int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) { return 180; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) { return 270; }
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
         return 0;
     }
 
     // 앨범에서 이미지 가져오기
-    public void doTakeAlbumAction() {
+    private void doTakeAlbumAction() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent,PICK_FROM_ALBUM);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
-    public void pushImageButton() {
-        doTakeAlbumAction();
+    private void addRoomInList() {
+
+        // 여기서 room 생성 서버 통신
+
+        // Room (int id, String name, Bitmap profileImage, String profileString, String comment, String hostID)
+
+        /*
+        Room newRoom = new Room(1, roomNameEt.toString(), roomProfile,
+                "image.url", voicePermission, roomCommentEt.toString(),
+                AppManager.getInstance().getUser().getID());
+*/
+
+        Log.d("sssong:CRFragment", "addRoomInList");
+
+        if (roomProfile == null) {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+            roomProfile = ((BitmapDrawable) drawable).getBitmap();
+        }
+        // 임시 추가
+        Room newRoom = new Room(1, roomNameEt.getText().toString(), roomProfile,
+                "image.url", voicePermission, roomCommentEt.getText().toString(),
+                AppManager.getInstance().getUser().getID());
+
+        AppManager.getInstance().getRoomList().add(newRoom);
 
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
+    }
 }
