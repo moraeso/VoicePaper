@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.network.UploadFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private MediaPlayer player; // 음성 재생
 
     private String fileName = null;
+    private String filePath = null;
 
     private static final int RECODE_START = 1;
     private static final int RECODE_STOP = 0;
@@ -67,8 +69,10 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
         state = RECODE_START;
 
-        fileName = getActivity().getExternalCacheDir().getAbsolutePath();
-        fileName += "/audiorecordtest.mp3";
+        filePath = getActivity().getExternalCacheDir().getAbsolutePath();
+        filePath += "/audiorecordtest.mp3";
+
+        fileName = "audiorecordtest.mp3";
 
         Log.d("smh:file path",fileName);
     }//프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
@@ -138,9 +142,11 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 /*
                 여기부근에 통신 넣어야합니다.
                  */
+                String url = "https://15011066.iptime.org:8123/uservoiceupload";
+                UploadFile uploadFile = new UploadFile(url,"id","shin",filePath);
 
+                uploadFile.execute();
                 break;
-
         }
     }
 
@@ -164,7 +170,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private void startPlaying() {
         player = new MediaPlayer();
         try {
-            player.setDataSource(fileName);
+            player.setDataSource(filePath);
             player.prepare();
             player.start();
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -196,7 +202,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
          */
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setOutputFile(fileName);
+        recorder.setOutputFile(filePath);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
         try {
             recorder.prepare();
