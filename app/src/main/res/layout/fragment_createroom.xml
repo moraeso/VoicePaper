@@ -24,20 +24,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="방 이름" />
 
         <EditText
             android:id="@+id/et_roomName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_rounded_edittext"
+            android:layout_marginRight="50dp"
             android:padding="7dp"
-            android:ems="10"
             android:inputType="textPersonName"
             android:maxLines ="1"
             android:maxLength="20"
             android:hint="최대 20자"
+            android:textSize="12sp"
             android:layout_toRightOf="@id/tv_roomName"
             android:layout_alignTop="@id/tv_roomName"
             android:layout_alignLeft="@id/btn_privateVoice"
@@ -49,19 +50,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_below="@id/et_roomName"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="대표 사진" />
 
         <ImageButton
             android:id="@+id/ib_roomProfile"
             style="@android:style/Widget.ImageButton"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="170dp"
+            android:layout_marginRight="50dp"
             android:layout_toRightOf="@id/tv_roomProfile"
             android:layout_alignTop="@id/tv_roomProfile"
             android:layout_alignLeft="@id/btn_privateVoice"
             android:scaleType="centerInside"
-            android:background="@drawable/box_rounded_gray" />
+            android:background="@drawable/custom_rounded" />
 
         <TextView
             android:id="@+id/tv_roomPermission"
@@ -69,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_below="@id/ib_roomProfile"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="목소리들을" />
         <Button
             android:id="@+id/btn_privateVoice"
@@ -77,6 +79,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_roomPermission"
             android:layout_alignTop="@id/tv_roomPermission"
+            android:textSize="12sp"
+            android:backgroundTint="@color/colorLightGray"
+            android:src="@drawable/custom_rounded"
             android:text="나만 듣기" />
 
         <Button
@@ -86,6 +91,9 @@
             android:layout_toRightOf="@id/btn_privateVoice"
             android:layout_alignTop="@id/tv_roomPermission"
             android:layout_marginLeft="30dp"
+            android:textSize="12sp"
+            android:backgroundTint="@color/colorLightGray"
+            android:src="@drawable/custom_rounded"
             android:text="모두가 듣기" />
 
         <TextView
@@ -94,20 +102,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_privateVoice"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="메시지" />
 
         <EditText
             android:id="@+id/et_roomComment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_rounded_edittext"
+            android:layout_marginRight="50dp"
             android:padding="7dp"
-            android:ems="10"
             android:lines="5"
             android:maxLines ="5"
             android:maxLength="50"
             android:hint="최대 50자"
+            android:textSize="12sp"
             android:inputType="textMultiLine"
             android:gravity="top|left"
             android:layout_toRightOf="@id/tv_roomComment"

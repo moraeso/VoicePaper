@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
@@ -78,8 +79,10 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
         createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
 
-        publicVoiceBtn.setBackgroundColor(Color.LTGRAY);
-        privateVoiceBtn.setBackgroundColor(Color.LTGRAY);
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
 
         voicePermission = Constants.SELECTED_NONE;
 
@@ -103,13 +106,17 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btn_privateVoice:
                 voicePermission = Constants.VOICE_PRIVATE;
-                privateVoiceBtn.setBackgroundColor(Color.CYAN);
-                publicVoiceBtn.setBackgroundColor(Color.LTGRAY);
+                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                        R.color.colorLightGray));
+                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                        R.color.colorRedPink));
                 break;
             case R.id.btn_publicVoice:
                 voicePermission = Constants.VOICE_PUBLIC;
-                privateVoiceBtn.setBackgroundColor(Color.LTGRAY);
-                publicVoiceBtn.setBackgroundColor(Color.CYAN);
+                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                    R.color.colorRedPink));
+                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                    R.color.colorLightGray));
                 break;
             case R.id.ib_roomProfile:
                 doTakeAlbumAction();
@@ -223,6 +230,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
         Log.d("sssong:CRFragment", "addRoomInList");
 
+        // 프로필 없을 경우 임시 프로필 추가
         if (roomProfile == null) {
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             roomProfile = ((BitmapDrawable) drawable).getBitmap();

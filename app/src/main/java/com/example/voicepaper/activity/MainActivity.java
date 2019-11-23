@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -233,6 +234,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void enterRoomAt(int pos) {
+        Toast.makeText(AppManager.getInstance().getContext(),
+                "Enter Room : " + AppManager.getInstance().getRoomList().get(pos).getName(),
+                Toast.LENGTH_SHORT).show();
         Log.d("sssong:MainActivity", "enter room number : " + pos);
     }
 
