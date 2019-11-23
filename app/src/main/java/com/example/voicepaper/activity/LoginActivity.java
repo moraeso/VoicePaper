@@ -1,6 +1,7 @@
 package com.example.voicepaper.activity;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,9 +9,12 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
+import com.example.voicepaper.fragment.login.SignUpFragment;
+import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.SignInTask;
 
@@ -43,17 +47,7 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     void initListener(){
         btn_signIn.setOnClickListener(this);
         btn_signUp.setOnClickListener(this);
-        et_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b){
 
-                }
-                else{
-
-                }
-            }
-        });
     }
 
     @Override
@@ -61,9 +55,20 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         switch (view.getId()){
             case R.id.btn_signIn:
                 //아이디 비밀번호를 받아와 서버와 통신
+//                Intent intent = new Intent(this, MainActivity.class);
+//
+//                startActivity(intent);
+//                finish();
+
+                RecordFragment recordFragment = RecordFragment.newInstance();
+                recordFragment.show(getSupportFragmentManager(),null);
+                
                 break;
             case R.id.btn_signUp:
                 //회원가입 화면 띄우기
+                SignUpFragment signUpFragment = SignUpFragment.newInstance();
+                signUpFragment.show(getSupportFragmentManager(),null);
+
                 break;
         }
 
