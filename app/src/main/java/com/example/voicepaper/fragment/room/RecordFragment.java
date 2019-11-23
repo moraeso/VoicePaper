@@ -142,8 +142,8 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 /*
                 여기부근에 통신 넣어야합니다.
                  */
-                String url = "https://15011066.iptime.org:8123/uservoiceupload";
-                UploadFile uploadFile = new UploadFile(url,"id","shin",filePath);
+                String url = "http://15011066.iptime.org:8123/uservoiceupload/";
+                UploadFile uploadFile = new UploadFile(url,"id","test3",filePath);
 
                 uploadFile.execute();
                 break;
@@ -203,7 +203,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(filePath);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         try {
             recorder.prepare();
         } catch (IOException e) {
