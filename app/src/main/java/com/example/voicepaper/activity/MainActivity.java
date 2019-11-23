@@ -25,17 +25,21 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.User;
 import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, DialogInterface.OnDismissListener {
 
     private CreateRoomFragment createRoomFragment;
 
     private ViewPager roomPager;
     private RoomSlidePagerAdapter roomPagerAdapter;
     private Button createRoomBtn, enterRoomBtn;
+
+    private ConfirmDialog confirmDialog;
+    private int selectedRoomPos;
 
     private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
 
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         roomPager = (ViewPager) findViewById(R.id.roomViewPager);
 
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }
 
     void initListener() {
@@ -114,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void initRoomPagerAdapter() {
         roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager());
 
-        setSlidePagerAdapter();
+        setRoomPagerAdapter();
 
         roomPager.setAdapter(roomPagerAdapter);
     }
@@ -133,12 +139,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getSupportFragmentManager().executePendingTransactions();
                 break;
             case R.id.btn_enterRoom:
-
                 break;
             case R.id.btn_setting:
-
+                break;
+            case R.id.iv_roomProfile1:
+                enterRoomAt(roomPager.getCurrentItem() * 4);
+                break;
+            case R.id.iv_roomProfile2:
+                enterRoomAt(roomPager.getCurrentItem() * 4 + 1);
+                break;
+            case R.id.iv_roomProfile3:
+                enterRoomAt(roomPager.getCurrentItem() * 4 + 2);
+                break;
+            case R.id.iv_roomProfile4:
+                enterRoomAt(roomPager.getCurrentItem() * 4 + 3);
+                break;
+            case R.id.btn_ok_dialog:
+                deleteRoomAt(selectedRoomPos);
+                confirmDialog.dismiss();
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_roomProfile1:
+                selectedRoomPos = roomPager.getCurrentItem() * 4;
+                showDeleteRoomDialog();
+                break;
+            case R.id.iv_roomProfile2:
+                selectedRoomPos = roomPager.getCurrentItem() * 4 + 1;
+                showDeleteRoomDialog();
+                break;
+            case R.id.iv_roomProfile3:
+                selectedRoomPos = roomPager.getCurrentItem() * 4 + 2;
+                showDeleteRoomDialog();
+                break;
+            case R.id.iv_roomProfile4:
+                selectedRoomPos = roomPager.getCurrentItem() * 4 + 3;
+                showDeleteRoomDialog();
+                break;
+        }
+
+        return true; // 이벤트 계속 진행 false, 이벤트 완료 true
     }
 
     // CreateRoomFragment에서 앨범에서 사진 받아왔을 때
@@ -169,10 +213,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("sssong:MainActivity", "===============");
         Log.d("sssong:MainActivity", "dismiss event");
         // 다시 set
-        setSlidePagerAdapter();
+        setRoomPagerAdapter();
     }
 
-    public void setSlidePagerAdapter() {
+    private void setRoomPagerAdapter() {
 
         ArrayList<Room> rooms = AppManager.getInstance().getRoomList();
 
@@ -186,5 +230,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         roomPagerAdapter.notifyDataSetChanged();
+    }
+
+    private void enterRoomAt(int pos) {
+        Log.d("sssong:MainActivity", "enter room number : " + pos);
+    }
+
+    private void showDeleteRoomDialog() {
+        confirmDialog.setMessage("방을 삭제하시겠습니까?\n"
+                + "[" + AppManager.getInstance().getRoomList().get(selectedRoomPos).getName() + "]");
+        confirmDialog.show();
+    }
+
+    private void deleteRoomAt(int pos) {
+        Log.d("sssong:MainActivity", "delete room number : " + pos);
+        AppManager.getInstance().getRoomList().remove(pos);
+        setRoomPagerAdapter();
     }
 }

@@ -1,9 +1,13 @@
 package com.example.voicepaper.fragment.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
@@ -22,10 +27,13 @@ import java.util.ArrayList;
 
 public class RoomSlidePageFragment extends Fragment {
 
+    private MainActivity mainActivity;
+
     private ImageView[] roomProfile = new ImageView[Constants.ROOMS];
     private TextView[] roomNameTv = new TextView[Constants.ROOMS];
     //private ArrayList<Room> roomList;
     private int page;
+    private int roomNum;
 
     public RoomSlidePageFragment(int page) {
         //this.roomList = roomList;
@@ -52,20 +60,18 @@ public class RoomSlidePageFragment extends Fragment {
 
         //Log.d("sssong:RoomSlideFrgmt", "list size(initView) : " + roomList.size());
 
-
         initView();
+        initListener();
 
         return view;
     }
-
-
 
     public void initView() {
 
         //Log.d("sssong:RoomSlideFrgmt", "list size : " + roomList.size());
         ArrayList<Room> allRooms = AppManager.getInstance().getRoomList();
         ArrayList<Room> curRooms = new ArrayList<Room>();
-        int roomNum = Constants.ROOMS;
+        roomNum = Constants.ROOMS;
 
         if (((allRooms.size() - 1) / Constants.ROOMS) == page
                 && allRooms.size() % Constants.ROOMS != 0) {
@@ -76,7 +82,7 @@ public class RoomSlidePageFragment extends Fragment {
             curRooms.add(allRooms.get(page * Constants.ROOMS + i));
         }
 
-        for (int i = 0; i < curRooms.size(); i++) {
+        for (int i = 0; i < roomNum; i++) {
 
             roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
             roomNameTv[i].setText(curRooms.get(i).getName());
@@ -84,5 +90,13 @@ public class RoomSlidePageFragment extends Fragment {
 
         Log.d("sssong:RoomSlideFrgmt", "page : " + page);
         Log.d("sssong:RoomSlideFrgmt", "roomNum : " + roomNum);
+    }
+
+    public void initListener() {
+
+        for (int i = 0; i < roomNum; i++) {
+            roomProfile[i].setOnClickListener((MainActivity)AppManager.getInstance().getContext());
+            roomProfile[i].setOnLongClickListener((MainActivity)AppManager.getInstance().getContext());
+        }
     }
 }
