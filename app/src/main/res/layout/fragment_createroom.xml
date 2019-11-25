@@ -1,140 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:id="@+id/sv_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".fragment.main.CreateRoomFragment">
 
-    <ImageView
-        android:id="@+id/iv_logo_top"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/logo_top" />
-
     <RelativeLayout
-        android:id="@+id/layout_enterInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/iv_logo_top">
-
-        <TextView
-            android:id="@+id/tv_roomName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textSize="16sp"
-            android:text="방 이름" />
-
-        <EditText
-            android:id="@+id/et_roomName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_rounded_edittext"
-            android:layout_marginRight="50dp"
-            android:padding="7dp"
-            android:inputType="textPersonName"
-            android:maxLines ="1"
-            android:maxLength="20"
-            android:hint="최대 20자"
-            android:textSize="12sp"
-            android:layout_toRightOf="@id/tv_roomName"
-            android:layout_alignTop="@id/tv_roomName"
-            android:layout_alignLeft="@id/btn_privateVoice"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/tv_roomProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/et_roomName"
-            android:textSize="16sp"
-            android:text="대표 사진" />
-
-        <ImageButton
-            android:id="@+id/ib_roomProfile"
-            style="@android:style/Widget.ImageButton"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:layout_marginRight="50dp"
-            android:layout_toRightOf="@id/tv_roomProfile"
-            android:layout_alignTop="@id/tv_roomProfile"
-            android:layout_alignLeft="@id/btn_privateVoice"
-            android:scaleType="centerInside"
-            android:background="@drawable/custom_rounded" />
-
-        <TextView
-            android:id="@+id/tv_roomPermission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_below="@id/ib_roomProfile"
-            android:textSize="16sp"
-            android:text="목소리들을" />
-        <Button
-            android:id="@+id/btn_privateVoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_roomPermission"
-            android:layout_alignTop="@id/tv_roomPermission"
-            android:textSize="12sp"
-            android:backgroundTint="@color/colorLightGray"
-            android:src="@drawable/custom_rounded"
-            android:text="나만 듣기" />
-
-        <Button
-            android:id="@+id/btn_publicVoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btn_privateVoice"
-            android:layout_alignTop="@id/tv_roomPermission"
-            android:layout_marginLeft="30dp"
-            android:textSize="12sp"
-            android:backgroundTint="@color/colorLightGray"
-            android:src="@drawable/custom_rounded"
-            android:text="모두가 듣기" />
-
-        <TextView
-            android:id="@+id/tv_roomComment"
-            android:layout_margin="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_privateVoice"
-            android:textSize="16sp"
-            android:text="메시지" />
-
-        <EditText
-            android:id="@+id/et_roomComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_rounded_edittext"
-            android:layout_marginRight="50dp"
-            android:padding="7dp"
-            android:lines="5"
-            android:maxLines ="5"
-            android:maxLength="50"
-            android:hint="최대 50자"
-            android:textSize="12sp"
-            android:inputType="textMultiLine"
-            android:gravity="top|left"
-            android:layout_toRightOf="@id/tv_roomComment"
-            android:layout_alignTop="@id/tv_roomComment"
-            android:layout_alignLeft="@id/btn_privateVoice"
-            android:text="" />
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_createRoom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:text="방 만들기" />
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/iv_logo_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logo_top" />
 
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_enterInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_logo_top">
+
+            <TextView
+                android:id="@+id/tv_roomTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="방 이름"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_roomTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/btn_privateVoice"
+                android:layout_alignTop="@id/tv_roomTitle"
+                android:layout_marginRight="50dp"
+                android:layout_toRightOf="@id/tv_roomTitle"
+                android:background="@drawable/custom_rounded_edittext"
+                android:hint="최대 20자"
+                android:inputType="textPersonName"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:padding="7dp"
+                android:text=""
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_roomProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_roomTitle"
+                android:layout_margin="20dp"
+                android:text="대표 사진"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/ib_roomProfile"
+                style="@android:style/Widget.ImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_alignLeft="@id/btn_privateVoice"
+                android:layout_alignTop="@id/tv_roomProfile"
+                android:layout_marginRight="50dp"
+                android:layout_toRightOf="@id/tv_roomProfile"
+                android:background="@drawable/custom_rounded"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:id="@+id/tv_roomPermission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_roomProfile"
+                android:layout_margin="20dp"
+                android:text="목소리들을"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_privateVoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_roomPermission"
+                android:layout_toRightOf="@id/tv_roomPermission"
+                android:backgroundTint="@color/colorLightGray"
+                android:src="@drawable/custom_rounded"
+                android:text="나만 듣기"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btn_publicVoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_roomPermission"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/btn_privateVoice"
+                android:backgroundTint="@color/colorLightGray"
+                android:src="@drawable/custom_rounded"
+                android:text="모두가 듣기"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_roomComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_privateVoice"
+                android:layout_margin="20dp"
+                android:text="메시지"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_roomComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/btn_privateVoice"
+                android:layout_alignTop="@id/tv_roomComment"
+                android:layout_marginRight="50dp"
+                android:layout_toRightOf="@id/tv_roomComment"
+                android:background="@drawable/custom_rounded_edittext"
+                android:gravity="top|left"
+                android:hint="최대 50자"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:maxLength="50"
+                android:maxLines="5"
+                android:padding="7dp"
+                android:text=""
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_createRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_enterInfo"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:text="방 만들기" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -75,11 +75,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
         inputRoomCodeBtn = (Button) findViewById(R.id.btn_inputRoomCode);
 
-        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-    }
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext()); }
 
     void initListener() {
         createRoomBtn.setOnClickListener(this);
+        confirmDialog.getOkBtn().setOnClickListener(this);
+
     }
 
     void initMyRoomList() {
@@ -121,15 +122,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void initRoomPagerAdapter() {
         roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager());
-
         setRoomPagerAdapter();
-
         roomPager.setAdapter(roomPagerAdapter);
+
+        initListener();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        AppManager.getInstance().setContext(this);
+        AppManager.getInstance().setResources(getResources());
     }
 
     @Override

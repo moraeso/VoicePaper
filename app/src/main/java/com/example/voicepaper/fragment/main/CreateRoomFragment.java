@@ -16,14 +16,18 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,15 +35,19 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
 import java.io.IOException;
 
 public class CreateRoomFragment extends DialogFragment implements View.OnClickListener {
 
-    private EditText roomNameEt, roomCommentEt;
+    private ScrollView scrollView;
+
+    private EditText roomTitleEt, roomCommentEt;
     private ImageButton roomProfileIb;
     private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
     private Bitmap roomProfile;
@@ -49,9 +57,13 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     private Uri roomProfileUri;
     private int exifDegree;
 
-    private static final int PICK_FROM_ALBUM = 1;
+    private ConfirmDialog confirmDialog;
 
-    private CreateRoomFragment() {    }
+    private static final int PICK_FROM_ALBUM = 1;
+    private int inputSuitable;
+
+    private CreateRoomFragment() {
+    }
 
     public static CreateRoomFragment newInstance() {
         CreateRoomFragment fragment = new CreateRoomFragment();
@@ -68,9 +80,13 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_createroom, container, false);
 
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        scrollView = (ScrollView) view.findViewById(R.id.sv_root);
+
         setCancelable(false);
 
-        roomNameEt = (EditText) view.findViewById(R.id.et_roomName);
+        roomTitleEt = (EditText) view.findViewById(R.id.et_roomTitle);
         roomProfileIb = (ImageButton) view.findViewById(R.id.ib_roomProfile);
         privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
         publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
@@ -78,16 +94,48 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
 
         publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorLightGray));
+                R.color.colorRedPink));
         privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorLightGray));
 
-        voicePermission = Constants.SELECTED_NONE;
+        voicePermission = Constants.VOICE_PUBLIC;
 
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+        confirmDialog.getOkBtn().setOnClickListener(this);
         privateVoiceBtn.setOnClickListener(this);
         publicVoiceBtn.setOnClickListener(this);
         roomProfileIb.setOnClickListener(this);
         createRoomBtn.setOnClickListener(this);
+
+        roomCommentEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollTo(0, scrollView.getBottom());
+                        }
+                    }, 500);
+                }
+            }
+        });
+
+        roomCommentEt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0, scrollView.getBottom());
+                    }
+                }, 500);
+            }
+
+        });
 
         return view;
     }
@@ -112,17 +160,24 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             case R.id.btn_publicVoice:
                 voicePermission = Constants.VOICE_PUBLIC;
                 publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                    R.color.colorRedPink));
+                        R.color.colorRedPink));
                 privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                    R.color.colorLightGray));
+                        R.color.colorLightGray));
                 break;
             case R.id.ib_roomProfile:
                 doTakeAlbumAction();
                 break;
             case R.id.btn_createRoom:
-
-                addRoomInList();
-                dismiss(); //  임시 여기서 서버 호출해서 방 생성
+                setDialogMessage();
+                setDialogListener();
+                confirmDialog.show();
+                break;
+            case R.id.btn_ok_dialog:
+                if (isTitleSuitable() && isCommentSuitable()) {
+                    addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
+                    confirmDialog.dismiss();
+                    dismiss();
+                }
                 break;
         }
     }
@@ -168,11 +223,34 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
-    private boolean verifyEnteredInfo() {
-        boolean check = true;
+    private void setDialogListener() {
+        if (!isTitleSuitable() || !isCommentSuitable()) {
+            confirmDialog.setOkBtnDismiss();
+        } else {
+            confirmDialog.getOkBtn().setOnClickListener(this);
+        }
+    }
 
+    private void setDialogMessage() {
+        if (!isTitleSuitable()) {
+            confirmDialog.setMessage("방 이름을 입력해주세요.");
+        } else if (!isCommentSuitable()) {
+            confirmDialog.setMessage("방 소개글을 입력해주세요.");
+        } else {
+            confirmDialog.setMessage("방을 생성하시겠습니까?");
+        }
+    }
 
-        return check;
+    private boolean isTitleSuitable() {
+        if (roomTitleEt.getText().toString().equals(""))
+            return false;
+        return true;
+    }
+
+    private boolean isCommentSuitable() {
+        if (roomCommentEt.getText().toString().equals(""))
+            return false;
+        return true;
     }
 
     private String getRealPathFromURI(Uri contentUri) {
@@ -234,7 +312,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             roomProfile = ((BitmapDrawable) drawable).getBitmap();
         }
         // 임시 추가
-        Room newRoom = new Room(1, roomNameEt.getText().toString(), roomProfile,
+        Room newRoom = new Room(1, roomTitleEt.getText().toString(), roomProfile,
                 "image.url", voicePermission, roomCommentEt.getText().toString(),
                 AppManager.getInstance().getUser().getID(), "123");
 

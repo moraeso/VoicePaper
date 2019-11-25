@@ -1,5 +1,6 @@
 package com.example.voicepaper.util;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -9,13 +10,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.voicepaper.R;
-import com.example.voicepaper.activity.MainActivity;
-import com.example.voicepaper.manager.AppManager;
 
-public class ConfirmDialog extends Dialog {
+import com.example.voicepaper.R;
+
+public class ConfirmDialog extends Dialog implements View.OnClickListener {
+
+    Context context;
     TextView messageTv;
     Button okBtn, cancelBtn;
+
     public ConfirmDialog(Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);   //다이얼로그의 타이틀바를 없애주는 옵션입니다.
@@ -25,22 +28,33 @@ public class ConfirmDialog extends Dialog {
         messageTv = (TextView) findViewById(R.id.tv_message_dialog);
 
         okBtn = (Button) findViewById(R.id.btn_ok_dialog);
-        okBtn.setOnClickListener((MainActivity) AppManager.getInstance().getContext());
+        okBtn.setOnClickListener(this);
 
         cancelBtn = (Button) findViewById(R.id.btn_cancel_dialog);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();   //다이얼로그를 닫는 메소드입니다.
-            }
-        });
+        cancelBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btn_ok_dialog:
+                dismiss();
+                break;
+            case R.id.btn_cancel_dialog:
+                dismiss();
+                break;
+        }
+    }
+
+    public Button getOkBtn() {
+        return okBtn;
     }
 
     public void setMessage(String message) {
         messageTv.setText(message);
     }
 
-    public String getMessage() {
-        return messageTv.getText().toString();
+    public void setOkBtnDismiss() {
+        okBtn.setOnClickListener(this);
     }
 }

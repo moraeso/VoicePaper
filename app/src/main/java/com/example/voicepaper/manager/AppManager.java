@@ -7,12 +7,18 @@ import android.graphics.BitmapFactory;
 
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.User;
+import com.example.voicepaper.util.ConfirmDialog;
 
 import java.util.ArrayList;
 
 public class AppManager {
 
     private static AppManager instance;
+
+    private AppManager() {
+        user = new User();
+        roomList = new ArrayList<>();
+    }
 
     private Context context;
     private Resources resources;
