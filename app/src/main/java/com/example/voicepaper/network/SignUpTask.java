@@ -7,14 +7,14 @@ import com.example.voicepaper.manager.AppManager;
 
 import org.json.JSONObject;
 
-public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
+public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
     String url;
     ContentValues values;
     AsyncCallback asyncCallback;
     private Exception exception;
 
-    public SignInTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = "";
+    public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
+        this.url = "db";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }
@@ -27,15 +27,14 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
 
-            if (!isSignInDataValid(result)) {
+            JSONObject job = new JSONObject(result);
+            int code = job.getInt("code");
+
+            if (!isSignUpDataValid(code)) {
                 throw new Exception("SignUp data is not valid");
             }
-
             // 토큰 설정
-            JSONObject job = new JSONObject(result);
-            String token = job.getString("token");
-            AppManager.getInstance().getUser().setToken(token);
-
+            AppManager.getInstance().getUser().setToken(job.getString("token"));
             // 유저 ID, Password 설정
             AppManager.getInstance().getUser().setID(values.getAsString("id"));
             AppManager.getInstance().getUser().setPw(values.getAsString("pw"));
@@ -60,20 +59,13 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
         }
     }
 
-    private boolean isSignInDataValid(String json_str) {
+    private boolean isSignUpDataValid(int code) {
         // 성공 : 200, 실패 : 204
-        try {
-            JSONObject jsonObj = new JSONObject(json_str);
-            int code = jsonObj.getInt("code");
-
-            if (code == 204) {
-                return false;
-            } else if (code == 200) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (code == 204) {
+            return false;
+        } else if (code == 200) {
+            return true;
         }
-        return true;
-    }
+        return false;
+    }//수정 필요
 }

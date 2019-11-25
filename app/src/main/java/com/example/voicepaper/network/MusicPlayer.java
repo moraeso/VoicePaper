@@ -15,7 +15,7 @@ public class MusicPlayer extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = "http://15011066.iptime.org:8123/static/testmusic4.mp3"; // your URL here
+        String url = "http://15011066.iptime.org:8123/static/ -파일이름"; // your URL here
 
         m_MediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
