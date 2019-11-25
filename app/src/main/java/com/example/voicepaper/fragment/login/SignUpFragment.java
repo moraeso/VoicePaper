@@ -104,8 +104,9 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
             case R.id.btn_userIamgeSet:
                 break;
             case R.id.btn_signUp:
+                final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
                 if(et_pw.getText().toString() == et_rePw.getText().toString()){
-                    ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
                     confirmDialog.setMessage("비밀번호가 일치하지 않습니다.");
                 }
                 else {
@@ -117,13 +118,16 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                     SignUpTask signUpTask = new SignUpTask(values, new AsyncCallback(){
                         @Override
                         public void onSuccess(Object object) {
-
+                            confirmDialog.setMessage("회원가입 완료!");
+                            dismiss();
                         }
                         @Override
                         public void onFailure(Exception e) {
                             //아이디가 이미 있음.
                         }
                     });
+
+                    signUpTask.execute();
                 }
                 break;
         }
