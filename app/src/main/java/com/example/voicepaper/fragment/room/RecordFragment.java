@@ -204,11 +204,21 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(filePath);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        recorder.setMaxDuration(15000);//녹음 최대 시간 셋
+        recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+            @Override
+            public void onInfo(MediaRecorder mediaRecorder, int i, int i1) {
+                if(i==MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
+                    Log.d("smh:Recoding time","reached");
+                    onRecord(false);
+                }
+            }
+        });
         try {
             recorder.prepare();
         } catch (IOException e) {
             Log.d("smh:record", "prepare() failed");
-        }
+            }
 
         //이미지 변경
         btn_record.setImageResource(R.drawable.ic_stop2);

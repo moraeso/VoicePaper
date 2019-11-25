@@ -3,6 +3,7 @@ package com.example.voicepaper.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -30,6 +31,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
 
         initView();
         initListener();
+
+       // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     void initView(){
@@ -52,11 +55,11 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
                 //아이디 비밀번호를 받아와 서버와 통신
                 Intent intent = new Intent(this, MainActivity.class);
 
-                startActivity(intent);
-                finish();
+//                startActivity(intent);
+//                finish();
 
-                //RecordFragment recordFragment = RecordFragment.newInstance();
-                //recordFragment.show(getSupportFragmentManager(),null);
+                RecordFragment recordFragment = RecordFragment.newInstance();
+                recordFragment.show(getSupportFragmentManager(),null);
 
                 break;
             case R.id.btn_signUp:
