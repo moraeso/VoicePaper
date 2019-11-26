@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/sv_root"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sv_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".fragment.main.CreateRoomFragment">
@@ -18,6 +17,14 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/logo_top" />
+
+        <LinearLayout
+            android:id="@+id/layout_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/iv_logo_top"
+            android:background="@drawable/custom_gradient"
+            android:orientation="vertical" />
 
         <RelativeLayout
             android:id="@+id/layout_enterInfo"
@@ -39,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/btn_privateVoice"
                 android:layout_alignTop="@id/tv_roomTitle"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="35dp"
                 android:layout_toRightOf="@id/tv_roomTitle"
                 android:background="@drawable/custom_rounded_edittext"
                 android:hint="최대 20자"
@@ -66,7 +73,7 @@
                 android:layout_height="170dp"
                 android:layout_alignLeft="@id/btn_privateVoice"
                 android:layout_alignTop="@id/tv_roomProfile"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="35dp"
                 android:layout_toRightOf="@id/tv_roomProfile"
                 android:background="@drawable/custom_rounded"
                 android:scaleType="centerInside" />
@@ -96,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/tv_roomPermission"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@id/btn_privateVoice"
                 android:backgroundTint="@color/colorLightGray"
                 android:src="@drawable/custom_rounded"
@@ -118,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/btn_privateVoice"
                 android:layout_alignTop="@id/tv_roomComment"
-                android:layout_marginRight="50dp"
+                android:layout_marginRight="35dp"
                 android:layout_toRightOf="@id/tv_roomComment"
                 android:background="@drawable/custom_rounded_edittext"
                 android:gravity="top|left"
@@ -138,8 +145,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_enterInfo"
             android:layout_centerInParent="true"
-            android:layout_marginTop="40dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
             android:text="방 만들기" />

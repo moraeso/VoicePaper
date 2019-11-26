@@ -3,6 +3,7 @@ package com.example.voicepaper.fragment.main;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,6 +39,8 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.network.AsyncCallback;
+import com.example.voicepaper.network.CreateRoomTask;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
@@ -144,7 +147,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public void onStart() {
         super.onStart();
 
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -294,6 +297,29 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
     private void addRoomInList() {
 
+        /*
+        ContentValues values = new ContentValues();
+        values.put("roomName", roomTitleEt.getText().toString());
+        values.put("roomText", roomCommentEt.getText().toString());
+        values.put("roomPermission", voicePermission);
+        values.put("hostID", AppManager.getInstance().getUser().getID());
+
+        String url = Constants.URL + "/room/roomCreate";
+        CreateRoomTask createRoomTask = new CreateRoomTask(url, values, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+        createRoomTask.execute();
+*/
+
+         
         // 여기서 room 생성 서버 통신
 
         // Room (int id, String name, Bitmap profileImage, String profileString, String comment, String hostID)

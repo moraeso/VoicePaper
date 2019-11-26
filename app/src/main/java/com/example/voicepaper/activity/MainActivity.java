@@ -25,6 +25,7 @@ import com.example.voicepaper.adapter.RoomSlidePagerAdapter;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.User;
 import com.example.voicepaper.fragment.main.CreateRoomFragment;
+import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, DialogInterface.OnDismissListener {
 
     private CreateRoomFragment createRoomFragment;
+    private InputRoomCodeFragment inputRoomCodeFragment;
 
     private ViewPager roomPager;
     private RoomSlidePagerAdapter roomPagerAdapter;
@@ -54,9 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ///////////////// 임시 유저 ////////////////////////
-        User user = new User();
-        AppManager.getInstance().setUser(user);
-        AppManager.getInstance().getUser().setID("user1");
+        AppManager.getInstance().getUser().setID("testID");
         ////////////////////////////////////////////////////
 
         initView();
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void initListener() {
         createRoomBtn.setOnClickListener(this);
+        inputRoomCodeBtn.setOnClickListener(this);
         confirmDialog.getOkBtn().setOnClickListener(this);
 
     }
@@ -90,7 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
         rooms.add(new Room(1001, "1Room", bitmap, "abc.url",
-                Constants.VOICE_PUBLIC, "ㅎㅇ", AppManager.getInstance().getUser().getID(), "456"));
+                Constants.VOICE_PUBLIC,
+                "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리 나라 만세 무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세.",
+                AppManager.getInstance().getUser().getID(), "456"));
 
         rooms.add(new Room(1001, "2Room", bitmap, "abc.url",
                 Constants.VOICE_PUBLIC, "ㅂㅇ", AppManager.getInstance().getUser().getID(), "123"));
@@ -144,6 +147,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getSupportFragmentManager().executePendingTransactions();
                 break;
             case R.id.btn_inputRoomCode:
+                inputRoomCodeFragment = InputRoomCodeFragment.newInstance();
+                inputRoomCodeFragment.show(getSupportFragmentManager(), "InputRoomCode");
+                getSupportFragmentManager().executePendingTransactions();
                 break;
             case R.id.btn_setting:
                 break;

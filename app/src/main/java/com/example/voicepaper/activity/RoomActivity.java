@@ -1,7 +1,10 @@
 package com.example.voicepaper.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -10,12 +13,15 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.adapter.VoiceRecycleViewerAdapter;
+import com.example.voicepaper.adapter.VoiceRecyclerViewDecoration;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -23,6 +29,12 @@ public class RoomActivity extends AppCompatActivity {
 
     private ImageView roomProfileIv;
     private TextView roomTitleTv, roomCommentTv;
+
+    private SwipeRefreshLayout swipeRefresh;
+
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView voiceRecycleView;
+    private VoiceRecycleViewerAdapter voiceAdapter;
 
     private Room room;
 
@@ -40,7 +52,42 @@ public class RoomActivity extends AppCompatActivity {
 
         initView();
         getRoomInfo();
+
+        // RecycleView 생성 및 사이즈 고정
+        voiceRecycleView = (RecyclerView) findViewById(R.id.rv_voiceList);
+        voiceRecycleView.setHasFixedSize(true);
+
+        // Grid 레이아웃 적용
+        layoutManager = new GridLayoutManager(AppManager.getInstance().getContext(), 2);
+        voiceRecycleView.setLayoutManager(layoutManager);
+        voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((Activity) AppManager.getInstance().getContext()));
+
+        // 어뎁터 연결
+        voiceAdapter = new VoiceRecycleViewerAdapter();
+        voiceRecycleView.setAdapter(voiceAdapter);
+
+        // 새로고침
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.layout_swipeRefresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+
+                        /*
+                        여기서 새로고침 시 기능 추가
+
+                        */
+
+                        voiceRecycleView.smoothScrollToPosition(0);
+                    }
+                }, 1000);
+            }
+        });
     }
+
 
     private void getRoomInfo() {
         code = getIntent().getExtras().getString("code");
@@ -60,10 +107,8 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        roomProfileIv = (ImageView)findViewById(R.id.iv_roomProfile);
-        roomTitleTv = (TextView)findViewById(R.id.tv_roomTitle);
-        roomCommentTv = (TextView)findViewById(R.id.tv_roomComment);
+        roomProfileIv = (ImageView) findViewById(R.id.iv_roomProfile);
+        roomTitleTv = (TextView) findViewById(R.id.tv_roomTitle);
+        roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
     }
-
-
 }

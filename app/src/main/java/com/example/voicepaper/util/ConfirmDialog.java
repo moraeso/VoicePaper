@@ -15,7 +15,6 @@ import com.example.voicepaper.R;
 
 public class ConfirmDialog extends Dialog implements View.OnClickListener {
 
-    Context context;
     TextView messageTv;
     Button okBtn, cancelBtn;
 
