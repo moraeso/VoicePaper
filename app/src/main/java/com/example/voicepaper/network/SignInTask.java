@@ -50,7 +50,7 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
             AppManager.getInstance().getUser().setID(job.getString("id"));
             AppManager.getInstance().getUser().setPw(job.getString("pw"));
             AppManager.getInstance().getUser().setName(job.getString("name"));
-            AppManager.getInstance().getUser().setName(job.getString("profileString"));
+            AppManager.getInstance().getUser().setProfileString(job.getString("profileString"));
             reseiveRoomList(job.getString("roomList"));
 
         } catch (Exception e) {
