@@ -52,6 +52,11 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        if (callback != null && exception == null) {
+            callback.onSuccess(participatedRoom);
+        } else {
+            callback.onFailure(exception);
+        }
     }
 
     private boolean isConnectionSuccess(String json_str) {
@@ -85,14 +90,13 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             int roomId = jsonObj.getInt("roomID");
             String roomCode = jsonObj.getString("roomCode");
             String roomName = jsonObj.getString("roomName");
+            String roomProfileString = jsonObj.getString("roomImage");
             String roomComment = jsonObj.getString("roomText");
             int roomPermission = jsonObj.getInt("roomPermission");
             String hostId = jsonObj.getString("hostID");
 
             participatedRoom = new Room(roomId, roomName, roomPermission, roomComment, hostId, roomCode);
-
-            //int loadPercent = (int)((i + 1) / (float)jsonArray.length() * 100.0f);
-            //MountManager.getInstance().setLoadPercent(loadPercent);
+            participatedRoom.setProfileString(roomProfileString);
 
         } catch (Exception e) {
             e.printStackTrace();

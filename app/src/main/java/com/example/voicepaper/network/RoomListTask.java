@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class UpdateRoomTask extends AsyncTask<Void, Void, Void> {
+public class RoomListTask extends AsyncTask<Void, Void, Void> {
 
     private ArrayList<Room> updatedRoomList;
 
@@ -26,7 +26,7 @@ public class UpdateRoomTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
-    public UpdateRoomTask(ContentValues values, AsyncCallback callback) {
+    public RoomListTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/grouplist";
         this.values = values;

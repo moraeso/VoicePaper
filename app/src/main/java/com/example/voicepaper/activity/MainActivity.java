@@ -30,9 +30,8 @@ import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.AsyncCallback;
-import com.example.voicepaper.network.UpdateRoomTask;
+import com.example.voicepaper.network.RoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
-import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
 
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         initListener();
         initMyRoomList();
+        //getUserRoomList();
         initRoomPagerAdapter();
 
         setSwipeRefresh();
@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
+        /*
         rooms.add(new Room(11, "1Room",
                 Constants.VOICE_PUBLIC,
                 "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리 나라 만세" +
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rooms.add(new Room(13, "3Room",
                 Constants.VOICE_PUBLIC, "3333", AppManager.getInstance().getUser().getID(), "12"));
-/*
+
         rooms.add(new Room(14, "4Room",
                 Constants.VOICE_PUBLIC, "4444", AppManager.getInstance().getUser().getID(), "13"));
 
@@ -144,6 +145,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initListener();
     }
 
+    private void getUserRoomList() {
+        ContentValues values = new ContentValues();
+        values.put("userID", AppManager.getInstance().getUser().getID());
+        RoomListTask roomListTask = new RoomListTask(values, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d("sssong:MainActivity", "onSuccess : update room list");
+                AppManager.getInstance().getRoomList().clear();
+                AppManager.getInstance().getRoomList().addAll((ArrayList<Room>)object);
+                setRoomPagerAdapter();                            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AppManager.getInstance().getContext(),
+                        "error : " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+        roomListTask.execute();
+    }
+
     private void setSwipeRefresh() {
         // 새로고침
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.layout_swipeRefresh);
@@ -155,24 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void run() {
                         swipeRefresh.setRefreshing(false);
 
-                        ContentValues values = new ContentValues();
-                        values.put("userID", AppManager.getInstance().getUser().getID());
-                        UpdateRoomTask updateRoomTask = new UpdateRoomTask(values, new AsyncCallback() {
-                            @Override
-                            public void onSuccess(Object object) {
-                                Log.d("sssong:MainActivity", "onSuccess : update room list");
-                                AppManager.getInstance().getRoomList().clear();
-                                AppManager.getInstance().getRoomList().addAll((ArrayList<Room>)object);
-                                setRoomPagerAdapter();                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Toast.makeText(AppManager.getInstance().getContext(),
-                                        "error : " + e, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        updateRoomTask.execute();
-
+                        getUserRoomList();
                     }
                 }, 1000);
             }
