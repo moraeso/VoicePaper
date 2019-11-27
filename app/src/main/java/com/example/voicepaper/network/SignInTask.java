@@ -1,11 +1,20 @@
 package com.example.voicepaper.network;
 
 import android.content.ContentValues;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     String url;
@@ -14,7 +23,7 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     private Exception exception;
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = "";
+        this.url = Constants.URL + "/auth/login";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }
@@ -27,18 +36,22 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
 
-            if (!isSignInDataValid(result)) {
-                throw new Exception("SignUp data is not valid");
+            JSONObject job = new JSONObject(result);
+            int code = job.getInt("code");
+            Log.d("smh:signin",""+code);
+            if (!isSignInDataValid(code)) {
+                throw new Exception("Signin data is not valid");
             }
 
-            // 토큰 설정
-            JSONObject job = new JSONObject(result);
             String token = job.getString("token");
             AppManager.getInstance().getUser().setToken(token);
 
             // 유저 ID, Password 설정
-            AppManager.getInstance().getUser().setID(values.getAsString("id"));
-            AppManager.getInstance().getUser().setPw(values.getAsString("pw"));
+            AppManager.getInstance().getUser().setID(job.getString("id"));
+            AppManager.getInstance().getUser().setPw(job.getString("pw"));
+            AppManager.getInstance().getUser().setName(job.getString("name"));
+            AppManager.getInstance().getUser().setName(job.getString("profileString"));
+            reseiveRoomList(job.getString("roomList"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,20 +73,53 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
         }
     }
 
-    private boolean isSignInDataValid(String json_str) {
+    private boolean isSignInDataValid(int code) {
         // 성공 : 200, 실패 : 204
-        try {
-            JSONObject jsonObj = new JSONObject(json_str);
-            int code = jsonObj.getInt("code");
+        if(code == 200){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
-            if (code == 204) {
-                return false;
-            } else if (code == 200) {
-                return true;
+    private void reseiveRoomList(String _jsonArray){
+        ArrayList<Room> roomArrayList = new ArrayList<Room>();
+
+        try {
+            JSONArray jsonArray = new JSONArray(_jsonArray);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+//                private int id;
+//                private String title;
+//                private Bitmap profileImage;
+//                private String profileString;
+//                private String comment;
+//                private int permission;
+//                private String hostID;
+//                private String code;
+
+//int id, String title, int permission, String comment, String hostID, String code
+
+                Room room = new Room(
+                        jsonObject.getInt("roomID"),
+                        jsonObject.getString("roomName"),
+                        jsonObject.getInt("roomPermission"),
+                        jsonObject.getString("roomText"),
+                        jsonObject.getString("hostID"),
+                        jsonObject.getString("roomCode")
+                );
+                room.setProfileString(jsonObject.getString("roomImage"));
+                //이미지 바로 넣을것인가? 여기서 받아올거면 Glide 쓰면 됩니다.
+
+                roomArrayList.add(room);
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        return true;
+
+        AppManager.getInstance().setRoomList(roomArrayList);
     }
 }

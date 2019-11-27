@@ -1,7 +1,11 @@
 package com.example.voicepaper.network;
 
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -17,19 +21,34 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     private AsyncCallback callback;
     private Exception exception;
 
+    private int type;
     private String m_url;
-    private String key;
-    private String value;
     private String filePath;
 
-    public static final int UPLOAD_IMAGE = 1;
-    public static final int UPLOAD_AUDIO = 2;
+    private ContentValues values;
+    private String roomiD;
+    private String useriD;
 
-    public UploadFile(String url, String key, String value, String filePath) {
-        this.m_url = url;
-        this.key = key;
-        this.value = value;
+    public static final int UPLOAD_IMAGE_USER = 1;
+    public static final int UPLOAD_IMAGE_ROOM = 2;
+    public static final int UPLOAD_AUDIO = 3;
+
+    public UploadFile(int type, ContentValues values, String filePath) {
+        this.type = type;
+        this.values = values;
         this.filePath = filePath;
+        this.useriD = AppManager.getInstance().getUser().getID();
+
+        if(type == UPLOAD_IMAGE_USER){
+            this.m_url = Constants.URL+"/file/uploaduserimage";
+        }
+        else if(type == UPLOAD_IMAGE_ROOM){
+            this.m_url = Constants.URL+"/file/uploadgroupimage";
+            this.roomiD = values.getAsString("roomID");
+        }
+        else if(type == UPLOAD_AUDIO){
+            this.m_url = Constants.URL+"/file/file/uploadvoice";
+        }
     }
 
     @Override
@@ -56,12 +75,36 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
 
             OutputStream os = con.getOutputStream();
             DataOutputStream wr = new DataOutputStream(os);
-            wr.writeBytes("\r\n--" + boundary + "\r\n");
-            wr.writeBytes("Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n" + value);
-            wr.writeBytes("\r\n--" + boundary + "\r\n");
-            wr.writeBytes("Content-Disposition: form-data; name=\"voice\"; filename=\"test.mp3\"\r\n");
-            //wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
-            wr.writeBytes("Content-Type: audio/mpeg\r\n\r\n");
+
+            if(type == UPLOAD_AUDIO) {
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + useriD);
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomiD);
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + "test.mp3");//임시로 넣어둠
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"voice\"; filename=\"test.mp3\"\r\n");
+                wr.writeBytes("Content-Type: audio/mpeg\r\n\r\n");
+            }
+            else if(type == UPLOAD_IMAGE_USER){
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + useriD);
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + useriD +".jpg");
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + useriD +".jpg"+ "\r\n");
+                wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
+            }
+            else if(type == UPLOAD_IMAGE_ROOM){
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomiD);
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + roomiD +".jpg");
+                wr.writeBytes("\r\n--" + boundary + "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + roomiD +".jpg"+ "\r\n");
+                wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
+            }
 
             FileInputStream fileInputStream = new FileInputStream(filePath);
             int bytesAvailable = fileInputStream.available();

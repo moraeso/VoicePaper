@@ -19,7 +19,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
