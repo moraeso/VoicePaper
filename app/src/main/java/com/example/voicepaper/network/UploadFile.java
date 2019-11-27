@@ -55,7 +55,7 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         String result;
-        try{
+        try {
             upload();
         } catch (Exception e){
             exception = e;
@@ -63,7 +63,15 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        if (callback != null && exception == null) {
+            callback.onSuccess(aVoid);
+        } else {
+            callback.onFailure(exception);
+        }
+    }
 
     private String upload() {
         URL url = null;

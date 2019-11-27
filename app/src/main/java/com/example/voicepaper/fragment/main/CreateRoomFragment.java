@@ -85,33 +85,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_createroom, container, false);
 
-        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        scrollView = (ScrollView) view.findViewById(R.id.sv_root);
-
-        setCancelable(false);
-
-        roomTitleEt = (EditText) view.findViewById(R.id.et_roomTitle);
-        roomProfileIb = (ImageButton) view.findViewById(R.id.ib_roomProfile);
-        privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
-        publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
-        roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
-        createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
-
-        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorRedPink));
-        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorLightGray));
-
-        voicePermission = Constants.VOICE_PUBLIC;
-
-        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-
-        confirmDialog.getOkBtn().setOnClickListener(this);
-        privateVoiceBtn.setOnClickListener(this);
-        publicVoiceBtn.setOnClickListener(this);
-        roomProfileIb.setOnClickListener(this);
-        createRoomBtn.setOnClickListener(this);
+        initView(view);
+        initListener();
 
         roomCommentEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -143,6 +118,36 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         });
 
         return view;
+    }
+
+    private void initView(View view) {
+        scrollView = (ScrollView) view.findViewById(R.id.sv_root);
+
+        roomTitleEt = (EditText) view.findViewById(R.id.et_roomTitle);
+        roomProfileIb = (ImageButton) view.findViewById(R.id.ib_roomProfile);
+        privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
+        publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
+        roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
+        createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
+
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorRedPink));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+
+        setCancelable(false);
+
+        voicePermission = Constants.VOICE_PUBLIC;
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+    }
+
+    private void initListener() {
+        confirmDialog.getOkBtn().setOnClickListener(this);
+        privateVoiceBtn.setOnClickListener(this);
+        publicVoiceBtn.setOnClickListener(this);
+        roomProfileIb.setOnClickListener(this);
+        createRoomBtn.setOnClickListener(this);
     }
 
     @Override
@@ -307,37 +312,41 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             @Override
             public void onSuccess(Object object) {
                 Log.d("sssong:CRFragment", "onSuccess : create room / add list");
-                AppManager.getInstance().getRoomList().add((Room)object);
 
-                ContentValues values1 = new ContentValues();
-                values1.put("roomID",((Room)object).getId());
-
-                UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM,values1, m_imagePath);
-
-                uploadFile.execute();
-
-                //콜백으로 화면을 처리해야한다.
-
-                confirmDialog.dismiss();
-                dismiss();
+                uploadRoomImage((Room)object);
             }
 
             @Override
             public void onFailure(Exception e) {
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
+
+                confirmDialog.dismiss();
             }
         });
         createRoomTask.execute();
-        /*
-        // 임시 추가
-        Room newRoom = new Room(1, roomTitleEt.getText().toString(),
-                voicePermission, roomCommentEt.getText().toString(),
-                AppManager.getInstance().getUser().getID(), "123");
+    }
 
-        AppManager.getInstance().getRoomList().add(newRoom);
-        */
+    private void uploadRoomImage(Room newRoom) {
+        ContentValues values = new ContentValues();
+        values.put("roomID", newRoom.getId());
+        UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM, values,
+                m_imagePath, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                confirmDialog.dismiss();
+                dismiss(); // dismiss and update
+            }
 
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AppManager.getInstance().getContext(),
+                        "error : " + e, Toast.LENGTH_SHORT).show();
+
+                confirmDialog.dismiss();
+            }
+        });
+        uploadFile.execute();
     }
 
     @Override

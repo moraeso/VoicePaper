@@ -1,15 +1,10 @@
 package com.example.voicepaper.fragment.main;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +18,7 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.GlideManager;
 import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
@@ -87,26 +83,14 @@ public class RoomSlidePageFragment extends Fragment {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
-                //roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
-
-                String buf;
-                buf = curRooms.get(i).getProfileString();
-                //Log.d("smh:image address group", buf);
-                String buf2[] = buf.split("/");
-                //Log.d("smh:image address group", buf2[2]);
-
-
-                Glide.with(this)
-                        .load(Constants.URL + "/groupimage/" + buf2[2])
-                        .placeholder(R.drawable.img_user) // loading
-                        .error(R.drawable.img_user) // error
-                        .into(roomProfile[i]);
+                String url = GlideManager.getInstance().getFullImageString(curRooms.get(i).getProfileString(), "groupImage");
+                GlideManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
             }
             roomNameTv[i].setText(curRooms.get(i).getTitle());
         }
 
-        Log.d("sssong:RoomSlideFrgmt", "page : " + page);
-        Log.d("sssong:RoomSlideFrgmt", "roomNum : " + roomNum);
+        //Log.d("sssong:RoomSlideFrgmt", "page : " + page);
+        //Log.d("sssong:RoomSlideFrgmt", "roomNum : " + roomNum);
     }
 
     public void initListener() {

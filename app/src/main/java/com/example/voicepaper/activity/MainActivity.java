@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onDismiss(DialogInterface dialog) {
         Log.d("sssong:MainActivity", "dismiss event / adapter update");
         // 다시 set
-        setRoomPagerAdapter();
+        getUserRoomList();
     }
 
     private void setRoomPagerAdapter() {
