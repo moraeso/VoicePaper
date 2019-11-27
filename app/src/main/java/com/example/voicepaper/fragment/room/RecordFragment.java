@@ -2,6 +2,7 @@ package com.example.voicepaper.fragment.room;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -37,11 +38,12 @@ import java.io.IOException;
 
 public class RecordFragment extends DialogFragment implements Button.OnClickListener{
     //view
-    TextView tv_content;
-    ImageButton btn_record;
-    Button btn_cancel;
-    Button btn_submit;
+    private TextView tv_content;
+    private ImageButton btn_record;
+    private Button btn_cancel;
+    private Button btn_submit;
     private int state;
+
 
     //reocrd
     private MediaRecorder recorder; // 음성 기록
@@ -54,6 +56,9 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private static final int RECODE_STOP = 0;
     private static final int PLAY_START = 2;
     private static final int PLAY_STOP = 3;
+
+    //임시
+    private String roomId;
 
     public RecordFragment(){ }
 
@@ -76,6 +81,10 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
         Log.d("smh:file path",fileName);
     }//프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
+
+    public void setRoomId(int roomId){
+        this.roomId = ""+roomId;
+    }
 
     @NonNull
     @Override
@@ -143,10 +152,13 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 여기부근에 통신 넣어야합니다.
                  */
 
-//                String url = "http://15011066.iptime.org:8123/uservoiceupload/";
-//                UploadFile uploadFile = new UploadFile(url,"id","test3",filePath);
-//
-//                uploadFile.execute();
+                ContentValues values = new ContentValues();
+                values.put("userId",AppManager.getInstance().getUser().getID());
+                values.put("roomId",roomId);
+
+                UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_AUDIO,values,filePath);
+
+                uploadFile.execute();
 
                 break;
         }

@@ -1,5 +1,6 @@
 package com.example.voicepaper.adapter;
 
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.viewholder.VoiceViewHolder;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.network.MusicPlayer;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,9 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                         @Override
                         public void onClick(View v) {
                             Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
+
+                            MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile());
+                            musicPlayer.execute();
                         }
                     }
             );
