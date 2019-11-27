@@ -91,7 +91,7 @@ public class RoomActivity extends AppCompatActivity {
         // Grid 레이아웃 적용
         layoutManager = new GridLayoutManager(AppManager.getInstance().getContext(), 2);
         voiceRecycleView.setLayoutManager(layoutManager);
-        voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((Activity) AppManager.getInstance().getContext()));
+        voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((RoomActivity)this));
 
         // 어뎁터 연결
         voiceAdapter = new VoiceRecycleViewerAdapter();
@@ -127,9 +127,11 @@ public class RoomActivity extends AppCompatActivity {
     보이스 데이터 불러오기 통신
 
      */
+
         ArrayList<Voice> bufferItems = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            bufferItems.add(new Voice());
+            // Voice(int id, int userId, String userName, int roomId, String voiceFile) {
+            bufferItems.add(new Voice(1, 1, "user00", room.getId(), "voiceFile.url"));
         }
         voiceAdapter.addAll(bufferItems);
 

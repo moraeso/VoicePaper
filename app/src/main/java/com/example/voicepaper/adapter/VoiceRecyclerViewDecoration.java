@@ -15,9 +15,9 @@ public class VoiceRecyclerViewDecoration extends RecyclerView.ItemDecoration {
     public VoiceRecyclerViewDecoration(Activity mActivity) {
         spanCount = 2;
         spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                12, mActivity.getResources().getDisplayMetrics());
+                20, mActivity.getResources().getDisplayMetrics());
         outerMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                5, mActivity.getResources().getDisplayMetrics());
+                20, mActivity.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -28,12 +28,12 @@ public class VoiceRecyclerViewDecoration extends RecyclerView.ItemDecoration {
         int row = position / spanCount;
         int lastRow = (maxCount - 1) / spanCount;
 
-        outRect.left = column * spacing / spanCount;
-        outRect.right = spacing - (column + 1) * spacing / spanCount;
-        outRect.bottom = spacing;
+        outRect.left = spacing - column * spacing / spanCount;
+        outRect.right = spacing - (1 - column) * spacing / spanCount;
+        outRect.top = spacing;
         outRect.bottom = spacing;
 
-        if (row != lastRow) {
+        if (row == lastRow) {
             outRect.bottom = outerMargin;
         }
     }

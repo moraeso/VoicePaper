@@ -34,15 +34,19 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         if (holder instanceof VoiceViewHolder) {
             final Voice voice = voiceItems.get(position);
 
-            ((VoiceViewHolder) holder).getVoiceButton().setText("Voice " + position);
-            ((VoiceViewHolder) holder).getVoiceButton().setOnClickListener(
+            ((VoiceViewHolder) holder).getUserNameTv().setText("" + voice.getUserName());
+            ((VoiceViewHolder) holder).getPlayerBtn().setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(AppManager.getInstance().getContext(), "Voice " + position, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
                         }
                     }
             );
+
+            /*
+            progressBar도 여기서 초기화 해주면 됨
+             */
 
         }
     }
