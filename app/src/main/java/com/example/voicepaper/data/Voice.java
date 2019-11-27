@@ -2,12 +2,12 @@ package com.example.voicepaper.data;
 
 public class Voice {
     private int id;
-    private int userId;
+    private String userId;
     private String userName;
     private int roomId;
     private String voiceFile;
 
-    public Voice(int id, int userId, String userName, int roomId, String voiceFile) {
+    public Voice(int id, String userId, String userName, int roomId, String voiceFile) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
@@ -23,11 +23,11 @@ public class Voice {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
