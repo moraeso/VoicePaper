@@ -2,6 +2,8 @@ package com.example.voicepaper.fragment.main;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,7 +86,12 @@ public class RoomSlidePageFragment extends Fragment {
 
         for (int i = 0; i < roomNum; i++) {
 
-            roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
+            if (curRooms.get(i).getProfileImage() == null) {
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+                roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+            } else {
+                roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
+            }
             roomNameTv[i].setText(curRooms.get(i).getTitle());
         }
 

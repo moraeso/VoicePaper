@@ -13,13 +13,12 @@ public class Room {
     private int permission;
     private String hostID;
     private String code;
-    // private ArrayList<RoomMember> roomMemberItems;
 
-    public Room(int id, String title, Bitmap profileImage, String profileString, int permission, String comment, String hostID, String code) {
+    public Room(int id, String title, int permission, String comment, String hostID, String code) {
         this.id = id;
         this.title = title;
-        this.profileImage = profileImage;
-        this.profileString = profileString;
+        this.profileImage = null;
+        this.profileString = "";
         this.permission = permission;
         this.comment = comment;
         this.hostID = hostID;

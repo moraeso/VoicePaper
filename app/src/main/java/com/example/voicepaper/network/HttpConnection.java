@@ -1,6 +1,7 @@
 package com.example.voicepaper.network;
 
 import android.content.ContentValues;
+import android.util.Log;
 
 import com.example.voicepaper.manager.AppManager;
 
@@ -63,6 +64,9 @@ public class HttpConnection {
             //추후 어떻게 보내느냐에 따라 변경될 수 있음. id와 token을 보냄
             conn.setRequestProperty("id", AppManager.getInstance().getUser().getID());
             conn.setRequestProperty("x-access-token", AppManager.getInstance().getUser().getToken());
+
+            //Log.d("sssong:HttpConnection", "id : " + AppManager.getInstance().getUser().getID()
+            // + " / token : " + AppManager.getInstance().getUser().getToken());
 
             conn.setDoInput(true);  //서버에서 읽기 모드 지정
             conn.setDoOutput(true); //서버에서 쓰기 모드 지정

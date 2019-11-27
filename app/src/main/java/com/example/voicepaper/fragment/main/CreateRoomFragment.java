@@ -1,12 +1,10 @@
 package com.example.voicepaper.fragment.main;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +21,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -178,8 +175,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             case R.id.btn_ok_dialog:
                 if (isTitleSuitable() && isCommentSuitable()) {
                     addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
-                    confirmDialog.dismiss();
-                    dismiss();
                 }
                 break;
         }
@@ -199,8 +194,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("sssong:CRFragment", "requestCode : " + requestCode);
-        Log.d("sssong:CRFragment", "RESULTCODE : " + ((Activity) AppManager.getInstance().getContext()).RESULT_OK);
+        Log.d("sssong:CRFragment", "request Code : " + requestCode);
+        Log.d("sssong:CRFragment", "RESULT CODE : " + ((Activity) AppManager.getInstance().getContext()).RESULT_OK);
 
         if (resultCode == ((Activity) AppManager.getInstance().getContext()).RESULT_OK) {
 
@@ -296,53 +291,36 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     }
 
     private void addRoomInList() {
-
-        /*
         ContentValues values = new ContentValues();
         values.put("roomName", roomTitleEt.getText().toString());
         values.put("roomText", roomCommentEt.getText().toString());
         values.put("roomPermission", voicePermission);
         values.put("hostID", AppManager.getInstance().getUser().getID());
 
-        String url = Constants.URL + "/room/roomCreate";
-        CreateRoomTask createRoomTask = new CreateRoomTask(url, values, new AsyncCallback() {
+        CreateRoomTask createRoomTask = new CreateRoomTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-
+                Log.d("sssong:CRFragment", "onSuccess : create room / add list");
+                AppManager.getInstance().getRoomList().add((Room)object);
+                confirmDialog.dismiss();
+                dismiss();
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                Toast.makeText(AppManager.getInstance().getContext(),
+                        "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         createRoomTask.execute();
-*/
-
-         
-        // 여기서 room 생성 서버 통신
-
-        // Room (int id, String name, Bitmap profileImage, String profileString, String comment, String hostID)
-
         /*
-        Room newRoom = new Room(1, roomNameEt.toString(), roomProfile,
-                "image.url", voicePermission, roomCommentEt.toString(),
-                AppManager.getInstance().getUser().getID());
-*/
-
-        Log.d("sssong:CRFragment", "addRoomInList");
-
-        // 프로필 없을 경우 임시 프로필 추가
-        if (roomProfile == null) {
-            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
-            roomProfile = ((BitmapDrawable) drawable).getBitmap();
-        }
         // 임시 추가
-        Room newRoom = new Room(1, roomTitleEt.getText().toString(), roomProfile,
-                "image.url", voicePermission, roomCommentEt.getText().toString(),
+        Room newRoom = new Room(1, roomTitleEt.getText().toString(),
+                voicePermission, roomCommentEt.getText().toString(),
                 AppManager.getInstance().getUser().getID(), "123");
 
         AppManager.getInstance().getRoomList().add(newRoom);
+        */
 
     }
 
