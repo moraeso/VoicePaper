@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +60,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_createRoom:
-
+                participateRoom();
                 break;
             case R.id.btn_cancel:
                 dismiss();
@@ -77,14 +78,24 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
             public void onSuccess(Object object) {
                 Log.d("sssong:InputRoomFrgmt", "onSuccess : participate room");
                 AppManager.getInstance().getRoomList().add((Room)object);
+                ////////////////////////////////////////
+
+
+                // 여기서 서버 오류때문에 success가 안됨
+
+
+                ////////////////////////////////////////
                 dismiss();
             }
 
             @Override
             public void onFailure(Exception e) {
-
+                Toast.makeText(AppManager.getInstance().getContext(),
+                        "error : " + e, Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
+        inputRoomCodeTask.execute();
     }
 
     @Override

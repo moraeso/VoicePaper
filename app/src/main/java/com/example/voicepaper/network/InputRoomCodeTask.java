@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.os.AsyncTask;
 
 import com.example.voicepaper.data.Room;
-import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.util.Constants;
 
 import org.json.JSONObject;
@@ -40,7 +39,7 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             if (!isConnectionSuccess(result)) {
                 throw new Exception("Participate room failed");
             }
-            inputRoomCodeFromJson(result);
+            inputRoomCodeFromJson(new JSONObject(result).getString("roomInfo"));
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
@@ -79,6 +78,7 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            exception = e;
         }
         return true;
     }
@@ -100,6 +100,7 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            exception = e;
         }
     }
 

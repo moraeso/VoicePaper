@@ -24,12 +24,9 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoomSlidePageFragment extends Fragment {
-
-    private MainActivity mainActivity;
 
     private ImageView[] roomProfile = new ImageView[Constants.ROOMS];
     private TextView[] roomNameTv = new TextView[Constants.ROOMS];
@@ -53,17 +50,15 @@ public class RoomSlidePageFragment extends Fragment {
         roomProfile[2] = (ImageView) view.findViewById(R.id.iv_roomProfile3);
         roomProfile[3] = (ImageView) view.findViewById(R.id.iv_roomProfile4);
 
-        //roomProfile[0].setOnLongClickListener(this);
-
         roomNameTv[0] = (TextView) view.findViewById(R.id.tv_roomName1);
         roomNameTv[1] = (TextView) view.findViewById(R.id.tv_roomName2);
         roomNameTv[2] = (TextView) view.findViewById(R.id.tv_roomName3);
         roomNameTv[3] = (TextView) view.findViewById(R.id.tv_roomName4);
 
-        //Log.d("sssong:RoomSlideFrgmt", "list size(initView) : " + roomList.size());
-
-        initView();
-        initListener();
+        if (AppManager.getInstance().getRoomList().size() > 0) {
+            initView();
+            initListener();
+        }
 
         return view;
     }

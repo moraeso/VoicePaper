@@ -2,6 +2,8 @@ package com.example.voicepaper.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +23,11 @@ import com.example.voicepaper.manager.AppManager;
 
 import java.util.ArrayList;
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView roomProfileIv;
     private TextView roomTitleTv, roomCommentTv;
+    private Button recordBtn;
 
     private SwipeRefreshLayout swipeRefresh;
 
@@ -47,6 +50,7 @@ public class RoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room);
 
         initView();
+        initListener();
         getRoomInfo();
         initVoiceRecyclerViewAdapter();
         loadVoiceData();
@@ -96,6 +100,22 @@ public class RoomActivity extends AppCompatActivity {
         roomProfileIv = (ImageView) findViewById(R.id.iv_roomProfile);
         roomTitleTv = (TextView) findViewById(R.id.tv_roomTitle);
         roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
+        recordBtn = (Button) findViewById(R.id.btn_record);
+    }
+
+    private void initListener() {
+        recordBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btn_record:
+                /*
+                녹음 기능
+                 */
+                break;
+        }
     }
 
     private void getRoomInfo() {

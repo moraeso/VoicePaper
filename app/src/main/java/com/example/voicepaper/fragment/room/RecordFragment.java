@@ -143,9 +143,9 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 여기부근에 통신 넣어야합니다.
                  */
                 String url = "http://15011066.iptime.org:8123/uservoiceupload/";
-                UploadFile uploadFile = new UploadFile(url,"id","test3",filePath);
+                //UploadFile uploadFile = new UploadFile("id","test3",filePath);
 
-                uploadFile.execute();
+                //uploadFile.execute();
                 break;
         }
     }

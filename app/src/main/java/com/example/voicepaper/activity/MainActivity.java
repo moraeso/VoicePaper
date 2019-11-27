@@ -30,7 +30,7 @@ import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.AsyncCallback;
-import com.example.voicepaper.network.RoomListTask;
+import com.example.voicepaper.network.UpdateRoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
 
 import java.util.ArrayList;
@@ -62,12 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ///////////////// 임시 유저 ////////////////////////
-        AppManager.getInstance().getUser().setID("testID");
+        //AppManager.getInstance().getUser().setID("testID");
         ////////////////////////////////////////////////////
 
         initView();
         initListener();
-        initMyRoomList();
+        //initMyRoomList();
         //getUserRoomList();
         initRoomPagerAdapter();
 
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getUserRoomList() {
         ContentValues values = new ContentValues();
         values.put("userID", AppManager.getInstance().getUser().getID());
-        RoomListTask roomListTask = new RoomListTask(values, new AsyncCallback() {
+        UpdateRoomListTask updateRoomListTask = new UpdateRoomListTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
                 Log.d("sssong:MainActivity", "onSuccess : update room list");
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
-        roomListTask.execute();
+        updateRoomListTask.execute();
     }
 
     private void setSwipeRefresh() {

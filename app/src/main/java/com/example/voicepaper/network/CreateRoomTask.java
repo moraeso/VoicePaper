@@ -91,6 +91,7 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            exception = e;
         }
         return true;
     }
