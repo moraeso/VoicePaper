@@ -42,8 +42,6 @@ public class VoiceListTask extends AsyncTask<Void,Boolean,Boolean> {
             //통신만하면 끝 테스크안에서, 리스트를 만들어, 리스트를 남겨준다
             //json 파일 -> 리스트 변환
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;

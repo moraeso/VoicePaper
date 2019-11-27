@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rooms.add(new Room(19, "9Room",
                 Constants.VOICE_PUBLIC, "9999", AppManager.getInstance().getUser().getID(), "18"));
 */
-        AppManager.getInstance().setRoomList(rooms);
+        //AppManager.getInstance().setRoomList(rooms);
     }
 
 

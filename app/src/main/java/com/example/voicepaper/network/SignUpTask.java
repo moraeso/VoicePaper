@@ -2,8 +2,10 @@ package com.example.voicepaper.network;
 
 import android.content.ContentValues;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.Constants;
 
 import org.json.JSONObject;
 
@@ -14,7 +16,7 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
     private Exception exception;
 
     public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = "db";
+        this.url = Constants.URL+ "/auth/register";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }
@@ -25,16 +27,14 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
 
         try {
             HttpConnection requestHttpConnection = new HttpConnection();
-            result = requestHttpConnection.request(url, values); // post token
+            result = requestHttpConnection.request(url, values);
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-
+            Log.d("smh:signUp",""+code);
             if (!isSignUpDataValid(code)) {
                 throw new Exception("SignUp data is not valid");
             }
-            // 토큰 설정
-            AppManager.getInstance().getUser().setToken(job.getString("token"));
             // 유저 ID, Password 설정
             AppManager.getInstance().getUser().setID(values.getAsString("id"));
             AppManager.getInstance().getUser().setPw(values.getAsString("pw"));
@@ -60,12 +60,11 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
     }
 
     private boolean isSignUpDataValid(int code) {
-        // 성공 : 200, 실패 : 204
-        if (code == 204) {
-            return false;
-        } else if (code == 200) {
+        // 성공 : 100, 실패 : 101
+        if (code == 100) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }//수정 필요
 }

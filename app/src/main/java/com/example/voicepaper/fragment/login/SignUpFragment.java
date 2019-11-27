@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,10 +78,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
        initView(view);
-
-        //btn listener
-        btn_imageSet.setOnClickListener(this);
-        btn_signUp.setOnClickListener(this);
+       initListener();
 
         return view;
     }
@@ -98,6 +96,13 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         btn_signUp = view.findViewById(R.id.btn_signUp);
     }
 
+    public void initListener(){
+        //btn listener
+        btn_imageSet.setOnClickListener(this);
+        btn_signUp.setOnClickListener(this);
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -106,27 +111,32 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
             case R.id.btn_signUp:
                 final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
 
-                if(et_pw.getText().toString() == et_rePw.getText().toString()){
+                if(et_pw.getText().toString().equals(et_rePw.getText().toString()) == false){
+                    Log.d("smh:pw and repw",""+et_pw.getText().toString()+et_rePw.getText().toString());
                     confirmDialog.setMessage("비밀번호가 일치하지 않습니다.");
+                    confirmDialog.show();
                 }
                 else {
                     ContentValues values = new ContentValues();
                     values.put("id", et_id.getText().toString());
                     values.put("pw", et_pw.getText().toString());
                     values.put("name", et_name.getText().toString());
+                    values.put("profileString",et_id.getText().toString());
 
                     SignUpTask signUpTask = new SignUpTask(values, new AsyncCallback(){
                         @Override
                         public void onSuccess(Object object) {
                             confirmDialog.setMessage("회원가입 완료!");
+                            confirmDialog.show();
                             dismiss();
                         }
                         @Override
                         public void onFailure(Exception e) {
                             //아이디가 이미 있음.
+                            confirmDialog.setMessage("동일한 아이디가 존재합니다.");
+                            confirmDialog.show();
                         }
                     });
-
                     signUpTask.execute();
                 }
                 break;
