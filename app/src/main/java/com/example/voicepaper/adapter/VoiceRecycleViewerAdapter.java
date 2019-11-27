@@ -1,21 +1,23 @@
 package com.example.voicepaper.adapter;
 
-import android.speech.tts.Voice;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.viewholder.VoiceViewHolder;
+import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
 
 import java.util.ArrayList;
 
 public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Voice> voiceItems;
+    private ArrayList<com.example.voicepaper.data.Voice> voiceItems;
 
     public VoiceRecycleViewerAdapter() {
         voiceItems = new ArrayList<>();
@@ -28,8 +30,19 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof VoiceViewHolder) {
+            final Voice voice = voiceItems.get(position);
+
+            ((VoiceViewHolder) holder).getVoiceButton().setText("Voice " + position);
+            ((VoiceViewHolder) holder).getVoiceButton().setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(AppManager.getInstance().getContext(), "Voice " + position, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
 
         }
     }
@@ -43,7 +56,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         return voiceItems;
     }
 
-    public void addAll(ArrayList<Voice> items) {
+    public void addAll(ArrayList<com.example.voicepaper.data.Voice> items) {
         voiceItems.clear();
         voiceItems.addAll(items);
         notifyDataSetChanged();

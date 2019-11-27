@@ -16,4 +16,8 @@ public class VoiceViewHolder extends RecyclerView.ViewHolder {
 
         voiceButton = (Button) convertView.findViewById(R.id.voiceButton);
     }
+
+    public Button getVoiceButton() {
+        return voiceButton;
+    }
 }
