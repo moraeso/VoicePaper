@@ -38,6 +38,7 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.CreateRoomTask;
+import com.example.voicepaper.network.UploadFile;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
@@ -61,6 +62,10 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
     private static final int PICK_FROM_ALBUM = 1;
     private int inputSuitable;
+
+    //수정필요
+    private String m_imagePath;
+
 
     private CreateRoomFragment() {
     }
@@ -205,6 +210,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 roomProfileUri = uri;
                 ExifInterface exif = null;
                 String imagePath = getRealPathFromURI(uri);
+                m_imagePath = imagePath;
                 Log.d("sssong:CRFragment", imagePath);
 
                 try {
@@ -302,6 +308,16 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             public void onSuccess(Object object) {
                 Log.d("sssong:CRFragment", "onSuccess : create room / add list");
                 AppManager.getInstance().getRoomList().add((Room)object);
+
+                ContentValues values1 = new ContentValues();
+                values1.put("roomID",((Room)object).getId());
+
+                UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM,values1, m_imagePath);
+
+                uploadFile.execute();
+
+                //콜백으로 화면을 처리해야한다.
+
                 confirmDialog.dismiss();
                 dismiss();
             }

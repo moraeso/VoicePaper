@@ -26,25 +26,26 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     private String filePath;
 
     private ContentValues values;
-    private String roomiD;
-    private String useriD;
+    private String roomId;
+    private String userId;
 
     public static final int UPLOAD_IMAGE_USER = 1;
     public static final int UPLOAD_IMAGE_ROOM = 2;
     public static final int UPLOAD_AUDIO = 3;
 
-    public UploadFile(int type, ContentValues values, String filePath) {
+    public UploadFile(int type, ContentValues values, String filePath, AsyncCallback callback) {
+        this.callback = callback;
         this.type = type;
         this.values = values;
         this.filePath = filePath;
-        this.useriD = AppManager.getInstance().getUser().getID();
+        this.userId = AppManager.getInstance().getUser().getID();
 
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
         }
         else if(type == UPLOAD_IMAGE_ROOM){
             this.m_url = Constants.URL+"/file/uploadgroupimage";
-            this.roomiD = values.getAsString("roomID");
+            this.roomId = values.getAsString("roomID");
         }
         else if(type == UPLOAD_AUDIO){
             this.m_url = Constants.URL+"/file/file/uploadvoice";
@@ -62,6 +63,8 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+
+
     private String upload() {
         URL url = null;
         try {
@@ -78,31 +81,31 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
 
             if(type == UPLOAD_AUDIO) {
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + useriD);
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + userId);
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomiD);
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomId);
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + "test.mp3");//임시로 넣어둠
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + "test.mp3"); //임시로 넣어둠
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
                 wr.writeBytes("Content-Disposition: form-data; name=\"voice\"; filename=\"test.mp3\"\r\n");
                 wr.writeBytes("Content-Type: audio/mpeg\r\n\r\n");
             }
             else if(type == UPLOAD_IMAGE_USER){
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + useriD);
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + userId);
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + useriD +".jpg");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + userId +".jpg");
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + useriD +".jpg"+ "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + userId +".jpg"+ "\r\n");
                 wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
             }
             else if(type == UPLOAD_IMAGE_ROOM){
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomiD);
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomId);
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + roomiD +".jpg");
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + roomId +".jpg");
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + roomiD +".jpg"+ "\r\n");
+                wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + roomId +".jpg"+ "\r\n");
                 wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
             }
 

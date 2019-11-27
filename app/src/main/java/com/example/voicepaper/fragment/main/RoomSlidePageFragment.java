@@ -82,7 +82,8 @@ public class RoomSlidePageFragment extends Fragment {
 
         for (int i = 0; i < roomNum; i++) {
 
-                if (curRooms.get(i).getProfileString().equals("undefined")) {
+            if (curRooms.get(i).getProfileString().equals("undefined") ||
+                    curRooms.get(i).getProfileString().equals("")) {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
@@ -90,15 +91,15 @@ public class RoomSlidePageFragment extends Fragment {
 
                 String buf;
                 buf = curRooms.get(i).getProfileString();
-                Log.d("smh:image address group",buf);
+                //Log.d("smh:image address group", buf);
                 String buf2[] = buf.split("/");
-                Log.d("smh:image address group",buf2[2]);
+                //Log.d("smh:image address group", buf2[2]);
 
 
-            Glide.with(this)
-                        .load(Constants.URL+"/groupimage/"+buf2[2])
-                        .placeholder(R.drawable.img_user)
-                        .error(R.drawable.img_user)
+                Glide.with(this)
+                        .load(Constants.URL + "/groupimage/" + buf2[2])
+                        .placeholder(R.drawable.img_user) // loading
+                        .error(R.drawable.img_user) // error
                         .into(roomProfile[i]);
             }
             roomNameTv[i].setText(curRooms.get(i).getTitle());
@@ -111,8 +112,8 @@ public class RoomSlidePageFragment extends Fragment {
     public void initListener() {
 
         for (int i = 0; i < roomNum; i++) {
-            roomProfile[i].setOnClickListener((MainActivity)AppManager.getInstance().getContext());
-            roomProfile[i].setOnLongClickListener((MainActivity)AppManager.getInstance().getContext());
+            roomProfile[i].setOnClickListener((MainActivity) AppManager.getInstance().getContext());
+            roomProfile[i].setOnLongClickListener((MainActivity) AppManager.getInstance().getContext());
         }
     }
 }
