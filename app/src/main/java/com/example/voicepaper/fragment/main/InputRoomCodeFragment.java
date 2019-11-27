@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,8 +59,6 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_createRoom:
-
-
 
                 break;
             case R.id.btn_cancel:

@@ -1,107 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <ImageView
-        android:id="@+id/iv_logo_top"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/logo_top" />
-
-    <LinearLayout
-        android:id="@+id/layout_gradient"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@id/iv_logo_top"
-        android:background="@drawable/custom_gradient"
-        android:orientation="vertical" />
-
     <RelativeLayout
-        android:id="@+id/layout_topMenu"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@id/layout_gradient"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_logo_top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logo_top" />
+
+        <LinearLayout
+            android:id="@+id/layout_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/iv_logo_top"
+            android:background="@drawable/custom_gradient"
+            android:orientation="vertical" />
 
         <RelativeLayout
-            android:id="@+id/layout_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/custom_border">
+            android:id="@+id/layout_topMenu"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/layout_gradient"
+            android:layout_marginTop="20dp">
 
-            <ImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/img_user" />
-
-            <TextView
-                android:id="@+id/tv_intro"
+            <RelativeLayout
+                android:id="@+id/layout_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/iv_profile"
-                android:layout_marginLeft="10dp"
-                android:text="User님 반갑습니다.\n목소리를 공유해 보세요!" />
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_border">
+
+                <ImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/img_user" />
+
+                <TextView
+                    android:id="@+id/tv_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/iv_profile"
+                    android:text="User님 반갑습니다.\n목소리를 공유해 보세요!" />
+            </RelativeLayout>
+
+
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:background="#00FFFFFF"
+                app:srcCompat="@drawable/img_setting" />
         </RelativeLayout>
 
+        >
 
-        <ImageButton
-            android:id="@+id/btn_setting"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:background="#00FFFFFF"
-            app:srcCompat="@drawable/img_setting" />
-    </RelativeLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/roomViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_below="@id/layout_topMenu"
-        android:layout_marginTop="15dp"
-        android:background="#01c7de">
-
-        <!-- Add as a direct child of your ViewPager -->
-        <com.itsronald.widget.ViewPagerIndicator
-            android:id="@+id/view_pager_indicator"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/roomViewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:paddingBottom="15dp"
-            android:gravity="center_vertical"/>
+            android:layout_height="350dp"
+            android:layout_below="@id/layout_topMenu"
+            android:layout_marginTop="15dp"
+            android:background="#01c7de">
 
-    </androidx.viewpager.widget.ViewPager>
+            <!-- Add as a direct child of your ViewPager -->
+            <com.itsronald.widget.ViewPagerIndicator
+                android:id="@+id/view_pager_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="15dp" />
 
-    <Button
-        android:id="@+id/btn_createRoom"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/roomViewPager"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="#086df1"
-        android:textColor="@color/colorWhite"
-        android:text="방 생성하기" />
+        </androidx.viewpager.widget.ViewPager>
 
-    <Button
-        android:id="@+id/btn_inputRoomCode"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/btn_createRoom"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:background="#086df1"
-        android:textColor="@color/colorWhite"
-        android:text="방 코드 입력" />
+        <Button
+            android:id="@+id/btn_createRoom"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/roomViewPager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="#086df1"
+            android:text="방 생성하기"
+            android:textColor="@color/colorWhite" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_inputRoomCode"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/btn_createRoom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:background="#086df1"
+            android:text="방 코드 입력"
+            android:textColor="@color/colorWhite" />
+
+    </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
