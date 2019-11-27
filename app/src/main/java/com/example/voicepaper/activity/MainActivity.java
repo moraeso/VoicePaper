@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.RoomSlidePagerAdapter;
 import com.example.voicepaper.data.Room;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ConfirmDialog confirmDialog;
     private int selectedRoomPos;
+
+    private ImageView iv_userImage;
 
     private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
 
@@ -87,13 +91,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         introTv.setText(AppManager.getInstance().getUser().getID() +
                 "님 반갑습니다.\n목소리를 공유해 보세요!");
 
-        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext()); }
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+        iv_userImage =(ImageView)findViewById(R.id.iv_profile);
+
+        String buf;
+        buf = AppManager.getInstance().getUser().getProfileString();
+        String buf2[] = buf.split("/");
+        Log.d("smh:image address",buf2[2]);
+
+        Glide.with(this)
+                .load(Constants.URL+"/userimage/"+buf2[2])
+                .placeholder(R.drawable.img_user)
+                .into(iv_userImage);
+    }
 
     void initListener() {
         createRoomBtn.setOnClickListener(this);
         inputRoomCodeBtn.setOnClickListener(this);
         confirmDialog.getOkBtn().setOnClickListener(this);
-
     }
 
     void initMyRoomList() {

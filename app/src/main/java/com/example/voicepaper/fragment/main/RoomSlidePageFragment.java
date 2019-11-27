@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
@@ -81,11 +82,24 @@ public class RoomSlidePageFragment extends Fragment {
 
         for (int i = 0; i < roomNum; i++) {
 
-            if (curRooms.get(i).getProfileImage() == null) {
+                if (curRooms.get(i).getProfileString().equals("undefined")) {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
-                roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
+                //roomProfile[i].setImageBitmap(curRooms.get(i).getProfileImage());
+
+                String buf;
+                buf = curRooms.get(i).getProfileString();
+                Log.d("smh:image address group",buf);
+                String buf2[] = buf.split("/");
+                Log.d("smh:image address group",buf2[2]);
+
+
+            Glide.with(this)
+                        .load(Constants.URL+"/groupimage/"+buf2[2])
+                        .placeholder(R.drawable.img_user)
+                        .error(R.drawable.img_user)
+                        .into(roomProfile[i]);
             }
             roomNameTv[i].setText(curRooms.get(i).getTitle());
         }
