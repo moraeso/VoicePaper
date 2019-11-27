@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;

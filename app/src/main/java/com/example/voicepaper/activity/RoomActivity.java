@@ -1,5 +1,7 @@
 package com.example.voicepaper.activity;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -14,12 +16,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.VoiceRecycleViewerAdapter;
 import com.example.voicepaper.adapter.VoiceRecyclerViewDecoration;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.GlideManager;
 
 import java.util.ArrayList;
 
@@ -49,9 +53,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_room);
 
+        getRoomInfo();
         initView();
         initListener();
-        getRoomInfo();
         initVoiceRecyclerViewAdapter();
         loadVoiceData();
 
@@ -101,6 +105,18 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         roomTitleTv = (TextView) findViewById(R.id.tv_roomTitle);
         roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
         recordBtn = (Button) findViewById(R.id.btn_record);
+
+        roomTitleTv.setText(room.getTitle());
+        roomCommentTv.setText(room.getComment());
+
+        if (room.getProfileString().equals("undefined") ||
+                room.getProfileString().equals("")) {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+            roomProfileIv.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+        } else {
+            String url = GlideManager.getInstance().getFullImageString(room.getProfileString(), "groupImage");
+            GlideManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
+        }
     }
 
     private void initListener() {
@@ -109,7 +125,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.btn_record:
                 /*
                 녹음 기능
@@ -129,10 +145,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
         }
-
-        roomProfileIv.setImageBitmap(room.getProfileImage());
-        roomTitleTv.setText(room.getTitle());
-        roomCommentTv.setText(room.getComment());
     }
 
     private void loadVoiceData() {

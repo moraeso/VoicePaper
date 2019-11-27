@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initListener();
         //initMyRoomList();
         //getUserRoomList();
+        getUserRoomList();
         initRoomPagerAdapter();
 
         setSwipeRefresh();
