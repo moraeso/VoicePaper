@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class UpdateRoom extends AsyncTask<Void, Void, Void> {
+public class UpdateRoomTask extends AsyncTask<Void, Void, Void> {
 
     private ArrayList<Room> updatedRoomList;
 
@@ -26,9 +26,9 @@ public class UpdateRoom extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
-    public UpdateRoom(ContentValues values, AsyncCallback callback) {
+    public UpdateRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/grouplist";
+        this.url = Constants.URL + "/room/grouplist";
         this.values = values;
 
         updatedRoomList = new ArrayList<>();
@@ -50,7 +50,8 @@ public class UpdateRoom extends AsyncTask<Void, Void, Void> {
             if (!isConnectionSuccess(result)) {
                 throw new Exception("Participate room failed");
             }
-            updateUserRoomListFromJson(result);
+
+            updateUserRoomListFromJson(new JSONObject(result).getString("roomList"));
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
@@ -62,6 +63,11 @@ public class UpdateRoom extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        if (callback != null && exception == null) {
+            callback.onSuccess(updatedRoomList);
+        } else {
+            callback.onFailure(exception);
+        }
     }
 
     private boolean isConnectionSuccess(String json_str) {
@@ -102,7 +108,7 @@ public class UpdateRoom extends AsyncTask<Void, Void, Void> {
         try {
             JSONArray jsonArray = new JSONArray(json_str);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObj = new JSONObject(json_str);
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
 
                 int roomId = jsonObj.getInt("roomID");
                 String roomName = jsonObj.getString("roomName");

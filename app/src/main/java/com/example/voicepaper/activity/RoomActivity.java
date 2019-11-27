@@ -1,12 +1,7 @@
 package com.example.voicepaper.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +19,6 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity {
@@ -91,7 +85,7 @@ public class RoomActivity extends AppCompatActivity {
         // Grid 레이아웃 적용
         layoutManager = new GridLayoutManager(AppManager.getInstance().getContext(), 2);
         voiceRecycleView.setLayoutManager(layoutManager);
-        voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((RoomActivity)this));
+        voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((RoomActivity) this));
 
         // 어뎁터 연결
         voiceAdapter = new VoiceRecycleViewerAdapter();

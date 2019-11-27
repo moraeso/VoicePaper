@@ -1,7 +1,7 @@
 package com.example.voicepaper.activity;
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,24 +9,28 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.RoomSlidePagerAdapter;
 import com.example.voicepaper.data.Room;
-import com.example.voicepaper.data.User;
 import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.network.AsyncCallback;
+import com.example.voicepaper.network.UpdateRoomTask;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
@@ -37,9 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CreateRoomFragment createRoomFragment;
     private InputRoomCodeFragment inputRoomCodeFragment;
 
+    private SwipeRefreshLayout swipeRefresh;
+
     private ViewPager roomPager;
     private RoomSlidePagerAdapter roomPagerAdapter;
     private Button createRoomBtn, inputRoomCodeBtn;
+    private TextView introTv;
 
     private ConfirmDialog confirmDialog;
     private int selectedRoomPos;
@@ -64,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initMyRoomList();
         initRoomPagerAdapter();
 
+        setSwipeRefresh();
+
         // 앨범 접근 허용(나중에 옮기기)
         checkPermission();
     }
@@ -73,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
         inputRoomCodeBtn = (Button) findViewById(R.id.btn_inputRoomCode);
+
+        introTv = (TextView) findViewById(R.id.tv_intro);
+        introTv.setText(AppManager.getInstance().getUser().getID() +
+                "님 반갑습니다.\n목소리를 공유해 보세요!");
 
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext()); }
 
@@ -131,11 +144,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initListener();
     }
 
+    private void setSwipeRefresh() {
+        // 새로고침
+        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.layout_swipeRefresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefresh.setRefreshing(false);
+
+                        ContentValues values = new ContentValues();
+                        values.put("userID", AppManager.getInstance().getUser().getID());
+                        UpdateRoomTask updateRoomTask = new UpdateRoomTask(values, new AsyncCallback() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                Log.d("sssong:MainActivity", "onSuccess : update room list");
+                                AppManager.getInstance().getRoomList().clear();
+                                AppManager.getInstance().getRoomList().addAll((ArrayList<Room>)object);
+                                setRoomPagerAdapter();                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Toast.makeText(AppManager.getInstance().getContext(),
+                                        "error : " + e, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        updateRoomTask.execute();
+
+                    }
+                }, 1000);
+            }
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
         AppManager.getInstance().setContext(this);
         AppManager.getInstance().setResources(getResources());
+
+        roomPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
