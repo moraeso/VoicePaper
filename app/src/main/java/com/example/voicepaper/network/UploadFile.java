@@ -22,6 +22,9 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     private String value;
     private String filePath;
 
+    public static final int UPLOAD_IMAGE = 1;
+    public static final int UPLOAD_AUDIO = 2;
+
     public UploadFile(String url, String key, String value, String filePath) {
         this.m_url = url;
         this.key = key;
