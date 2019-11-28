@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "root",
+    "password": "0302",
+    "database": "VoicePaper",
+    "host": "15011066.iptime.org",
+    "port": "7777",
+    "dialect": "mysql"
+  }
+}
