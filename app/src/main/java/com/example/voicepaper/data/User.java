@@ -11,6 +11,10 @@ public class User {
     private String profileString; //profile image의 uri를 string 으로 저장함
     private Bitmap profileImage; //profile bitmap image를 저장함. profileString의 값이 null이 아니면, 유저 이미지를 가져와 bitmap으로 저장함.
 
+    public User() {
+        profileString = "";
+    }
+
     //private Room class list를 가질 필요있음.
 
     public User(String token, String id, String name, String profileString, String pw){

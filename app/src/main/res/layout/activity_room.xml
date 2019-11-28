@@ -1,10 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.RoomActivity">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/iv_logo_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/logo_top" />
+
+    <LinearLayout
+        android:id="@+id/layout_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@id/iv_logo_top"
+        android:background="@drawable/custom_gradient"
+        android:orientation="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_gradient">
+
+        <ImageView
+            android:id="@+id/iv_roomProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rounded" />
+
+        <TextView
+            android:id="@+id/tv_roomTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@id/iv_roomProfile"
+            android:text="Room Title"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_roomComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_roomTitle"
+            android:layout_alignLeft="@id/tv_roomTitle"
+            android:layout_marginRight="20dp"
+            android:text="Room Comment"
+            android:textSize="10dp" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:text="녹음하기"
+        android:layout_below="@id/layout_title"/>
+
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/layout_swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btn_record">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_voiceList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="true"
+            android:overScrollMode="never" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

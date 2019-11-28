@@ -1,10 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".activity.LoginActivity"
     android:orientation="vertical"
+    android:fillViewport="true"
+    android:id="@+id/sv_root">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    android:orientation="vertical">
 
-</LinearLayout>
+    <!--로그인 화면 로그 위치-->
+    <ImageView
+        android:id="@+id/iv_mainLogo"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="80dp"
+        app:srcCompat="@drawable/logo_main" />
+
+    <!--ID EditText-->
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/iv_mainLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:ems="10"
+        android:hint=" ID"
+        android:inputType="textPersonName" />
+
+    <!--Password EditText-->
+    <EditText
+        android:id="@+id/et_pw"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_id"
+        android:layout_alignLeft="@id/et_id"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:hint=" PASSWORD"
+        android:inputType="textPassword" />
+
+    <!--Sign in button-->
+    <Button
+        android:id="@+id/btn_signIn"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_pw"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Sign in"
+        android:textSize="15sp" />
+
+    <!--Sign up button-->
+    <Button
+        android:id="@+id/btn_signUp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_signIn"
+        android:layout_centerHorizontal="true"
+        android:text="Sign up"
+        android:textSize="15sp" />
+
+</RelativeLayout>
+</ScrollView>

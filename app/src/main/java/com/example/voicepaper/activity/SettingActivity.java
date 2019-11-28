@@ -14,6 +14,8 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AppManager.getInstance().setContext(this);
+        AppManager.getInstance().setResources(getResources());
+
         setContentView(R.layout.activity_setting);
     }
 }
