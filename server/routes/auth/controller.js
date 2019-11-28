@@ -7,20 +7,18 @@ const {User} = require('../../models');
 
 const saltRounds = 10;
 
-
 exports.register = function(request, response) {
-  const userID = sanitizeHtml(request.body.id);
-  const userPassword = sanitizeHtml(request.body.pw);
+  const userID = sanitizeHtml(request.body.ID);
+  const userPassword = sanitizeHtml(request.body.password);
   const userName = sanitizeHtml(request.body.name)
-  const userImage = sanitizeHtml(request.body.profileString);
-
+  const userImage = sanitizeHtml(request.body.image);
+  
   let user;
 
   const encrypt = (foundResult) => {
-    if(foundResult != undefined){
+    if(foundResult){
       response.json({
-        registerStatus: 'existingEmail',
-        code : 101
+        registerStatus: 'existingEmail'
       })
     }
 
@@ -49,7 +47,7 @@ exports.register = function(request, response) {
   const assign = (count) => {
     console.log('****assigning process****');
     if(count){
-      return User.update({ admin: 1 },
+      return User.update({ admin: 1 }, 
         {
           where: {
             userID: user.userID
@@ -60,8 +58,7 @@ exports.register = function(request, response) {
 
   const respond = () => {
     response.json({
-      registerStatus: 'registerSuccess',
-      code: 100
+      registerStatus: 'registerSuccess'
     })
   }
 
@@ -72,21 +69,31 @@ exports.register = function(request, response) {
 }
 
 exports.login = (request, response) => {
-  const userID = sanitizeHtml(request.body.id);//*
-  const userPassword = sanitizeHtml(request.body.pw);
-
+  const userID = sanitizeHtml(request.body.ID);
+  const userPassword = sanitizeHtml(request.body.password);
+ 
   let user;
   let participatingRoomList;
 
   const query = `
-  SELECT room.*,roomMembership.* , (SELECT count(*) FROM VoicePaper.roomMembership
-  WHERE roomMembership.roomID = room.roomID) as ?
-  FROM VoicePaper.roomMembership JOIN VoicePaper.room
+  SELECT room.*, (SELECT count(*) FROM VoicePaper.roomMembership WHERE roomMembership.roomID = room.roomID) as countMember 
+  FROM VoicePaper.roomMembership 
+  WHERE room.roomID IN (
+    SELECT roomID 
+    FROM roomMembership 
+    WHERE 
+  )
+  `
+
+  const query2 = `
+  SELECT room.*,roomMembership.* , (SELECT count(*) FROM VoicePaper.roomMembership 
+  WHERE roomMembership.roomID = room.roomID) as ? 
+  FROM VoicePaper.roomMembership JOIN VoicePaper.room 
   ON roomMembership.userID=? AND roomMembership.roomID = room.roomID
   `
 
   const decrypt = (foundResult) => {
-    if(foundResult != undefined){
+    if(foundResult){
       user = foundResult;
 
       console.log('****decrypting process****');
@@ -94,8 +101,7 @@ exports.login = (request, response) => {
       return bcrypt.compareSync(userPassword, foundResult.userPassword)
     } else {
       response.json({
-        loginStatus: "invalidEmail",
-        code: 201
+        loginStatus: "invalidEmail"
       })
     }
   }
@@ -104,7 +110,7 @@ exports.login = (request, response) => {
     if(authenticated){
       console.log('****participating room getting process****');
 
-      return models.sequelize.query(query,
+      return models.sequelize.query(query2, 
         {
           replacements: ['CountMember', user.userID],
           type: models.sequelize.QueryTypes.SELECT,
@@ -112,8 +118,7 @@ exports.login = (request, response) => {
         });
     } else {
       response.json({
-        loginStatus: "inccorectPassword",
-        code: 202
+        loginStatus: "inccorectPassword"
       })
     }
   }
@@ -145,11 +150,9 @@ exports.login = (request, response) => {
   const respond = (token) => {
     response.json({
       loginStatus: "success",
-      code: 200,
-      id: user.userID,
-      pw: user.userPassword,
+      ID: user.userID,
       name: user.userName,
-      profileString: user.userImage,
+      pw: user.userPassword,
       token: token,
       roomList: participatingRoomList
     })
