@@ -107,14 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "groupImage");
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
         }
-
-        Glide.with(this)
-                .load(Constants.URL+"/userimage/"+buf2[2])
-                .placeholder(R.drawable.img_user)
-                .into(iv_userImage);
     }
 
     void initListener() {

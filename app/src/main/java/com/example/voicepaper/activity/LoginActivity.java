@@ -146,12 +146,6 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
                 });
 
                 signInTask.execute();
-                //RecordFragment recordFragment = RecordFragment.newInstance();
-                //recordFragment.show(getSupportFragmentManager(),null);
-
-//                Intent intent = new Intent(AppManager.getInstance().getContext(),MainActivity.class);
-//                startActivity(intent);
-//                finish();
 
                 break;
             case R.id.btn_signUp:

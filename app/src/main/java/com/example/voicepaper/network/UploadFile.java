@@ -33,22 +33,25 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     public static final int UPLOAD_IMAGE_ROOM = 2;
     public static final int UPLOAD_AUDIO = 3;
 
-    public UploadFile(int type, ContentValues _values, String filePath, AsyncCallback asyncCallback) {
+    public UploadFile(int type, ContentValues _values, String filePath, AsyncCallback callback) {
         this.type = type;
         this.values = _values;
         this.filePath = filePath;
-        this.userId = AppManager.getInstance().getUser().getID();
+        this.callback = callback;
 
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
+            this.userId = _values.get("userID").toString();
+            Log.d("smh:roomid",this.userId);
         }
         else if(type == UPLOAD_IMAGE_ROOM){
             this.m_url = Constants.URL+"/file/uploadgroupimage";
-            this.roomId = values.get("roomId").toString();
+            this.roomId = values.get("roomID").toString();
         }
         else if(type == UPLOAD_AUDIO){
             this.m_url = Constants.URL+"/file/uploadvoice";
             this.roomId = values.get("roomId").toString();
+            this.userId = AppManager.getInstance().getUser().getID();
             Log.d("smh:roomid",this.roomId);
         }
     }
@@ -102,8 +105,6 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             else if(type == UPLOAD_IMAGE_USER){
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
                 wr.writeBytes("Content-Disposition: form-data; name=\"" + "userID" + "\"\r\n\r\n" + userId);
-                wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + userId +".jpg");
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
                 wr.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"" + userId +".jpg"+ "\r\n");
                 wr.writeBytes("Content-Type: application/octet-stream\r\n\r\n");
