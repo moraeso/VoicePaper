@@ -41,7 +41,6 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         String result;
 
-        // MyInfo에 토큰 설정
         try {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values); // post token

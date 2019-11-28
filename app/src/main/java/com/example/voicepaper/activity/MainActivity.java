@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.textclassifier.ConversationAction;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
+import com.example.voicepaper.network.ExitRoomTask;
 import com.example.voicepaper.network.UpdateRoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
@@ -107,14 +109,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "groupImage");
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
         }
-
-        Glide.with(this)
-                .load(Constants.URL+"/userimage/"+buf2[2])
-                .placeholder(R.drawable.img_user)
-                .into(iv_userImage);
     }
 
     void initListener() {
@@ -345,7 +342,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void deleteRoomAt(int pos) {
         Log.d("sssong:MainActivity", "delete room number : " + pos);
-        AppManager.getInstance().getRoomList().remove(pos);
-        setRoomPagerAdapter();
+
+        ContentValues values = new ContentValues();
+        values.put("userID", AppManager.getInstance().getUser().getID());
+        values.put("roomID", AppManager.getInstance().getRoomList().get(pos).getId());
+        values.put("roomPos", pos);
+
+        ExitRoomTask exitRoomTask = new ExitRoomTask(values, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object pos) {
+                getUserRoomList();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(MainActivity.this, "error : " + e,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        exitRoomTask.execute();
     }
 }
