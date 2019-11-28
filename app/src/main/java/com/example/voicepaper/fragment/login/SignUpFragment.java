@@ -184,7 +184,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         SignUpTask signUpTask = new SignUpTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                uploadUserImage((User)object);
+                uploadUserImage((String)object);
             }
 
             @Override
@@ -197,9 +197,9 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         signUpTask.execute();
     }
 
-    private void uploadUserImage(User signedUser) {
+    private void uploadUserImage(String userID) {
         ContentValues values = new ContentValues();
-        values.put("userID", signedUser.getID());
+        values.put("userID", userID);
         Log.d("sssong:SignUpFragment", "image path : " + albumImagePath);
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_USER, values,
                 albumImagePath, new AsyncCallback() {
