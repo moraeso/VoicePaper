@@ -3,15 +3,34 @@ var bodyParser = require('body-parser');
 var mysql      = require('mysql');
 var dbconfig = require('./config/dbconfig.js');
 var fs =require('fs');
+var multer = require('multer');
+const path = require('path');
+
 //resource
 /*********file upload***************/
+const userimageupload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './voice/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, req.body.id + path.extname(file.originalname));
+    }
+  }),
+});
 
 /*********file upload***************/
 
 var app = express();
 app.use( bodyParser.urlencoded({ extended: true }) );
 app.use( bodyParser.json() );
-
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
+    res.header('Access-Control-Allow-Headers', 'content-type, id');
+    next();
+});
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -21,10 +40,11 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use('/voice', express.static('./voice'));
 app.use('/static', express.static('./'));
 // streaming test
 app.get('/', function(req, res) {
-    //stream 파일 생성
+    //1. stream 파일 생성
       var stream = fs.createReadStream('./testmusic4.mp3'); //path => <real voice file path
     // 2. 잘게 쪼개진 stream 이 몇번 전송되는지 확인하기 위한 count
     var count = 0;
@@ -253,7 +273,18 @@ app.get('/uploaduserimgquerytest', (req, res) => {
     connection.end();
 });// /uploaduserimgquerytest
 
+app.post('/uservoiceupload', userimageupload.single('voice'), (req, res) => {
+  console.log(req.file);
+  console.log(req.body.id);
+  console.log(req.file.filename);
+  var id = req.body.id;
+  var pic= req.file.filename;
 
+  var voicepath='./voice/'.concat(pic);
+
+  res.send(req.file)
+
+});
 //test port
 app.listen(8123);
 console.log('server start');

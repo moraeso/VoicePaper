@@ -72,6 +72,99 @@ exports.register = function(request, response) {
 }
 
 exports.login = (request, response) => {
+  console.log(request);
+  const userID = sanitizeHtml(request.body.id);//*
+  const userPassword = sanitizeHtml(request.body.pw);
+
+  let user;
+  let participatingRoomList;
+
+  const query = `
+  SELECT room.*,roomMembership.* , (SELECT count(*) FROM VoicePaper.roomMembership
+  WHERE roomMembership.roomID = room.roomID) as ?
+  FROM VoicePaper.roomMembership JOIN VoicePaper.room
+  ON roomMembership.userID=? AND roomMembership.roomID = room.roomID
+  `
+
+  const decrypt = (foundResult) => {
+    if(foundResult != undefined){
+      user = foundResult;
+
+      console.log('****decrypting process****');
+
+      return bcrypt.compareSync(userPassword, foundResult.userPassword)
+    } else {
+      response.json({
+        loginStatus: "invalidEmail",
+        code: 201
+      })
+    }
+  }
+
+  const getParticipatingRoomAndCount = (authenticated) => {
+    if(authenticated){
+      console.log('****participating room getting process****');
+
+      return models.sequelize.query(query,
+        {
+          replacements: ['CountMember', user.userID],
+          type: models.sequelize.QueryTypes.SELECT,
+          raw: true
+        });
+    } else {
+      response.json({
+        loginStatus: "inccorectPassword",
+        code: 202
+      })
+    }
+  }
+
+  const createToken = (participatingRoomAndCountResult) => {
+    console.log('****token creating process****');
+
+    console.log(participatingRoomAndCountResult);
+
+    participatingRoomList = participatingRoomAndCountResult;
+
+    var token = jwt.sign(
+      {
+        ID: user.userID,
+        name: user.userName
+      },
+      'secret',
+      {
+        expiresIn: '1h',
+        issuer: 'http://15011066.iptime.org',
+        subject: 'userInfo'
+      })
+
+    console.log('token successfuly created');
+
+    return token
+  }
+
+  const respond = (token) => {
+    response.json({
+      loginStatus: "success",
+      code: 200,
+      id: user.userID,
+      pw: user.userPassword,
+      name: user.userName,
+      profileString: user.userImage,
+      token: token,
+      roomList: participatingRoomList
+    })
+  }
+
+  User.findUserByID(userID)
+  .then(decrypt)
+  .then(getParticipatingRoomAndCount)
+  .then(createToken)
+  .then(respond)
+}
+
+exports.getGroupList = (req, res) => {
+
   const userID = sanitizeHtml(request.body.id);//*
   const userPassword = sanitizeHtml(request.body.pw);
 

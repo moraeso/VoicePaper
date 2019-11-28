@@ -19,9 +19,6 @@ module.exports = (sequelize, Datatypes) => {
       type: Datatypes.STRING(45),
       allowNull: false
     },
-    roomTag: {
-      type: Datatypes.STRING(45)
-    },
     roomText: {
       type: Datatypes.STRING(100),
       allowNull: false
@@ -45,6 +42,13 @@ module.exports = (sequelize, Datatypes) => {
     console.log('function \'findRoomByRoomID\' start!');
     return room.findOne({
       where: {roomID: roomID}
+    })
+  }
+
+  room.findRoomByRoomCode = function(roomCode) {
+    console.log('function \'findRoomByRoomCode\' start!');
+    return room.findOne({
+      where: {roomCode: roomCode}
     })
   }
 

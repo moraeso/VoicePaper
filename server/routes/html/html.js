@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const sanitizeHtml = require('sanitize-html');
 
 router.get('/', function(request, response){
   const html = `
@@ -48,5 +49,22 @@ router.get('/login', function(request, response){
   `
   response.send(html);
 });
+
+router.get('/main', function(request, response){
+  const userID = sanitizeHtml(request.body.ID);
+
+  const html = `
+  <html>
+  <head>
+    <title>main page</title>
+  </head>
+  <body>
+    <h2>Welcome ${userID}<h2>
+    <a href="/room/roomCreate">create room</a>
+    <a href="/room/roomParticipate">participate room</a>
+  </body>
+  </html>
+  `
+})
 
 module.exports = router;
