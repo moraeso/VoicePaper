@@ -17,7 +17,7 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
-import com.example.voicepaper.manager.GlideManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
@@ -82,8 +82,8 @@ public class RoomSlidePageFragment extends Fragment {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
-                String url = GlideManager.getInstance().getFullImageString(curRooms.get(i).getProfileString(), "groupImage");
-                GlideManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
+                String url = ImageManager.getInstance().getFullImageString(curRooms.get(i).getProfileString(), "groupImage");
+                ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
             }
             roomNameTv[i].setText(curRooms.get(i).getTitle());
         }

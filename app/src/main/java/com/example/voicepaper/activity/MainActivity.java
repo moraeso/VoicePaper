@@ -31,6 +31,7 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.fragment.main.CreateRoomFragment;
 import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.UpdateRoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSwipeRefresh();
 
         // 앨범 접근 허용(나중에 옮기기)
-        checkPermission();
+        //checkPermission();
     }
 
     void initView() {
@@ -100,7 +101,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String buf;
         buf = AppManager.getInstance().getUser().getProfileString();
         String buf2[] = buf.split("/");
-        Log.d("smh:image address",buf2[2]);
+        //Log.d("smh:image address",buf2[2]);
+
+        if (AppManager.getInstance().getUser().getProfileString().equals("undefined")) {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+            iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+        } else {
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "groupImage");
+            ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
+        }
 
         Glide.with(this)
                 .load(Constants.URL+"/userimage/"+buf2[2])
@@ -274,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /*
     //갤러리 접근 권한 설정
     private void checkPermission() {
 
@@ -288,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.v("갤러리 권한", "갤러리 사용을 위해 권한이 필요합니다.");
         }
 
-    }
+    }*/
 
     @Override
     public void onDismiss(DialogInterface dialog) {

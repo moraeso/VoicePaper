@@ -36,6 +36,7 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.CreateRoomTask;
 import com.example.voicepaper.network.UploadFile;
@@ -51,20 +52,13 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     private EditText roomTitleEt, roomCommentEt;
     private ImageButton roomProfileIb;
     private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
-    private Bitmap roomProfile;
 
     private int voicePermission;
 
-    private Uri roomProfileUri;
-    private int exifDegree;
-
     private ConfirmDialog confirmDialog;
 
-    private static final int PICK_FROM_ALBUM = 1;
-    private int inputSuitable;
-
     //수정필요
-    private String m_imagePath;
+    private String albumImagePath;
 
 
     private CreateRoomFragment() {
@@ -209,25 +203,23 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
         if (resultCode == ((Activity) AppManager.getInstance().getContext()).RESULT_OK) {
 
-            if (requestCode == PICK_FROM_ALBUM) {
+            if (requestCode == ImageManager.PICK_FROM_ALBUM) {
                 //앨범 선택
                 Uri uri = data.getData();
-                roomProfileUri = uri;
                 ExifInterface exif = null;
-                String imagePath = getRealPathFromURI(uri);
-                m_imagePath = imagePath;
-                Log.d("sssong:CRFragment", imagePath);
+                albumImagePath = ImageManager.getInstance().getRealPathFromURI(AppManager.getInstance().getContext(), uri);
+                Log.d("sssong:CRFragment", albumImagePath);
 
                 try {
-                    exif = new ExifInterface(imagePath);
+                    exif = new ExifInterface(albumImagePath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                exifDegree = exifOrientationToDegrees(exifOrientation);
+                int exifDegree = ImageManager.getInstance().exifOrientationToDegrees(exifOrientation);
                 roomProfileIb.setBackgroundColor(Color.WHITE);
-                roomProfile = BitmapFactory.decodeFile(imagePath);
-                roomProfileIb.setImageBitmap(rotate(roomProfile, exifDegree));
+                Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
+                roomProfileIb.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
             }
         }
     }
@@ -262,6 +254,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         return true;
     }
 
+    /*
     private String getRealPathFromURI(Uri contentUri) {
         int column_index = 0;
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -291,14 +284,14 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             return 270;
         }
         return 0;
-    }
+    }*/
 
     // 앨범에서 이미지 가져오기
     private void doTakeAlbumAction() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        startActivityForResult(intent, ImageManager.PICK_FROM_ALBUM);
     }
 
     private void addRoomInList() {
@@ -331,7 +324,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         ContentValues values = new ContentValues();
         values.put("roomID", newRoom.getId());
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM, values,
-                m_imagePath, new AsyncCallback() {
+                albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
                 confirmDialog.dismiss();

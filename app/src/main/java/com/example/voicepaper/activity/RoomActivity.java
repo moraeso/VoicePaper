@@ -16,14 +16,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.VoiceRecycleViewerAdapter;
 import com.example.voicepaper.adapter.VoiceRecyclerViewDecoration;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
-import com.example.voicepaper.manager.GlideManager;
+import com.example.voicepaper.manager.ImageManager;
 
 import java.util.ArrayList;
 
@@ -114,8 +113,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             roomProfileIv.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = GlideManager.getInstance().getFullImageString(room.getProfileString(), "groupImage");
-            GlideManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
+            String url = ImageManager.getInstance().getFullImageString(room.getProfileString(), "groupImage");
+            ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
         }
     }
 

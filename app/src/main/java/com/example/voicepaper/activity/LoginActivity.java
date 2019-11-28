@@ -1,9 +1,12 @@
 package com.example.voicepaper.activity;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -12,6 +15,8 @@ import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.fragment.login.SignUpFragment;
@@ -28,6 +33,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     EditText et_pw;
     ScrollView scrollView;
 
+    private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +45,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
 
         initView();
         initListener();
+
+        checkPermission(); // 갤러리 접근 권한
     }
 
     void initView(){
@@ -157,5 +166,21 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     @Override
     public void onFocusChange(View view, boolean b) {
         //리스너뺄지 고민중
+    }
+
+    //갤러리 접근 권한 설정
+    private void checkPermission() {
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE);
+
+            Log.v("갤러리 권한", "갤러리 사용을 위해 권한이 필요합니다.");
+        }
+
     }
 }

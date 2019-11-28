@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.voicepaper.data.User;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
@@ -14,6 +15,8 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
     ContentValues values;
     AsyncCallback asyncCallback;
     private Exception exception;
+
+    User newUser;
 
     public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
         this.url = Constants.URL+ "/auth/register";
@@ -35,9 +38,10 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
             if (!isSignUpDataValid(code)) {
                 throw new Exception("SignUp data is not valid");
             }
-            // 유저 ID, Password 설정
-            AppManager.getInstance().getUser().setID(values.getAsString("id"));
-            AppManager.getInstance().getUser().setPw(values.getAsString("pw"));
+
+            newUser = new User();
+            newUser.setID(values.getAsString("id"));
+            newUser.setPw(values.getAsString("pw"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +57,7 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
         super.onPostExecute(result);
 
         if(result == true){
-            asyncCallback.onSuccess(true);
+            asyncCallback.onSuccess(newUser);
         }else{
             asyncCallback.onFailure(exception);
         }
