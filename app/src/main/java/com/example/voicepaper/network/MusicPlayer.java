@@ -11,15 +11,22 @@ import java.io.IOException;
 
 public class MusicPlayer extends AsyncTask<Void, Void, Void> {
     private MediaPlayer m_MediaPlayer;
+    private String url;
 
-    public MusicPlayer() {
+    public MusicPlayer(String _filePath) {
         m_MediaPlayer = new MediaPlayer();
+
+        String buf;
+        buf = _filePath;
+        //Log.d("smh:image address group", buf);
+        String buf2[] = buf.split("/");
+        //Log.d("smh:image address group", buf2[2]);
+
+        url = Constants.URL + "/voicefile/" + buf2[2]; // your URL here
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = Constants.URL + "/static/ -파일이름"; // your URL here
-
         m_MediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             m_MediaPlayer.setDataSource(url);

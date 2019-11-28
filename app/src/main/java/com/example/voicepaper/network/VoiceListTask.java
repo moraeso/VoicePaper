@@ -1,11 +1,13 @@
 package com.example.voicepaper.network;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,27 +15,30 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class VoiceListTask extends AsyncTask<Void,Boolean,Boolean> {
+public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
     private ContentValues values;
     private AsyncCallback callback;
     private Exception exception;
     private String url;
 
-    public VoiceListTask(ContentValues values, AsyncCallback callback, Exception exception) {
-        this.url = "15011066.iptime.org:8000/voicedatalist";
+    public VoiceListTask(ContentValues values, AsyncCallback callback) {
+        this.url = Constants.URL +"/room/voicedatalist";
         this.values = values;
         this.callback = callback;
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected ArrayList<Voice> doInBackground(Void... params) {
         String result;
-
+        ArrayList<Voice> arrayList;
         try {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
 
-            if (!isSignInDataValid(result)) {
+            JSONObject jsonObject= new JSONObject(result);
+            int code = jsonObject.getInt("code");
+
+            if (!isSignInDataValid(code)) {
                 throw new Exception("SignUp data is not valid");
             }
 
@@ -42,65 +47,64 @@ public class VoiceListTask extends AsyncTask<Void,Boolean,Boolean> {
             //통신만하면 끝 테스크안에서, 리스트를 만들어, 리스트를 남겨준다
             //json 파일 -> 리스트 변환
 
+            arrayList = makeVoiceList(jsonObject.getString("voiceList"));
+            Log.d("smh:array",arrayList.get(1).getUserId());
+            return arrayList;
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
-            return false;
+            return null;
         }
-
-        return true; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(ArrayList<Voice> result) {
         super.onPostExecute(result);
-
-        if(result == true){
-            callback.onSuccess(true);
+        if(result.size() != 0){
+            callback.onSuccess(result);
         }else{
             callback.onFailure(exception);
         }
     }
 
-    private boolean isSignInDataValid(String json_str) {
+    private boolean isSignInDataValid(int code) {
         // 성공 : 200, 실패 : 204
-        try {
-            JSONObject jsonObj = new JSONObject(json_str);
-            int code = jsonObj.getInt("code");
-
-            if (code == 204) {
-                return false;
-            } else if (code == 200) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (code == 200) {
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     private ArrayList makeVoiceList(String _jsonArray){
         ArrayList<Voice> voiceArrayList = new ArrayList<Voice>();
-
+        Log.d("smh:json",_jsonArray);
         try {
             JSONArray jsonArray = new JSONArray(_jsonArray);
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+//----------여기 부분 이상하니 서버랑 이야기 해봐야함 이름이 너무 이상함, 유저 이름을 안넘겨줌
 //                private int id;
-//                private int userId;
+//                private String userId;
 //                private String userName;
 //                private int roomId;
 //                private String voiceFile;
 
+//                        "fileID": 38,
+//                        "userID": "1234",
+//                        "roomID": 79,
+//                        "filePath": "./voice/test.mp3",
+//                        "recordedTime": null
                 Voice voice = new Voice(
-                        jsonObject.getInt("id"),
-                        jsonObject.getInt("userId"),
-                        jsonObject.getString("userName"),
-                        jsonObject.getInt("roomId"),
-                        jsonObject.getString("voiceFile")
+                        jsonObject.getInt("fileID"),
+                        jsonObject.getString("userID"),
+                        jsonObject.getString("userID"),
+                        jsonObject.getInt("roomID"),
+                        jsonObject.getString("filePath")
                 );
+
                 voiceArrayList.add(voice);
             }
         } catch (JSONException e) {
@@ -109,5 +113,4 @@ public class VoiceListTask extends AsyncTask<Void,Boolean,Boolean> {
 
         return voiceArrayList;
     }
-
 }

@@ -2,6 +2,7 @@ package com.example.voicepaper.fragment.room;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -13,20 +14,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.UploadFile;
+import com.example.voicepaper.util.ConfirmDialog;
 
-import java.io.File;
 import java.io.IOException;
 
 
@@ -37,11 +38,12 @@ import java.io.IOException;
 
 public class RecordFragment extends DialogFragment implements Button.OnClickListener{
     //view
-    TextView tv_content;
-    ImageButton btn_record;
-    Button btn_cancel;
-    Button btn_submit;
+    private TextView tv_content;
+    private ImageButton btn_record;
+    private Button btn_cancel;
+    private Button btn_submit;
     private int state;
+
 
     //reocrd
     private MediaRecorder recorder; // 음성 기록
@@ -54,6 +56,11 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private static final int RECODE_STOP = 0;
     private static final int PLAY_START = 2;
     private static final int PLAY_STOP = 3;
+
+    private ConfirmDialog confirmDialog;
+
+    //임시
+    private String roomId;
 
     public RecordFragment(){ }
 
@@ -75,7 +82,13 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         fileName = "audiorecordtest.mp3";
 
         Log.d("smh:file path",fileName);
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }//프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
+
+    public void setRoomId(int roomId){
+        this.roomId = ""+roomId;
+    }
 
     @NonNull
     @Override
@@ -143,10 +156,26 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 여기부근에 통신 넣어야합니다.
                  */
 
-//                String url = "http://15011066.iptime.org:8123/uservoiceupload/";
-//                UploadFile uploadFile = new UploadFile(url,"id","test3",filePath);
-//
-//                uploadFile.execute();
+                ContentValues values = new ContentValues();
+                values.put("userId",AppManager.getInstance().getUser().getID());
+                values.put("roomId",roomId);
+
+                UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_AUDIO,values,filePath, new AsyncCallback() {
+                    @Override
+                    public void onSuccess(Object object) {
+                        confirmDialog.setMessage("회원가입 완료!");
+                        confirmDialog.show();
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(AppManager.getInstance().getContext(), "error : " + e, Toast.LENGTH_SHORT).show();
+                        confirmDialog.dismiss();
+                    }
+                });
+
+                uploadFile.execute();
 
                 break;
         }

@@ -2,6 +2,7 @@ package com.example.voicepaper.activity;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -21,9 +22,11 @@ import com.example.voicepaper.adapter.VoiceRecycleViewerAdapter;
 import com.example.voicepaper.adapter.VoiceRecyclerViewDecoration;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.Voice;
+import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
-
+import com.example.voicepaper.network.AsyncCallback;
+import com.example.voicepaper.network.VoiceListTask;
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity implements View.OnClickListener {
@@ -129,6 +132,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 /*
                 녹음 기능
                  */
+                RecordFragment recordFragment = RecordFragment.newInstance();
+                recordFragment.setRoomId(room.getId());
+
+                recordFragment.show(getSupportFragmentManager(),null);
+
                 break;
         }
     }
@@ -152,14 +160,26 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     보이스 데이터 불러오기 통신
 
      */
+        ContentValues values = new ContentValues();
+        values.put("roomID",room.getId());
 
-        ArrayList<Voice> bufferItems = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            // Voice(int id, int userId, String userName, int roomId, String voiceFile) {
-            bufferItems.add(new Voice(1, 1, "user00", room.getId(), "voiceFile.url"));
-        }
-        voiceAdapter.addAll(bufferItems);
+        VoiceListTask voiceListTask = new VoiceListTask(values, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                voiceAdapter.addAll(((ArrayList<Voice>)object));
+            }
 
+            @Override
+            public void onFailure(Exception e) {
 
+            }
+        });
+        voiceListTask.execute();
+//        ArrayList<Voice> bufferItems = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            // Voice(int id, int userId, String userName, int roomId, String voiceFile) {
+//            bufferItems.add(new Voice(1, 1, "user00", room.getId(), "voiceFile.url"));
+//        }
+//        voiceAdapter.addAll(bufferItems);
     }
 }

@@ -33,10 +33,9 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     public static final int UPLOAD_IMAGE_ROOM = 2;
     public static final int UPLOAD_AUDIO = 3;
 
-    public UploadFile(int type, ContentValues values, String filePath, AsyncCallback callback) {
-        this.callback = callback;
+    public UploadFile(int type, ContentValues _values, String filePath, AsyncCallback asyncCallback) {
         this.type = type;
-        this.values = values;
+        this.values = _values;
         this.filePath = filePath;
         this.userId = AppManager.getInstance().getUser().getID();
 
@@ -45,10 +44,12 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
         }
         else if(type == UPLOAD_IMAGE_ROOM){
             this.m_url = Constants.URL+"/file/uploadgroupimage";
-            this.roomId = values.getAsString("roomID");
+            this.roomId = values.get("roomId").toString();
         }
         else if(type == UPLOAD_AUDIO){
-            this.m_url = Constants.URL+"/file/file/uploadvoice";
+            this.m_url = Constants.URL+"/file/uploadvoice";
+            this.roomId = values.get("roomId").toString();
+            Log.d("smh:roomid",this.roomId);
         }
     }
 
@@ -93,7 +94,7 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
                 wr.writeBytes("Content-Disposition: form-data; name=\"" + "roomID" + "\"\r\n\r\n" + roomId);
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
-                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + "test.mp3"); //임시로 넣어둠
+                wr.writeBytes("Content-Disposition: form-data; name=\"" + "filename" + "\"\r\n\r\n" + "test"); //임시로 넣어둠
                 wr.writeBytes("\r\n--" + boundary + "\r\n");
                 wr.writeBytes("Content-Disposition: form-data; name=\"voice\"; filename=\"test.mp3\"\r\n");
                 wr.writeBytes("Content-Type: audio/mpeg\r\n\r\n");
