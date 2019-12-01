@@ -80,6 +80,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                         여기서 새로고침 시 기능 추가
 
                         */
+                        loadVoiceData();
 
                         voiceRecycleView.smoothScrollToPosition(0);
                     }
@@ -167,7 +168,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         VoiceListTask voiceListTask = new VoiceListTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                voiceAdapter.clearItems();
                 voiceAdapter.addAll(((ArrayList<Voice>)object));
             }
 

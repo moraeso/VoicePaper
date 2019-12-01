@@ -42,18 +42,18 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
 
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
-            this.userId = _values.get("userID").toString();
-            Log.d("smh:roomid",this.userId);
+            this.userId = _values.get("userId").toString();
+            Log.d("smh:roomId",this.userId);
         }
         else if(type == UPLOAD_IMAGE_ROOM){
             this.m_url = Constants.URL+"/file/uploadgroupimage";
-            this.roomId = values.get("roomID").toString();
+            this.roomId = values.get("roomId").toString();
         }
         else if(type == UPLOAD_AUDIO){
             this.m_url = Constants.URL+"/file/uploadvoice";
             this.roomId = values.get("roomId").toString();
             this.userId = AppManager.getInstance().getUser().getID();
-            Log.d("smh:roomid",this.roomId);
+            Log.d("smh:roomId",this.roomId);
         }
     }
 
