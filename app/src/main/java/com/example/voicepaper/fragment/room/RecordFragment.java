@@ -1,8 +1,10 @@
 package com.example.voicepaper.fragment.room;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -131,6 +133,17 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     }
 
     @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_record:
@@ -176,7 +189,6 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 });
 
                 uploadFile.execute();
-
                 break;
         }
     }

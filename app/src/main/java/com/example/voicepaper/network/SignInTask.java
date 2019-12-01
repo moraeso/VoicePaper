@@ -92,17 +92,6 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-//                private int id;
-//                private String title;
-//                private Bitmap profileImage;
-//                private String profileString;
-//                private String comment;
-//                private int permission;
-//                private String hostID;
-//                private String code;
-
-//int id, String title, int permission, String comment, String hostID, String code
-
                 Room room = new Room(
                         jsonObject.getInt("roomID"),
                         jsonObject.getString("roomName"),
@@ -112,7 +101,6 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
                         jsonObject.getString("roomCode")
                 );
                 room.setProfileString(jsonObject.getString("roomImage"));
-                //이미지 바로 넣을것인가? 여기서 받아올거면 Glide 쓰면 됩니다.
 
                 roomArrayList.add(room);
             }

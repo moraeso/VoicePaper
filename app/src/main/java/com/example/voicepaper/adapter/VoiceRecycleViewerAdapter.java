@@ -70,4 +70,8 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         voiceItems.addAll(items);
         notifyDataSetChanged();
     }
+
+    public void clearItems(){
+        voiceItems.clear();
+    }
 }

@@ -10,7 +10,7 @@ import com.example.voicepaper.util.Constants;
 
 import org.json.JSONObject;
 
-public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
+public class SignUpTask extends AsyncTask<Void, Boolean, String> {
     String url;
     ContentValues values;
     AsyncCallback asyncCallback;
@@ -25,7 +25,7 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(Void... params) {
+    protected String doInBackground(Void... params) {
         String result;
 
         try {
@@ -36,28 +36,26 @@ public class SignUpTask extends AsyncTask<Void, Boolean, Boolean> {
             int code = job.getInt("code");
             Log.d("smh:signUp",""+code);
             if (!isSignUpDataValid(code)) {
+                Log.d("smh:signUp UserID","error");
                 throw new Exception("SignUp data is not valid");
             }
 
-            newUser = new User();
-            newUser.setID(values.getAsString("id"));
-            newUser.setPw(values.getAsString("pw"));
-
+            Log.d("smh:signUp UserID",""+values.get("id").toString());
+            return values.get("id").toString();
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
-            return false;
+            return null;
         }
 
-        return true; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        if(result == true){
-            asyncCallback.onSuccess(newUser);
+        if(result != null){
+            asyncCallback.onSuccess(result);
         }else{
             asyncCallback.onFailure(exception);
         }

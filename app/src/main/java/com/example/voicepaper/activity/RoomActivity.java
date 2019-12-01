@@ -1,5 +1,6 @@
 package com.example.voicepaper.activity;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.content.ContentValues;
@@ -29,7 +30,7 @@ import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.VoiceListTask;
 import java.util.ArrayList;
 
-public class RoomActivity extends AppCompatActivity implements View.OnClickListener {
+public class RoomActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
 
     private ImageView roomProfileIv;
     private TextView roomTitleTv, roomCommentTv;
@@ -166,6 +167,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         VoiceListTask voiceListTask = new VoiceListTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
+                voiceAdapter.clearItems();
                 voiceAdapter.addAll(((ArrayList<Voice>)object));
             }
 
@@ -181,5 +183,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 //            bufferItems.add(new Voice(1, 1, "user00", room.getId(), "voiceFile.url"));
 //        }
 //        voiceAdapter.addAll(bufferItems);
+    }
+
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        loadVoiceData();
     }
 }
