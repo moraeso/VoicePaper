@@ -163,7 +163,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_AUDIO,values,filePath, new AsyncCallback() {
                     @Override
                     public void onSuccess(Object object) {
-                        confirmDialog.setMessage("회원가입 완료!");
+                        confirmDialog.setMessage("녹음 완료!");
                         confirmDialog.show();
                         dismiss();
                     }
@@ -171,7 +171,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                     @Override
                     public void onFailure(Exception e) {
                         Toast.makeText(AppManager.getInstance().getContext(), "error : " + e, Toast.LENGTH_SHORT).show();
-                        confirmDialog.dismiss();
+                        //confirmDialog.dismiss();
                     }
                 });
 

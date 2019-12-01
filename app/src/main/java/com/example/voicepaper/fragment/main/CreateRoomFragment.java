@@ -322,7 +322,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
 
     private void uploadRoomImage(Room newRoom) {
         ContentValues values = new ContentValues();
-        values.put("roomID", newRoom.getId());
+        values.put("roomId", newRoom.getId());
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM, values,
                 albumImagePath, new AsyncCallback() {
             @Override

@@ -48,7 +48,6 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
             //json 파일 -> 리스트 변환
 
             arrayList = makeVoiceList(jsonObject.getString("voiceList"));
-            Log.d("smh:array",arrayList.get(1).getUserId());
             return arrayList;
         } catch (Exception e) {
             e.printStackTrace();

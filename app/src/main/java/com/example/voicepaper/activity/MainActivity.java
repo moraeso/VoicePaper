@@ -126,38 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
-        /*
-        rooms.add(new Room(11, "1Room",
-                Constants.VOICE_PUBLIC,
-                "동해물과 백두산이 마르고 닳도록 하느님이 보우하사 우리 나라 만세" +
-                        "무궁화 삼천리 화려강산 대한사람 대한으로 길이 보전하세.",
-                AppManager.getInstance().getUser().getID(), "00"));
-
-        rooms.add(new Room(12, "2Room",
-                Constants.VOICE_PUBLIC, "2222", AppManager.getInstance().getUser().getID(), "11"));
-
-        rooms.add(new Room(13, "3Room",
-                Constants.VOICE_PUBLIC, "3333", AppManager.getInstance().getUser().getID(), "12"));
-
-        rooms.add(new Room(14, "4Room",
-                Constants.VOICE_PUBLIC, "4444", AppManager.getInstance().getUser().getID(), "13"));
-
-        rooms.add(new Room(15, "5Room",
-                Constants.VOICE_PUBLIC, "5555", AppManager.getInstance().getUser().getID(), "14"));
-
-        rooms.add(new Room(16, "6Room",
-                Constants.VOICE_PUBLIC, "6666", AppManager.getInstance().getUser().getID(), "15"));
-
-        rooms.add(new Room(17, "7Room",
-                Constants.VOICE_PUBLIC, "7777", AppManager.getInstance().getUser().getID(), "16"));
-
-        rooms.add(new Room(18, "8Room",
-                Constants.VOICE_PUBLIC, "8888", AppManager.getInstance().getUser().getID(), "17"));
-
-        rooms.add(new Room(19, "9Room",
-                Constants.VOICE_PUBLIC, "9999", AppManager.getInstance().getUser().getID(), "18"));
-*/
-        //AppManager.getInstance().setRoomList(rooms);
     }
 
 

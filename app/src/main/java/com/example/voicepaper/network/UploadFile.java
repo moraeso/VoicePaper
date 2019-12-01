@@ -33,8 +33,9 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     public static final int UPLOAD_IMAGE_ROOM = 2;
     public static final int UPLOAD_AUDIO = 3;
 
-    public UploadFile(int type, ContentValues _values, String filePath, AsyncCallback asyncCallback) {
+    public UploadFile(int type, ContentValues _values, String filePath, AsyncCallback callback) {
         this.type = type;
+        this.callback = callback;
         this.values = _values;
         this.filePath = filePath;
         this.userId = AppManager.getInstance().getUser().getID();
