@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.User;
 import com.example.voicepaper.util.ConfirmDialog;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class AppManager {
 
     private static AppManager instance;
+    private MainActivity MA;
 
     private AppManager() {
         user = new User();
@@ -47,4 +49,6 @@ public class AppManager {
         return BitmapFactory.decodeResource(resources, r);
     }
 
+    public void setMainActivity(MainActivity MA){this.MA = MA;}
+    public MainActivity getMainActivity(){ return MA; }
 }

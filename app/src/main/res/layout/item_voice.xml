@@ -6,41 +6,43 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/layout_upper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:orientation="horizontal">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:background="@drawable/custom_border">
 
-        <TextView
-            android:id="@+id/tv_name"
+        <LinearLayout
+            android:id="@+id/layout_upper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="0.7"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-        <ImageButton
-            android:id="@+id/btn_player"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_toRightOf="@id/tv_name"
-            android:layout_weight="0.3"
-            android:backgroundTint="#00000000"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            app:srcCompat="@drawable/ic_playing" />
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.8"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="TextView" />
+
+            <ImageButton
+                android:id="@+id/btn_player"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/tv_name"
+                android:layout_weight="0.1"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00000000"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_playing" />
+        </LinearLayout>
+
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_upper"
-        android:layout_alignLeft="@id/layout_upper" />
 
 </RelativeLayout>

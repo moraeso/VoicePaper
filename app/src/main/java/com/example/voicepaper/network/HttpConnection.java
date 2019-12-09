@@ -55,6 +55,7 @@ public class HttpConnection {
 
             //conn 설정
             conn.setConnectTimeout(10000); // 연결 대기시간 설정
+            conn.setReadTimeout(1000);
             conn.setRequestMethod("POST"); // 전송방식 POST
 
             //header 부분 설정.

@@ -96,8 +96,8 @@ public class RoomSlidePageFragment extends Fragment {
     public void initListener() {
 
         for (int i = 0; i < roomNum; i++) {
-            roomProfile[i].setOnClickListener((MainActivity) AppManager.getInstance().getContext());
-            roomProfile[i].setOnLongClickListener((MainActivity) AppManager.getInstance().getContext());
+            roomProfile[i].setOnClickListener((MainActivity) getActivity());
+            roomProfile[i].setOnLongClickListener((MainActivity) getActivity());
         }
     }
 }
