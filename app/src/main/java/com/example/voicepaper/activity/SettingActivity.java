@@ -94,6 +94,10 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             case R.id.btn_about:
                 break;
             case R.id.btn_signOut:
+                AppManager.getInstance().getMainActivity().finish();
+                Intent intent = new Intent(AppManager.getInstance().getContext(),LoginActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }

@@ -168,6 +168,9 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 /*
                 여기부근에 통신 넣어야합니다.
                  */
+                if(state==RECODE_STOP){
+                    onRecord(false);
+                }
 
                 ContentValues values = new ContentValues();
                 values.put("userId",AppManager.getInstance().getUser().getID());
@@ -219,7 +222,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    stopPlaying();
+                    onPlay(false);
                 }
             });
 

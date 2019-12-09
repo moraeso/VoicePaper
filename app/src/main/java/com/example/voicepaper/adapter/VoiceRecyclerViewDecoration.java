@@ -31,7 +31,7 @@ public class VoiceRecyclerViewDecoration extends RecyclerView.ItemDecoration {
         outRect.left = spacing - column * spacing / spanCount;
         outRect.right = spacing - (1 - column) * spacing / spanCount;
         outRect.top = spacing;
-        outRect.bottom = spacing;
+        outRect.bottom = spacing / 3;
 
         if (row == lastRow) {
             outRect.bottom = outerMargin;
