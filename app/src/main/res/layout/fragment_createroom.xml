@@ -76,7 +76,7 @@
                 android:layout_marginRight="35dp"
                 android:layout_toRightOf="@id/tv_roomProfile"
                 android:background="@drawable/custom_rounded"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"/>
 
             <TextView
                 android:id="@+id/tv_roomPermission"

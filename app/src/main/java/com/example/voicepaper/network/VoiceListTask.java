@@ -45,11 +45,6 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
                 throw new Exception("Voice data is not valid");
             }
 
-            //방 입장하면, 음성을 기록한 사람들에 대한 리스트 받잖아
-            //이 리스트를 받아와서 어디서 add를 해줘야하냐?
-            //통신만하면 끝 테스크안에서, 리스트를 만들어, 리스트를 남겨준다
-            //json 파일 -> 리스트 변환
-
             arrayList = makeVoiceList(jsonObject.getString("voiceList"));
             return arrayList;
         } catch (Exception e) {
@@ -87,18 +82,6 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-//----------여기 부분 이상하니 서버랑 이야기 해봐야함 이름이 너무 이상함, 유저 이름을 안넘겨줌
-//                private int id;
-//                private String userId;
-//                private String userName;
-//                private int roomId;
-//                private String voiceFile;
-
-//                        "fileID": 38,
-//                        "userID": "1234",
-//                        "roomID": 79,
-//                        "filePath": "./voice/test.mp3",
-//                        "recordedTime": null
                 Voice voice = new Voice(
                         jsonObject.getInt("fileID"),
                         jsonObject.getString("userID"),
