@@ -92,6 +92,7 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             case R.id.btn_inquire:
                 break;
             case R.id.btn_about:
+                about();
                 break;
             case R.id.btn_signOut:
                 AppManager.getInstance().getMainActivity().finish();
@@ -157,5 +158,19 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             }
         });
         uploadFile.execute();
+    }
+
+    private void inquire(){
+        confirmDialog.setMessage(
+                "전화번호 : 010 - xxxx - xxxx\n" +
+                        "문의메일: audgk562@naver.com\n");
+        confirmDialog.show();
+    }
+
+    private void about(){
+        confirmDialog.setMessage(
+                "보이스 페이스 1.0\n" +
+                        "제작자: 김형수, 서유식, 송상현, 신명하\n");
+        confirmDialog.show();
     }
 }
