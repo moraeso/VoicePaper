@@ -77,6 +77,8 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
         btn_inquire.setOnClickListener(this);
         btn_about.setOnClickListener(this);
         btn_signOut.setOnClickListener(this);
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }
 
     @Override
@@ -84,8 +86,6 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
         switch (view.getId()){
             case R.id.btn_changeImage:
                 doTakeAlbumAction();
-                confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-                uploadUserImage(AppManager.getInstance().getUser().getID());
                 break;
             case R.id.btn_changePw:
                 break;
@@ -126,6 +126,8 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
                 iv_userImage.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 iv_userImage.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+
+                uploadUserImage(AppManager.getInstance().getUser().getID());
             }
         }
     }

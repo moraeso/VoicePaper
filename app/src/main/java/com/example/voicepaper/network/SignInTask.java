@@ -38,10 +38,12 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-            Log.d("smh:signin",""+code);
+            Log.d("smh:signin",""+job.toString());
+            Log.d("smh:signin code",""+code);
             if (!isSignInDataValid(code)) {
                 throw new Exception("Signin data is not valid");
             }
+
 
             String token = job.getString("token");
             AppManager.getInstance().getUser().setToken(token);

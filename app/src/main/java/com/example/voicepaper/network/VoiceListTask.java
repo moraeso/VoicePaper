@@ -102,7 +102,7 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
                 Voice voice = new Voice(
                         jsonObject.getInt("fileID"),
                         jsonObject.getString("userID"),
-                        jsonObject.getString("userID"), // ??
+                        jsonObject.getString("userName"), // ??
                         jsonObject.getInt("roomID"),
                         jsonObject.getString("filePath")
                 );
