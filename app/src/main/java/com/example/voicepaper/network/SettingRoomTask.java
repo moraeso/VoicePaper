@@ -42,7 +42,8 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
             result = requestHttpURLConnection.request(url, values); // post token
 
             if (!isConnectionSuccess(result)) {
-                throw new Exception("Setting room failed");
+                // 수정할 것 601만 받음
+                //throw new Exception("Setting room failed");
             }
             settingRoomFromJson(result);
         } catch (Exception e) {
@@ -92,9 +93,9 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
-            roomSettingValues.put("title", jsonObj.getString("roomName"));
-            roomSettingValues.put("comment", jsonObj.getString("roomText"));
-            roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
+            //roomSettingValues.put("title", jsonObj.getString("roomName"));
+            //roomSettingValues.put("comment", jsonObj.getString("roomText"));
+            //roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
         } catch (Exception e) {
             e.printStackTrace();
         }

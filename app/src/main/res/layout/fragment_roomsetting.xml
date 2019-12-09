@@ -14,14 +14,13 @@
         <ImageView
             android:id="@+id/iv_logo_top"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="70dp"
             android:src="@drawable/logo_top" />
 
         <LinearLayout
             android:id="@+id/layout_gradient"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="5dp"
             android:layout_below="@id/iv_logo_top"
             android:background="@drawable/custom_gradient"
             android:orientation="vertical" />
@@ -142,13 +141,14 @@
         <Button
             android:id="@+id/btn_settingRoom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@id/layout_enterInfo"
             android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
+            android:background="@color/colorMainBold"
             android:text="수정하기" />
 
     </RelativeLayout>

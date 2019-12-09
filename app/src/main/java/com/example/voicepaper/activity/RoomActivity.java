@@ -28,7 +28,10 @@ import com.example.voicepaper.fragment.room.RoomSettingFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
+import com.example.voicepaper.network.RoomTask;
 import com.example.voicepaper.network.VoiceListTask;
+import com.example.voicepaper.util.ConfirmDialog;
+
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
@@ -46,8 +49,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     private VoiceRecycleViewerAdapter voiceAdapter;
 
     private Room room;
-
-    private String code;
+    private int id;
 
 
     @Override
@@ -59,17 +61,20 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_room);
 
+        id = getIntent().getExtras().getInt("id");
+
         initView();
-        getRoomInfo();
-        initViewIntoData();
         initListener();
+
         initVoiceRecyclerViewAdapter();
+
+        loadRoomInfo();
         loadVoiceData();
 
-        setSwipeRefresh();
+        initSwipeRefresh();
     }
 
-    private void setSwipeRefresh() {
+    private void initSwipeRefresh() {
         // 새로고침
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.layout_swipeRefresh);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -80,21 +85,26 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                     public void run() {
                         swipeRefresh.setRefreshing(false);
 
-                        /*
-                        여기서 새로고침 시 기능 추가
-
-                        */
                         loadVoiceData();
-
-
-                        getRoomInfo();
-                        initViewIntoData();
-
+                        loadRoomInfo();
                         voiceRecycleView.smoothScrollToPosition(0);
                     }
                 }, 1000);
             }
         });
+    }
+
+    private void initView() {
+        roomProfileIv = (ImageView) findViewById(R.id.iv_roomProfile);
+        roomTitleTv = (TextView) findViewById(R.id.tv_roomTitle);
+        roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
+        recordBtn = (Button) findViewById(R.id.btn_record);
+        settingBtn = (Button) findViewById(R.id.btn_setting);
+    }
+
+    private void initListener() {
+        recordBtn.setOnClickListener(this);
+        settingBtn.setOnClickListener(this);
     }
 
     private void initVoiceRecyclerViewAdapter() {
@@ -112,15 +122,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         voiceRecycleView.setAdapter(voiceAdapter);
     }
 
-    private void initView() {
-        roomProfileIv = (ImageView) findViewById(R.id.iv_roomProfile);
-        roomTitleTv = (TextView) findViewById(R.id.tv_roomTitle);
-        roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
-        recordBtn = (Button) findViewById(R.id.btn_record);
-        settingBtn = (Button) findViewById(R.id.btn_setting);
-    }
-
-    private void initViewIntoData() {
+    private void initViewContents() {
 
         roomTitleTv.setText(room.getTitle());
         roomCommentTv.setText(room.getComment());
@@ -135,10 +137,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void initListener() {
-        recordBtn.setOnClickListener(this);
-        settingBtn.setOnClickListener(this);
-    }
 
     @Override
     public void onClick(View v) {
@@ -155,25 +153,38 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_setting:
-                roomSettingFragment = RoomSettingFragment.newInstance(
-                        room.getId(), room.getTitle(), room.getComment(),
-                        room.getPermission(), room.getProfileString());
-                roomSettingFragment.show(getSupportFragmentManager(), "InputRoomCode");
-                getSupportFragmentManager().executePendingTransactions();
+                if (AppManager.getInstance().getUser().getID().equals(room.getHostID())) {
+                    roomSettingFragment = RoomSettingFragment.newInstance(
+                            room.getId(), room.getTitle(), room.getComment(),
+                            room.getPermission(), room.getProfileString());
+                    roomSettingFragment.show(getSupportFragmentManager(), "InputRoomCode");
+                    getSupportFragmentManager().executePendingTransactions();
+                } else {
+                    ConfirmDialog cd = new ConfirmDialog(AppManager.getInstance().getContext());
+                    cd.setMessage("호스트만 사용 가능합니다.");
+                    cd.show();
+                }
         }
     }
 
-    private void getRoomInfo() {
-        code = getIntent().getExtras().getString("code");
-        Toast.makeText(this, "Room Code : " + code, Toast.LENGTH_SHORT).show();
-
-        ArrayList<Room> roomItems = AppManager.getInstance().getRoomList();
-        for (Room item : roomItems) {
-            if (code.equals(item.getCode())) {
-                room = item;
-                break;
+    private void loadRoomInfo() {
+        ContentValues values = new ContentValues();
+        values.put("userID", AppManager.getInstance().getUser().getID());
+        values.put("roomID", id);
+        RoomTask roomTask = new RoomTask(values, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                room = (Room)object;
+                initViewContents();
             }
-        }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(AppManager.getInstance().getContext(),
+                        "error : " + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+        roomTask.execute();
     }
 
     private void loadVoiceData() {
@@ -184,7 +195,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
      */
         ContentValues values = new ContentValues();
         values.put("userID",AppManager.getInstance().getUser().getID());
-        values.put("roomID",room.getId());
+        values.put("roomID",id);
 
         VoiceListTask voiceListTask = new VoiceListTask(values, new AsyncCallback() {
             @Override
@@ -200,20 +211,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         voiceListTask.execute();
-//        ArrayList<Voice> bufferItems = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            // Voice(int id, int userId, String userName, int roomId, String voiceFile) {
-//            bufferItems.add(new Voice(1, 1, "user00", room.getId(), "voiceFile.url"));
-//        }
-//        voiceAdapter.addAll(bufferItems);
     }
 
 
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         loadVoiceData();
-
-        getRoomInfo();
-        initViewIntoData();
+        loadRoomInfo();
     }
 }

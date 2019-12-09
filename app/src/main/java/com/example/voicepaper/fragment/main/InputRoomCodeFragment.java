@@ -71,6 +71,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
     private void participateRoom() {
         ContentValues values = new ContentValues();
         values.put("id", AppManager.getInstance().getUser().getID());
+        //values.put("userID", AppManager.getInstance().getUser().getID());
         values.put("roomCode", inputRoomCodeEt.getText().toString());
 
         InputRoomCodeTask inputRoomCodeTask = new InputRoomCodeTask(values, new AsyncCallback() {
@@ -78,13 +79,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
             public void onSuccess(Object object) {
                 Log.d("sssong:InputRoomFrgmt", "onSuccess : participate room");
                 AppManager.getInstance().getRoomList().add((Room)object);
-                ////////////////////////////////////////
 
-
-                // 여기서 서버 오류때문에 success가 안됨
-
-
-                ////////////////////////////////////////
                 dismiss();
             }
 

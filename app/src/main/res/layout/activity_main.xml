@@ -32,20 +32,19 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_below="@id/layout_gradient"
-            android:background="@color/colorWhite"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
-
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/colorWhite">
 
             <RelativeLayout
                 android:id="@+id/layout_profile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/iv_profile"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="70dp"
                     android:src="@drawable/img_user" />
@@ -68,14 +67,13 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
+                android:layout_alignBottom="@id/layout_profile"
                 android:layout_marginRight="10dp"
                 android:background="#00FFFFFF"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/img_setting" />
         </RelativeLayout>
 
-        >
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/roomViewPager"

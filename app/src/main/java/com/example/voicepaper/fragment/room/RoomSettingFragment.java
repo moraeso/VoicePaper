@@ -307,20 +307,8 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             public void onSuccess(Object object) {
                 Log.d("sssong:SRFragment", "onSuccess : setting room");
 
-                ArrayList<Room> roomItems = AppManager.getInstance().getRoomList();
-                for (Room item : roomItems) {
-                    if (id == item.getId()) {
-                        item.setTitle(roomTitleEt.getText().toString());
-                        item.setComment(roomCommentEt.getText().toString());
-                        item.setPermission(voicePermission);
-                        //item.setTitle((String)((ContentValues)object).get("title"));
-                        //item.setComment((String)((ContentValues)object).get("comment"));
-                        //item.setPermission((Integer)((ContentValues)object).get("permission"));
-                        break;
-                    }
-                }
-
                 if (albumImagePath != null)
+                    // 이미지 통신
                     uploadRoomImage();
                 else {
                     confirmDialog.dismiss();
@@ -350,7 +338,6 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
 
                 // 임시
                 Log.d("RSFragment:sssong","image changed");
-                ((RoomActivity)(AppManager.getInstance().getContext())).roomProfileIv.setImageBitmap(bitmapTmp);
 
                 confirmDialog.dismiss();
                 dismiss(); // dismiss and update

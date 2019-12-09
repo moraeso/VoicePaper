@@ -71,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        ///////////////// 임시 유저 ////////////////////////
-        //AppManager.getInstance().getUser().setID("testID");
-        ////////////////////////////////////////////////////
-
         initView();
         initListener();
         //initMyRoomList();
@@ -307,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //아이디 비밀번호를 받아와 서버와 통신
         Intent intent = new Intent(this, RoomActivity.class);
 
-        intent.putExtra("code", AppManager.getInstance().getRoomList().get(pos).getCode());
+        intent.putExtra("id", AppManager.getInstance().getRoomList().get(pos).getId());
 
         startActivity(intent);
 

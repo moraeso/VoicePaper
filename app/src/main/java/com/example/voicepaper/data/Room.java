@@ -7,7 +7,7 @@ public class Room {
 
     private int id;
     private String title;
-    private Bitmap profileImage;
+    //private Bitmap profileImage;
     private String profileString;
     private String comment;
     private int permission;
@@ -17,7 +17,7 @@ public class Room {
     public Room(int id, String title, int permission, String comment, String hostID, String code) {
         this.id = id;
         this.title = title;
-        this.profileImage = null;
+        //this.profileImage = null;
         this.profileString = "";
         this.permission = permission;
         this.comment = comment;
@@ -25,13 +25,13 @@ public class Room {
         this.code = code;
     }
 
-    public Bitmap getProfileImage() {
+    /*public Bitmap getProfileImage() {
         return profileImage;
     }
 
     public void setProfileImage(Bitmap profileImage) {
         this.profileImage = profileImage;
-    }
+    }*/
 
     public int getId() {
         return id;

@@ -71,17 +71,21 @@
             <Button
                 android:id="@+id/btn_record"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/colorMainBold"
                 android:text="녹음하기" />
 
             <Button
                 android:id="@+id/btn_setting"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_margin="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorMainBold"
                 android:text="설정" />
         </RelativeLayout>
 

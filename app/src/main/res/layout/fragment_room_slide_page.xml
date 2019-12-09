@@ -25,7 +25,7 @@
             android:layout_gravity="left"
             android:layout_marginLeft="2sp"
             android:textSize="16sp"
-            android:text="text" />
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout

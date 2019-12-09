@@ -89,22 +89,6 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
         return true;
     }
 
-    public Bitmap getBitmapFromURL(String url, String srcName) {
-        InputStream is;
-        Drawable drawable = null;
-        Bitmap bitmap = null;
-
-        try {
-            is = (InputStream) new URL(url).getContent();
-            drawable = Drawable.createFromStream(is, srcName);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
     private void updateUserRoomListFromJson(String json_str) {
         try {
             JSONArray jsonArray = new JSONArray(json_str);
@@ -121,9 +105,6 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
 
                 Room item = new Room(roomId, roomName, roomPermission, roomComment, hostId, roomCode);
                 item.setProfileString(roomProfileString);
-                item.setProfileImage(getBitmapFromURL(
-                        ImageManager.getInstance().getFullImageString(roomProfileString,"groupimage")
-                        ,"room" + (i + 1)));
 
                 updatedRoomList.add(item);
             }
