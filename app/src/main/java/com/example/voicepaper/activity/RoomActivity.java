@@ -23,7 +23,6 @@ import com.example.voicepaper.adapter.VoiceRecycleViewerAdapter;
 import com.example.voicepaper.adapter.VoiceRecyclerViewDecoration;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.Voice;
-import com.example.voicepaper.fragment.main.InputRoomCodeFragment;
 import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.fragment.room.RoomSettingFragment;
 import com.example.voicepaper.manager.AppManager;
@@ -36,8 +35,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
     private RoomSettingFragment roomSettingFragment;
 
-
-    private ImageView roomProfileIv;
+    public ImageView roomProfileIv;
     private TextView roomTitleTv, roomCommentTv;
     private Button recordBtn, settingBtn;
 
@@ -61,8 +59,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_room);
 
-        getRoomInfo();
         initView();
+        getRoomInfo();
+        initViewIntoData();
         initListener();
         initVoiceRecyclerViewAdapter();
         loadVoiceData();
@@ -86,6 +85,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
                         */
                         loadVoiceData();
+
+
+                        getRoomInfo();
+                        initViewIntoData();
 
                         voiceRecycleView.smoothScrollToPosition(0);
                     }
@@ -115,7 +118,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         roomCommentTv = (TextView) findViewById(R.id.tv_roomComment);
         recordBtn = (Button) findViewById(R.id.btn_record);
         settingBtn = (Button) findViewById(R.id.btn_setting);
+    }
 
+    private void initViewIntoData() {
 
         roomTitleTv.setText(room.getTitle());
         roomCommentTv.setText(room.getComment());
@@ -207,5 +212,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         loadVoiceData();
+
+        getRoomInfo();
+        initViewIntoData();
     }
 }

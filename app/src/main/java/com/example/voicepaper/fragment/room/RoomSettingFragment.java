@@ -31,6 +31,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.activity.RoomActivity;
+import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
@@ -40,17 +42,21 @@ import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class RoomSettingFragment extends DialogFragment implements View.OnClickListener {
 
     private ScrollView scrollView;
+
+    /// 임시로 쓸 변경 사진
+    private Bitmap bitmapTmp;
 
     private int id, permission;
     private String title, comment, imgStr;
 
     private EditText roomTitleEt, roomCommentEt;
     private ImageButton roomProfileIv;
-    private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
+    private Button privateVoiceBtn, publicVoiceBtn, settingRoomBtn;
 
     private int voicePermission;
 
@@ -84,7 +90,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_createroom, container, false);
+        View view = inflater.inflate(R.layout.fragment_roomsetting, container, false);
 
         initView(view);
         initListener();
@@ -129,7 +135,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
         publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
         roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
-        createRoomBtn = (Button) view.findViewById(R.id.btn_settingRoom);
+        settingRoomBtn = (Button) view.findViewById(R.id.btn_settingRoom);
 
         publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorMain));
@@ -145,6 +151,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         roomTitleEt.setText(title);
         roomCommentEt.setText(comment);
         if (permission == Constants.VOICE_PRIVATE) {
+            voicePermission = Constants.VOICE_PUBLIC;
             publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                     R.color.colorLightGray));
             privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
@@ -165,7 +172,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         privateVoiceBtn.setOnClickListener(this);
         publicVoiceBtn.setOnClickListener(this);
         roomProfileIv.setOnClickListener(this);
-        createRoomBtn.setOnClickListener(this);
+        settingRoomBtn.setOnClickListener(this);
     }
 
     @Override
@@ -195,7 +202,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             case R.id.ib_roomProfile:
                 doTakeAlbumAction();
                 break;
-            case R.id.btn_createRoom:
+            case R.id.btn_settingRoom:
                 setDialogMessage();
                 setDialogListener();
                 confirmDialog.show();
@@ -243,6 +250,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 int exifDegree = ImageManager.getInstance().exifOrientationToDegrees(exifOrientation);
                 roomProfileIv.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
+                bitmapTmp = bitmap;
                 roomProfileIv.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
             }
         }
@@ -299,9 +307,18 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             public void onSuccess(Object object) {
                 Log.d("sssong:SRFragment", "onSuccess : setting room");
 
-                //title = (String)((ContentValues)object).get("title");
-                //comment = (String)((ContentValues)object).get("comment");
-                //permission = (Integer)((ContentValues)object).get("permission");
+                ArrayList<Room> roomItems = AppManager.getInstance().getRoomList();
+                for (Room item : roomItems) {
+                    if (id == item.getId()) {
+                        item.setTitle(roomTitleEt.getText().toString());
+                        item.setComment(roomCommentEt.getText().toString());
+                        item.setPermission(voicePermission);
+                        //item.setTitle((String)((ContentValues)object).get("title"));
+                        //item.setComment((String)((ContentValues)object).get("comment"));
+                        //item.setPermission((Integer)((ContentValues)object).get("permission"));
+                        break;
+                    }
+                }
 
                 if (albumImagePath != null)
                     uploadRoomImage();
@@ -317,6 +334,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                         "error : " + e, Toast.LENGTH_SHORT).show();
 
                 confirmDialog.dismiss();
+                dismiss();
             }
         });
         settingRoomTask.execute();
@@ -329,6 +347,11 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
+
+                // 임시
+                Log.d("RSFragment:sssong","image changed");
+                ((RoomActivity)(AppManager.getInstance().getContext())).roomProfileIv.setImageBitmap(bitmapTmp);
+
                 confirmDialog.dismiss();
                 dismiss(); // dismiss and update
             }
@@ -339,6 +362,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                         "error : " + e, Toast.LENGTH_SHORT).show();
 
                 confirmDialog.dismiss();
+                dismiss();
             }
         });
         uploadFile.execute();

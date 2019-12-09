@@ -3,9 +3,13 @@ package com.example.voicepaper.network;
 import android.content.ContentValues;
 import android.os.AsyncTask;
 
+import com.example.voicepaper.data.Room;
+import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
 
@@ -20,6 +24,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         this.callback = callback;
         this.url = Constants.URL + "/room/roomSetting";
         this.values = values;
+        roomSettingValues = new ContentValues();
     }
 
     @Override
@@ -39,7 +44,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
             if (!isConnectionSuccess(result)) {
                 throw new Exception("Setting room failed");
             }
-            createRoomFromJson(result);
+            settingRoomFromJson(result);
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
@@ -82,7 +87,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         return true;
     }
 
-    private void createRoomFromJson(String json_str) {
+    private void settingRoomFromJson(String json_str) {
 
         try {
             JSONObject jsonObj = new JSONObject(json_str);
@@ -90,7 +95,6 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
             roomSettingValues.put("title", jsonObj.getString("roomName"));
             roomSettingValues.put("comment", jsonObj.getString("roomText"));
             roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
-
         } catch (Exception e) {
             e.printStackTrace();
         }

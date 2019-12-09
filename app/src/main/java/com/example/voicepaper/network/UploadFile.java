@@ -147,6 +147,8 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             while ((line = rd.readLine()) != null) {
                 Log.d("smh:ConnectionResult", line);
             }
+
+            Log.d("sssong:UploadFile", "result : " + con.getInputStream().toString());
             return con.getInputStream().toString();
             //나중에 결과 반환 정리할 필요가 잇을듯
 

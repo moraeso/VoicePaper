@@ -5,7 +5,7 @@
     android:id="@+id/sv_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".fragment.main.CreateRoomFragment">
+    tools:context=".fragment.room.RoomSettingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

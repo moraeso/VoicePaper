@@ -181,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppManager.getInstance().setContext(this);
         AppManager.getInstance().setResources(getResources());
 
+        getUserRoomList();
+
         roomPagerAdapter.notifyDataSetChanged();
     }
 

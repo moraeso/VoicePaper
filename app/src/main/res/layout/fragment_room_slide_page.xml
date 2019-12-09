@@ -14,16 +14,18 @@
 
         <ImageView
             android:id="@+id/iv_roomProfile1"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_roomName1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="" />
+            android:layout_gravity="left"
+            android:layout_marginLeft="2sp"
+            android:textSize="16sp"
+            android:text="text" />
     </LinearLayout>
 
     <LinearLayout
@@ -33,19 +35,21 @@
         android:orientation="vertical"
         android:layout_toRightOf="@id/layout_room1"
         android:layout_alignTop="@id/layout_room1"
-        android:layout_marginLeft="50dp">
+        android:layout_marginLeft="40dp">
 
         <ImageView
             android:id="@+id/iv_roomProfile2"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_roomName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
+            android:layout_marginLeft="2sp"
+            android:textSize="16sp"
             android:text="" />
     </LinearLayout>
 
@@ -55,20 +59,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/layout_room1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp">
 
         <ImageView
             android:id="@+id/iv_roomProfile3"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_roomName3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
+            android:layout_marginLeft="2sp"
+            android:textSize="16sp"
             android:text="" />
     </LinearLayout>
 
@@ -80,19 +86,21 @@
         android:layout_toRightOf="@id/layout_room3"
         android:layout_alignTop="@id/layout_room3"
         android:layout_below="@id/layout_room2"
-        android:layout_marginLeft="50dp">
+        android:layout_marginLeft="40dp">
 
         <ImageView
             android:id="@+id/iv_roomProfile4"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_roomName4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left"
+            android:layout_marginLeft="2sp"
+            android:textSize="16sp"
             android:text="" />
     </LinearLayout>
 

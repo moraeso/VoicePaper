@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".activity.MainActivity">
 
     <RelativeLayout
@@ -15,14 +15,14 @@
         <ImageView
             android:id="@+id/iv_logo_top"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/logo_top" />
+            android:layout_height="70dp"
+            android:src="@drawable/logo_top"
+            android:background="@color/colorWhite"/>
 
         <LinearLayout
             android:id="@+id/layout_gradient"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="5dp"
             android:layout_below="@id/iv_logo_top"
             android:background="@drawable/custom_gradient"
             android:orientation="vertical" />
@@ -30,22 +30,24 @@
         <RelativeLayout
             android:id="@+id/layout_topMenu"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
             android:layout_below="@id/layout_gradient"
-            android:layout_marginTop="20dp">
+            android:background="@color/colorWhite"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
 
             <RelativeLayout
                 android:id="@+id/layout_profile"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/custom_border">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/iv_profile"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="70dp"
                     android:src="@drawable/img_user" />
 
                 <TextView
@@ -55,7 +57,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_profile"
-                    android:text="User님 반갑습니다.\n목소리를 공유해 보세요!" />
+                    android:text="User님 반갑습니다.\n목소리를 공유해 보세요!"
+                    android:textColor="@color/colorBlack" />
             </RelativeLayout>
 
 
@@ -76,17 +79,16 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_below="@id/layout_topMenu"
-            android:layout_marginTop="30dp"
-            android:background="@color/colorWhite">
+            android:background="@color/colorBackground">
 
             <!-- Add as a direct child of your ViewPager -->
             <com.itsronald.widget.ViewPagerIndicator
                 android:id="@+id/view_pager_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="15dp"
                 android:layout_gravity="bottom|center_horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/colorLightGray"/>
+                android:background="@color/colorBackground"
+                android:gravity="center_vertical" />
 
         </androidx.viewpager.widget.ViewPager>
 
@@ -96,9 +98,9 @@
             android:layout_height="40dp"
             android:layout_below="@id/roomViewPager"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@color/colorMainBold"
-            android:text="방 생성하기"/>
+            android:text="방 생성하기" />
 
         <Button
             android:id="@+id/btn_inputRoomCode"
@@ -108,7 +110,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:background="@color/colorMainBold"
-            android:text="방 코드 입력"/>
+            android:text="방 코드 입력" />
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
