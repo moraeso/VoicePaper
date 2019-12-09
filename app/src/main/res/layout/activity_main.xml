@@ -74,19 +74,19 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/roomViewPager"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="400dp"
             android:layout_below="@id/layout_topMenu"
-            android:layout_marginTop="15dp"
-            android:background="#01c7de">
+            android:layout_marginTop="30dp"
+            android:background="@color/colorWhite">
 
             <!-- Add as a direct child of your ViewPager -->
             <com.itsronald.widget.ViewPagerIndicator
                 android:id="@+id/view_pager_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:gravity="center_vertical"
-                android:paddingBottom="15dp" />
+                android:background="@color/colorLightGray"/>
 
         </androidx.viewpager.widget.ViewPager>
 
@@ -96,10 +96,9 @@
             android:layout_height="40dp"
             android:layout_below="@id/roomViewPager"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="#086df1"
-            android:text="방 생성하기"
-            android:textColor="@color/colorWhite" />
+            android:layout_marginTop="40dp"
+            android:background="@color/colorMainBold"
+            android:text="방 생성하기"/>
 
         <Button
             android:id="@+id/btn_inputRoomCode"
@@ -108,9 +107,8 @@
             android:layout_below="@id/btn_createRoom"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:background="#086df1"
-            android:text="방 코드 입력"
-            android:textColor="@color/colorWhite" />
+            android:background="@color/colorMainBold"
+            android:text="방 코드 입력"/>
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

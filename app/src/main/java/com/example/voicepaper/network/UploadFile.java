@@ -43,7 +43,7 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
             this.userId = _values.get("userId").toString();
-            Log.d("smh:roomId",this.userId);
+            Log.d("smh:userId",this.userId);
         }
         else if(type == UPLOAD_IMAGE_ROOM){
             this.m_url = Constants.URL+"/file/uploadgroupimage";

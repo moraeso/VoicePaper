@@ -55,25 +55,36 @@
             android:layout_marginRight="20dp"
             android:text="Room Comment"
             android:textSize="10dp" />
-
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_record"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/layout_menu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:text="녹음하기"
-        android:layout_below="@id/layout_title"/>
+        android:layout_below="@id/layout_title">
 
+        <Button
+            android:id="@+id/btn_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp"
+            android:text="녹음하기"/>
 
+        <Button
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:text="설정"/>
+    </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/layout_swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btn_record">
+        android:layout_below="@id/layout_menu">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_voiceList"

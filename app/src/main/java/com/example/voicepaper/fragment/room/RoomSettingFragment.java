@@ -1,15 +1,13 @@
-package com.example.voicepaper.fragment.main;
+package com.example.voicepaper.fragment.room;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -33,24 +31,25 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
-import com.example.voicepaper.activity.MainActivity;
-import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
-import com.example.voicepaper.network.CreateRoomTask;
+import com.example.voicepaper.network.SettingRoomTask;
 import com.example.voicepaper.network.UploadFile;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
 
 import java.io.IOException;
 
-public class CreateRoomFragment extends DialogFragment implements View.OnClickListener {
+public class RoomSettingFragment extends DialogFragment implements View.OnClickListener {
 
     private ScrollView scrollView;
 
+    private int id, permission;
+    private String title, comment, imgStr;
+
     private EditText roomTitleEt, roomCommentEt;
-    private ImageButton roomProfileIb;
+    private ImageButton roomProfileIv;
     private Button privateVoiceBtn, publicVoiceBtn, createRoomBtn;
 
     private int voicePermission;
@@ -61,11 +60,19 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     private String albumImagePath;
 
 
-    private CreateRoomFragment() {
+    private RoomSettingFragment(int id, String title, String comment, int permission, String imgStr) {
+        this.id = id;
+        this.title = title;
+        this.comment = comment;
+        this.permission = permission;
+        this.imgStr = imgStr;
+
+        albumImagePath = null;
     }
 
-    public static CreateRoomFragment newInstance() {
-        CreateRoomFragment fragment = new CreateRoomFragment();
+    public static RoomSettingFragment newInstance(int id, String title, String comment, int permission, String imgStr) {
+
+        RoomSettingFragment fragment = new RoomSettingFragment(id, title, comment, permission, imgStr);
         return fragment;
     }
 
@@ -118,11 +125,11 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         scrollView = (ScrollView) view.findViewById(R.id.sv_root);
 
         roomTitleEt = (EditText) view.findViewById(R.id.et_roomTitle);
-        roomProfileIb = (ImageButton) view.findViewById(R.id.ib_roomProfile);
+        roomProfileIv = (ImageButton) view.findViewById(R.id.ib_roomProfile);
         privateVoiceBtn = (Button) view.findViewById(R.id.btn_privateVoice);
         publicVoiceBtn = (Button) view.findViewById(R.id.btn_publicVoice);
         roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
-        createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
+        createRoomBtn = (Button) view.findViewById(R.id.btn_settingRoom);
 
         publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorMain));
@@ -134,13 +141,30 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         voicePermission = Constants.VOICE_PUBLIC;
 
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+        roomTitleEt.setText(title);
+        roomCommentEt.setText(comment);
+        if (permission == Constants.VOICE_PRIVATE) {
+            publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                    R.color.colorLightGray));
+            privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                    R.color.colorMain));
+        }
+
+        if (imgStr.equals("undefined") || imgStr.equals("")) {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+            roomProfileIv.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+        } else {
+            String url = ImageManager.getInstance().getFullImageString(imgStr, "groupImage");
+            ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
+        }
     }
 
     private void initListener() {
         confirmDialog.getOkBtn().setOnClickListener(this);
         privateVoiceBtn.setOnClickListener(this);
         publicVoiceBtn.setOnClickListener(this);
-        roomProfileIb.setOnClickListener(this);
+        roomProfileIv.setOnClickListener(this);
         createRoomBtn.setOnClickListener(this);
     }
 
@@ -178,7 +202,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 break;
             case R.id.btn_ok_dialog:
                 if (isTitleSuitable() && isCommentSuitable()) {
-                    addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
+                    settingRoomInfo(); //  임시 여기서 서버 호출해서 방 생성
                 }
                 break;
         }
@@ -208,7 +232,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 Uri uri = data.getData();
                 ExifInterface exif = null;
                 albumImagePath = ImageManager.getInstance().getRealPathFromURI(AppManager.getInstance().getContext(), uri);
-                Log.d("sssong:CRFragment", albumImagePath);
+                Log.d("sssong:RSFragment", albumImagePath);
 
                 try {
                     exif = new ExifInterface(albumImagePath);
@@ -217,9 +241,9 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 }
                 int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 int exifDegree = ImageManager.getInstance().exifOrientationToDegrees(exifOrientation);
-                roomProfileIb.setBackgroundColor(Color.WHITE);
+                roomProfileIv.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
-                roomProfileIb.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+                roomProfileIv.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
             }
         }
     }
@@ -238,7 +262,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         } else if (!isCommentSuitable()) {
             confirmDialog.setMessage("방 소개글을 입력해주세요.");
         } else {
-            confirmDialog.setMessage("방을 생성하시겠습니까?");
+            confirmDialog.setMessage("방 정보를 수정하시겠습니까?");
         }
     }
 
@@ -254,38 +278,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         return true;
     }
 
-    /*
-    private String getRealPathFromURI(Uri contentUri) {
-        int column_index = 0;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        cursor.moveToFirst();
-        column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-        Log.d("sssong:getPathFromURI", cursor.getString(column_index));
-        return cursor.getString(column_index);
-    }
-
-    private Bitmap rotate(Bitmap src, float degree) {
-        // Matrix 객체 생성
-        Matrix matrix = new Matrix();
-        // 회전 각도 셋팅
-        matrix.postRotate(degree); // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
-    }
-
-    // 이미지 각도 조절
-    private int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }*/
-
     // 앨범에서 이미지 가져오기
     private void doTakeAlbumAction() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -294,19 +286,29 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         startActivityForResult(intent, ImageManager.PICK_FROM_ALBUM);
     }
 
-    private void addRoomInList() {
+    private void settingRoomInfo() {
         ContentValues values = new ContentValues();
+        values.put("roomID", id);
         values.put("roomName", roomTitleEt.getText().toString());
         values.put("roomText", roomCommentEt.getText().toString());
         values.put("roomPermission", voicePermission);
         values.put("userID", AppManager.getInstance().getUser().getID());
 
-        CreateRoomTask createRoomTask = new CreateRoomTask(values, new AsyncCallback() {
+        SettingRoomTask settingRoomTask = new SettingRoomTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                Log.d("sssong:CRFragment", "onSuccess : create room / add list");
+                Log.d("sssong:SRFragment", "onSuccess : setting room");
 
-                uploadRoomImage((Room)object);
+                //title = (String)((ContentValues)object).get("title");
+                //comment = (String)((ContentValues)object).get("comment");
+                //permission = (Integer)((ContentValues)object).get("permission");
+
+                if (albumImagePath != null)
+                    uploadRoomImage();
+                else {
+                    confirmDialog.dismiss();
+                    dismiss();
+                }
             }
 
             @Override
@@ -317,12 +319,12 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 confirmDialog.dismiss();
             }
         });
-        createRoomTask.execute();
+        settingRoomTask.execute();
     }
 
-    private void uploadRoomImage(Room newRoom) {
+    private void uploadRoomImage() {
         ContentValues values = new ContentValues();
-        values.put("roomId", newRoom.getId());
+        values.put("roomId", id);
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_ROOM, values,
                 albumImagePath, new AsyncCallback() {
             @Override

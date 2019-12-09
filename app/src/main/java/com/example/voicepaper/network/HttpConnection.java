@@ -62,7 +62,7 @@ public class HttpConnection {
             conn.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
 
             //추후 어떻게 보내느냐에 따라 변경될 수 있음. id와 token을 보냄
-            conn.setRequestProperty("id", AppManager.getInstance().getUser().getID());
+            conn.setRequestProperty("userID", AppManager.getInstance().getUser().getID());
             conn.setRequestProperty("x-access-token", AppManager.getInstance().getUser().getToken());
 
             //Log.d("sssong:HttpConnection", "id : " + AppManager.getInstance().getUser().getID()

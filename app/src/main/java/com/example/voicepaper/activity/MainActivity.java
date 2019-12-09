@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void initRoomPagerAdapter() {
         roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager());
+
         setRoomPagerAdapter();
         roomPager.setAdapter(roomPagerAdapter);
 

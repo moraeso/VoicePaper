@@ -11,7 +11,7 @@
     <color name="colorDarkGray">#777777</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGold">#FFCC33</color>
-    <color name="colorMain">#7DB249</color>
-    <color name="colorRedPink">#ee3e61</color>
+    <color name="colorMain">#ffe6df</color>
+    <color name="colorMainBold">#feccbe</color>
     <color name="transparent">#00ffffff</color>
 </resources>

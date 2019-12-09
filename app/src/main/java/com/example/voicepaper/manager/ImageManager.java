@@ -35,7 +35,7 @@ public class ImageManager {
                 .into(iv);
     }
 
-    public String   getFullImageString(String img_str, String type_str) {
+    public String getFullImageString(String img_str, String type_str) {
         String buf[] = img_str.split("/");
         return Constants.URL + "/" + type_str + "/" + buf[2];
     }

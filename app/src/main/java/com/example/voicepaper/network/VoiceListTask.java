@@ -35,11 +35,14 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
 
+            if (result == null)
+                return null;
+
             JSONObject jsonObject= new JSONObject(result);
             int code = jsonObject.getInt("code");
 
             if (!isSignInDataValid(code)) {
-                throw new Exception("SignUp data is not valid");
+                throw new Exception("Voice data is not valid");
             }
 
             //방 입장하면, 음성을 기록한 사람들에 대한 리스트 받잖아
@@ -59,9 +62,9 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
     @Override
     protected void onPostExecute(ArrayList<Voice> result) {
         super.onPostExecute(result);
-        if(result.size() != 0){
+        if(result == null || result.size() != 0){
             callback.onSuccess(result);
-        }else{
+        } else {
             callback.onFailure(exception);
         }
     }
@@ -99,7 +102,7 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
                 Voice voice = new Voice(
                         jsonObject.getInt("fileID"),
                         jsonObject.getString("userID"),
-                        jsonObject.getString("userID"),
+                        jsonObject.getString("userID"), // ??
                         jsonObject.getInt("roomID"),
                         jsonObject.getString("filePath")
                 );

@@ -1,33 +1,24 @@
 package com.example.voicepaper.network;
 
 import android.content.ContentValues;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
-import com.example.voicepaper.data.Room;
 import com.example.voicepaper.util.Constants;
-
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
 
-public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
-
-    private Room createdRoom;
+    ContentValues roomSettingValues;
 
     private AsyncCallback callback;
     private Exception exception;
     String url;
     ContentValues values;
 
-    public CreateRoomTask(ContentValues values, AsyncCallback callback) {
+    public SettingRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/room/roomCreate";
+        this.url = Constants.URL + "/room/roomSetting";
         this.values = values;
     }
 
@@ -46,7 +37,7 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
             result = requestHttpURLConnection.request(url, values); // post token
 
             if (!isConnectionSuccess(result)) {
-                throw new Exception("Init room failed");
+                throw new Exception("Setting room failed");
             }
             createRoomFromJson(result);
         } catch (Exception e) {
@@ -62,27 +53,23 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         if (callback != null && exception == null) {
-            callback.onSuccess(createdRoom);
+            callback.onSuccess(roomSettingValues);
         } else {
             callback.onFailure(exception);
         }
     }
 
     private boolean isConnectionSuccess(String json_str) {
-        // 성공 : 300, 실패 : 301, 302, 303, 304
+        // 성공 : 200, 실패 :
         /*
-        room create success : 300
-        no user id for host : 301
-        maximum room number limit error : 302
-        maximum room number for user limit error : 303
-        room create error : 304
+        room setting success : 300
          */
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
 
-            if (code == 300) {
+            if (code == 200) {
                 return true;
             } else {
                 return false;
@@ -95,38 +82,14 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
         return true;
     }
 
-    public Bitmap getBitmapFromURL(String url, String srcName) {
-        InputStream is;
-        Drawable drawable = null;
-        Bitmap bitmap = null;
-
-        try {
-            is = (InputStream) new URL(url).getContent();
-            drawable = Drawable.createFromStream(is, srcName);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
     private void createRoomFromJson(String json_str) {
 
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
-            int roomId = jsonObj.getInt("roomID");
-            String roomCode = jsonObj.getString("roomCode");
-            String roomName = jsonObj.getString("roomName");
-            String roomComment = jsonObj.getString("roomText");
-            int roomPermission = jsonObj.getInt("roomPermission");
-            String userId = jsonObj.getString("userID");
-
-            createdRoom = new Room(roomId, roomName, roomPermission, roomComment, userId, roomCode);
-
-            //int loadPercent = (int)((i + 1) / (float)jsonArray.length() * 100.0f);
-            //MountManager.getInstance().setLoadPercent(loadPercent);
+            roomSettingValues.put("title", jsonObj.getString("roomName"));
+            roomSettingValues.put("comment", jsonObj.getString("roomText"));
+            roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
 
         } catch (Exception e) {
             e.printStackTrace();
