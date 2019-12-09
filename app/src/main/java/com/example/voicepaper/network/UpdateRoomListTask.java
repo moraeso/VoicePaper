@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
 import com.example.voicepaper.data.Room;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.util.Constants;
 
 import org.json.JSONArray;
@@ -120,7 +121,9 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
 
                 Room item = new Room(roomId, roomName, roomPermission, roomComment, hostId, roomCode);
                 item.setProfileString(roomProfileString);
-                item.setProfileImage(getBitmapFromURL(roomProfileString,"room" + (i + 1)));
+                item.setProfileImage(getBitmapFromURL(
+                        ImageManager.getInstance().getFullImageString(roomProfileString,"groupimage")
+                        ,"room" + (i + 1)));
 
                 updatedRoomList.add(item);
             }

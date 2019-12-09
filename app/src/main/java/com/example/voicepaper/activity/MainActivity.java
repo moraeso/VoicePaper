@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.textclassifier.ConversationAction;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewPager roomPager;
     private RoomSlidePagerAdapter roomPagerAdapter;
     private Button createRoomBtn, inputRoomCodeBtn;
+    private ImageButton settingBtn;
     private TextView introTv;
 
     private ConfirmDialog confirmDialog;
@@ -91,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         createRoomBtn = (Button) findViewById(R.id.btn_createRoom);
         inputRoomCodeBtn = (Button) findViewById(R.id.btn_inputRoomCode);
+        settingBtn = (ImageButton) findViewById(R.id.btn_setting);
+
 
         introTv = (TextView) findViewById(R.id.tv_intro);
         introTv.setText(AppManager.getInstance().getUser().getID() +
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         createRoomBtn.setOnClickListener(this);
         inputRoomCodeBtn.setOnClickListener(this);
         confirmDialog.getOkBtn().setOnClickListener(this);
+        settingBtn.setOnClickListener(this);
     }
 
     void initMyRoomList() {
@@ -200,6 +205,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getSupportFragmentManager().executePendingTransactions();
                 break;
             case R.id.btn_setting:
+                Intent intent = new Intent(AppManager.getInstance().getContext(),SettingActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.iv_roomProfile1:
                 enterRoomAt(roomPager.getCurrentItem() * 4);

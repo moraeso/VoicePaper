@@ -214,7 +214,6 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
             public void onFailure(Exception e) {
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
-
                 //confirmDialog.dismiss();
             }
         });

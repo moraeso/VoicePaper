@@ -64,11 +64,14 @@
 
             <ImageButton
                 android:id="@+id/btn_setting"
+                style="@android:style/Widget.ImageButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
+                android:layout_marginRight="10dp"
                 android:background="#00FFFFFF"
+                android:scaleType="centerInside"
                 app:srcCompat="@drawable/img_setting" />
         </RelativeLayout>
 
