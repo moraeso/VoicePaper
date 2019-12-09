@@ -215,7 +215,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
 
-                confirmDialog.dismiss();
+                //confirmDialog.dismiss();
             }
         });
         uploadFile.execute();
