@@ -124,6 +124,14 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         switch (view.getId()){
             case R.id.btn_signIn:
                 //아이디 비밀번호를 받아와 서버와 통신
+                final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+                if(et_id.getText().toString().length() == 0 || et_pw.getText().toString().length() == 0){
+                    confirmDialog.setMessage("아이디 혹은 비밀번호를 확인해주세요");
+                    confirmDialog.show();
+                    break;
+                }
+
                 ContentValues values = new ContentValues();
                 values.put("id",et_id.getText().toString());
                 values.put("pw",et_pw.getText().toString());
@@ -139,7 +147,6 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
 
                     @Override
                     public void onFailure(Exception e) {
-                        ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
                         confirmDialog.setMessage("로그인 실패");
                         //confirmDialog.getOkBtn().setOnClickListener(); -> ok버튼 클릭시 뭔가 하고 싶으면 이거 하십쇼
                     }

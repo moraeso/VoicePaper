@@ -59,6 +59,8 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
 
     private String albumImagePath;
 
+    private Boolean imageSetting;
+
     public SignUpFragment() {
     }
 
@@ -95,6 +97,8 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
+
+        imageSetting = false;
 
         initView(view);
         initListener();
@@ -136,6 +140,9 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                     Log.d("smh:pw and repw", "" + et_pw.getText().toString() + et_rePw.getText().toString());
                     confirmDialog.setMessage("비밀번호가 일치하지 않습니다.");
                     confirmDialog.show();
+                } else if(imageSetting == false){
+                    confirmDialog.setMessage("사진을 등록해주세요.");
+                    confirmDialog.show();
                 } else {
                     btn_signUp.setEnabled(false);
                     doSignUpTask();
@@ -173,6 +180,8 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 iv_userImage.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 iv_userImage.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+
+                imageSetting = true;
             }
         }
     }
