@@ -70,8 +70,8 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
 
     private void participateRoom() {
         ContentValues values = new ContentValues();
-        values.put("id", AppManager.getInstance().getUser().getID());
-        //values.put("userID", AppManager.getInstance().getUser().getID());
+        //values.put("id", AppManager.getInstance().getUser().getID());
+        values.put("userID", AppManager.getInstance().getUser().getID());
         values.put("roomCode", inputRoomCodeEt.getText().toString());
 
         InputRoomCodeTask inputRoomCodeTask = new InputRoomCodeTask(values, new AsyncCallback() {

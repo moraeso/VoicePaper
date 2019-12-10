@@ -76,6 +76,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginLeft="20dp"
                 android:background="@color/colorMainBold"
+                android:textColor="@color/colorWhite"
                 android:text="녹음하기" />
 
             <Button
@@ -86,6 +87,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginRight="20dp"
                 android:background="@color/colorMainBold"
+                android:textColor="@color/colorWhite"
                 android:text="설정" />
         </RelativeLayout>
 

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.textclassifier.ConversationAction;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,12 +20,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
 import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.RoomSlidePagerAdapter;
 import com.example.voicepaper.data.Room;
@@ -38,7 +34,6 @@ import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.ExitRoomTask;
 import com.example.voicepaper.network.UpdateRoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
-import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
 
@@ -60,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView iv_userImage;
 
-    private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
         initListener();
-        //initMyRoomList();
-        //getUserRoomList();
-        getUserRoomList();
+
+        loadUserRoomList();
         initRoomPagerAdapter();
 
         setSwipeRefresh();
@@ -93,17 +85,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         introTv = (TextView) findViewById(R.id.tv_intro);
-        introTv.setText(AppManager.getInstance().getUser().getID() +
+        introTv.setText(AppManager.getInstance().getUser().getName() +
                 "님 반갑습니다.\n목소리를 공유해 보세요!");
 
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
 
-        iv_userImage =(ImageView)findViewById(R.id.iv_profile);
-
-        String buf;
-        buf = AppManager.getInstance().getUser().getProfileString();
-        String buf2[] = buf.split("/");
-        //Log.d("smh:image address",buf2[2]);
+        iv_userImage = (ImageView) findViewById(R.id.iv_profile);
 
         if (AppManager.getInstance().getUser().getProfileString().equals("undefined")) {
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
@@ -121,14 +108,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingBtn.setOnClickListener(this);
     }
 
-    void initMyRoomList() {
-        ArrayList<Room> rooms = new ArrayList<>();
-
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
-        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-
-    }
-
 
     void initRoomPagerAdapter() {
         roomPagerAdapter = new RoomSlidePagerAdapter(getSupportFragmentManager());
@@ -139,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initListener();
     }
 
-    private void getUserRoomList() {
+    private void loadUserRoomList() {
         ContentValues values = new ContentValues();
         values.put("userID", AppManager.getInstance().getUser().getID());
         UpdateRoomListTask updateRoomListTask = new UpdateRoomListTask(values, new AsyncCallback() {
@@ -170,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void run() {
                         swipeRefresh.setRefreshing(false);
 
-                        getUserRoomList();
+                        loadUserRoomList();
                     }
                 }, 1000);
             }
@@ -182,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppManager.getInstance().setContext(this);
         AppManager.getInstance().setResources(getResources());
 
-        getUserRoomList();
+        loadUserRoomList();
 
         roomPagerAdapter.notifyDataSetChanged();
     }
@@ -255,28 +234,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /*
-    //갤러리 접근 권한 설정
-    private void checkPermission() {
-
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_READ_EXTERNAL_STORAGE);
-
-            Log.v("갤러리 권한", "갤러리 사용을 위해 권한이 필요합니다.");
-        }
-
-    }*/
-
     @Override
     public void onDismiss(DialogInterface dialog) {
         Log.d("sssong:MainActivity", "dismiss event / adapter update");
         // 다시 set
-        getUserRoomList();
+        loadUserRoomList();
     }
 
     private void setRoomPagerAdapter() {
@@ -296,11 +258,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void enterRoomAt(int pos) {
-        //Toast.makeText(AppManager.getInstance().getContext(),
-        //        "Enter Room : " + AppManager.getInstance().getRoomList().get(pos).getName(),
-        //        Toast.LENGTH_SHORT).show();
-
-        //아이디 비밀번호를 받아와 서버와 통신
         Intent intent = new Intent(this, RoomActivity.class);
 
         intent.putExtra("id", AppManager.getInstance().getRoomList().get(pos).getId());
@@ -316,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void deleteRoomAt(int pos) {
-        Log.d("sssong:MainActivity", "delete room number : " + pos);
+        //Log.d("sssong:MainActivity", "delete room number : " + pos);
 
         ContentValues values = new ContentValues();
         values.put("userID", AppManager.getInstance().getUser().getID());
@@ -326,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ExitRoomTask exitRoomTask = new ExitRoomTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object pos) {
-                getUserRoomList();
+                loadUserRoomList();
             }
 
             @Override

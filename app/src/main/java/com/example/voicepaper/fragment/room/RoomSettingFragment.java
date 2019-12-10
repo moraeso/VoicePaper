@@ -138,7 +138,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         settingRoomBtn = (Button) view.findViewById(R.id.btn_settingRoom);
 
         publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorMain));
+                R.color.colorMainBold));
         privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorLightGray));
 
@@ -155,7 +155,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                     R.color.colorLightGray));
             privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                    R.color.colorMain));
+                    R.color.colorMainBold));
         }
 
         if (imgStr.equals("undefined") || imgStr.equals("")) {
@@ -190,12 +190,12 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                         R.color.colorLightGray));
                 privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMain));
+                        R.color.colorMainBold));
                 break;
             case R.id.btn_publicVoice:
                 voicePermission = Constants.VOICE_PUBLIC;
                 publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMain));
+                        R.color.colorMainBold));
                 privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                         R.color.colorLightGray));
                 break;

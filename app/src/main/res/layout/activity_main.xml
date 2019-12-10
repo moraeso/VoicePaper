@@ -101,6 +101,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:background="@color/colorMainBold"
+            android:textColor="@color/colorWhite"
             android:text="방 생성하기" />
 
         <Button
@@ -111,6 +112,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:background="@color/colorMainBold"
+            android:textColor="@color/colorWhite"
             android:text="방 코드 입력" />
 
     </RelativeLayout>

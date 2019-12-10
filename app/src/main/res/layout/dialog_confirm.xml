@@ -23,18 +23,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#ee3e61"
-            android:text="확인"
-            android:textColor="#000" />
+            android:background="@color/colorMainBold"
+            android:textColor="@color/colorWhite"
+            android:text="확인" />
 
         <Button
             android:id="@+id/btn_cancel_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#fff"
-            android:text="취소"
-            android:textColor="#000" />
+            android:background="@color/colorMainBold"
+            android:textColor="@color/colorWhite"
+            android:text="취소" />
     </LinearLayout>
 
 </LinearLayout>

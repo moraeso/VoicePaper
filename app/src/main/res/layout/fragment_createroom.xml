@@ -95,6 +95,7 @@
                 android:layout_toRightOf="@id/tv_roomPermission"
                 android:backgroundTint="@color/colorLightGray"
                 android:src="@drawable/custom_rounded"
+                android:textColor="@color/colorWhite"
                 android:text="나만 듣기"
                 android:textSize="12sp" />
 
@@ -106,6 +107,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@id/btn_privateVoice"
                 android:backgroundTint="@color/colorLightGray"
+                android:textColor="@color/colorWhite"
                 android:src="@drawable/custom_rounded"
                 android:text="모두가 듣기"
                 android:textSize="12sp" />
@@ -150,6 +152,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
             android:background="@color/colorMainBold"
+            android:textColor="@color/colorWhite"
             android:text="방 만들기" />
 
     </RelativeLayout>

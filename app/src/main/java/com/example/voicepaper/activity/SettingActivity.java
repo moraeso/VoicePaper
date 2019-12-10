@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -69,6 +71,19 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
         btn_inquire = findViewById(R.id.btn_inquire);
         btn_about = findViewById(R.id.btn_about);
         btn_signOut = findViewById(R.id.btn_signOut);
+
+        tv_userId.setText(AppManager.getInstance().getUser().getID());
+        tv_userName.setText(AppManager.getInstance().getUser().getName());
+
+        if (AppManager.getInstance().getUser().getProfileString().equals("undefined")) {
+            Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+            iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+        } else {
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
+            ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
+        }
+
+
     }
 
     void initListener(){

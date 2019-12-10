@@ -194,8 +194,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
      */
         ContentValues values = new ContentValues();
-        values.put("userID",AppManager.getInstance().getUser().getID());
-        values.put("roomID",id);
+        values.put("userID", AppManager.getInstance().getUser().getID());
+        values.put("roomID", id);
 
         VoiceListTask voiceListTask = new VoiceListTask(values, new AsyncCallback() {
             @Override
