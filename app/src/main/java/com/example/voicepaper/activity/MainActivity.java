@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setSwipeRefresh();
 
+        AppManager.getInstance().setMainActivity(this);
+
         // 앨범 접근 허용(나중에 옮기기)
         //checkPermission();
     }
@@ -182,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_setting:
                 Intent intent = new Intent(AppManager.getInstance().getContext(),SettingActivity.class);
                 startActivity(intent);
-
                 break;
             case R.id.iv_roomProfile1:
                 enterRoomAt(roomPager.getCurrentItem() * 4);
@@ -237,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDismiss(DialogInterface dialog) {
         Log.d("sssong:MainActivity", "dismiss event / adapter update");
+        AppManager.getInstance().setContext(this);
+        AppManager.getInstance().setResources(getResources());
+
         // 다시 set
         loadUserRoomList();
     }
