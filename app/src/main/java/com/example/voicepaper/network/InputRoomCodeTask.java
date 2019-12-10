@@ -93,11 +93,11 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
-            int roomId = jsonObj.getInt("roomID");
-            String roomCode = jsonObj.getString("roomCode");
+            int roomId = jsonObj.getInt("id");
             String roomName = jsonObj.getString("roomName");
-            String roomProfileString = jsonObj.getString("roomImage");
-            String roomComment = jsonObj.getString("roomText");
+            String roomCode = jsonObj.getString("roomCode");
+            String roomProfileString = jsonObj.getString("profileString");
+            String roomComment = jsonObj.getString("comment");
             int roomPermission = jsonObj.getInt("roomPermission");
             String hostId = jsonObj.getString("hostID");
 
