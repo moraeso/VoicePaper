@@ -80,6 +80,8 @@ public class HttpConnection {
             os.close(); // 시스템 자원 해제.
 
             //연결 실패시 null을 리턴하면서 종료.
+            Log.d("sssong:HttpConnection", "con code : " + conn.getResponseCode());
+
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 return null;
             }

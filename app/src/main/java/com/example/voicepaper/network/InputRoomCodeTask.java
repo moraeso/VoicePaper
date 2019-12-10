@@ -2,6 +2,7 @@ package com.example.voicepaper.network;
 
 import android.content.ContentValues;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.util.Constants;
@@ -36,13 +37,17 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values); // post token
 
+            Log.d("sssong:InputRoomFrgmt", "result : " + result);
+
             if (!isConnectionSuccess(result)) {
                 throw new Exception("Participate room failed");
             }
-            inputRoomCodeFromJson(new JSONObject(result).getString("roomInfo"));
+            inputRoomCodeFromJson(new JSONObject(result).getString("Room"));
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
+            Log.d("sssong:InputRoomFrgmt", "error(doInbackground) : " + e);
+
         }
 
         return null;
@@ -69,6 +74,7 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
+            Log.d("sssong:InputRoomFrgmt", "error code : " + code);
 
             if (code == 400) {
                 return true;

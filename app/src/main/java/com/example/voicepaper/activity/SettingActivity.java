@@ -184,7 +184,7 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
 
     private void about(){
         confirmDialog.setMessage(
-                "보이스 페이스 1.0\n" +
+                "Voice Paper 1.0\n" +
                         "제작자: 김형수, 서유식, 송상현, 신명하\n");
         confirmDialog.show();
     }
