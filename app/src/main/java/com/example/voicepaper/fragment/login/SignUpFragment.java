@@ -129,6 +129,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 doTakeAlbumAction();
                 break;
             case R.id.btn_signUp:
+
                 confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
 
                 if (et_pw.getText().toString().equals(et_rePw.getText().toString()) == false) {
@@ -136,6 +137,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                     confirmDialog.setMessage("비밀번호가 일치하지 않습니다.");
                     confirmDialog.show();
                 } else {
+                    btn_signUp.setEnabled(false);
                     doSignUpTask();
                 }
                 break;
@@ -192,6 +194,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 //아이디가 이미 있음.
                 confirmDialog.setMessage("동일한 아이디가 존재합니다.");
                 confirmDialog.show();
+                btn_signUp.setEnabled(true);
             }
         });
         signUpTask.execute();
