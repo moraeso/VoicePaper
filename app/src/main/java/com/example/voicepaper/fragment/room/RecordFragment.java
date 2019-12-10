@@ -46,7 +46,6 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private Button btn_submit;
     private int state;
 
-
     //reocrd
     private MediaRecorder recorder; // 음성 기록
     private MediaPlayer player; // 음성 재생
@@ -121,7 +120,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         btn_cancel.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
 
-        tv_content.setText("목소리를 녹음할게요.\n 버튼을 눌러 시작해 주세요.");
+        tv_content.setText("목소리를 녹음할게요.\n버튼을 눌러 시작해 주세요.");
     }
 
     public void permissinCheck(){

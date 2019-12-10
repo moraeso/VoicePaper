@@ -144,14 +144,14 @@
         <Button
             android:id="@+id/btn_createRoom"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/layout_enterInfo"
             android:layout_centerInParent="true"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
-            android:background="@color/colorMainBold"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 만들기" />
 

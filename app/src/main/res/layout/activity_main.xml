@@ -96,22 +96,22 @@
         <Button
             android:id="@+id/btn_createRoom"
             android:layout_width="250dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/roomViewPager"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:background="@color/colorMainBold"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 생성하기" />
 
         <Button
             android:id="@+id/btn_inputRoomCode"
             android:layout_width="250dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/btn_createRoom"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:background="@color/colorMainBold"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 코드 입력" />
 

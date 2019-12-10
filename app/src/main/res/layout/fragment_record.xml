@@ -13,6 +13,8 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="7dp"
         android:text="content"
         android:textAlignment="center" />
 
@@ -29,7 +31,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_record">
+        android:layout_below="@id/btn_record"
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/btn_cancel"
