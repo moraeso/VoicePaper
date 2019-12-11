@@ -16,15 +16,25 @@ import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.MusicPlayer;
 import com.example.voicepaper.util.ConfirmDialog;
+import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
 
 public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<com.example.voicepaper.data.Voice> voiceItems;
+    int permission;
+    boolean isHost;
 
     public VoiceRecycleViewerAdapter() {
         voiceItems = new ArrayList<>();
+    }
+
+    public void setPermission(int permission) {
+        this.permission = permission;
+    }
+    public void isUserHost(boolean isHost) {
+        this.isHost = isHost;
     }
 
     @NonNull
@@ -64,10 +74,14 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
+                            if (permission == Constants.VOICE_PUBLIC || isHost) {
+                                Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
 
-                            final MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile(),((VoiceViewHolder) holder).getPlayerBtn());
-                            musicPlayer.execute();
+                                final MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile(), ((VoiceViewHolder) holder).getPlayerBtn());
+                                musicPlayer.execute();
+                            } else {
+                                Toast.makeText(AppManager.getInstance().getContext(), "권환이 없습니다.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
             );

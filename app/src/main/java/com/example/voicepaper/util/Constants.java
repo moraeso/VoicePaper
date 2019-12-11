@@ -8,4 +8,6 @@ public class Constants {
 
     public static final int ROOMS = 4; // 페이지 당 방 개수
 
+    public static final int MAX_ROOMS = 16;
+
 }

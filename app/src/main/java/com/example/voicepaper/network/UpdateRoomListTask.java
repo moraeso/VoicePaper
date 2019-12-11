@@ -24,8 +24,8 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
 
     private AsyncCallback callback;
     private Exception exception;
-    String url;
-    ContentValues values;
+    private String url;
+    private ContentValues values;
 
     public UpdateRoomListTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;

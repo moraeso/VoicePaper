@@ -9,12 +9,11 @@ import com.example.voicepaper.util.Constants;
 import org.json.JSONObject;
 
 public class RoomTask extends AsyncTask<Void, Void, Void> {
+    private Room room;
 
-    Room room;
-
-    String url;
-    ContentValues values;
-    AsyncCallback callback;
+    private String url;
+    private ContentValues values;
+    private AsyncCallback callback;
     private Exception exception;
 
     public RoomTask(ContentValues values, AsyncCallback asyncCallback){

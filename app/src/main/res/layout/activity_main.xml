@@ -86,7 +86,7 @@
             <com.itsronald.widget.ViewPagerIndicator
                 android:id="@+id/view_pager_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
+                android:layout_height="20dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:background="@color/colorBackground"
                 android:gravity="center_vertical" />
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_createRoom"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 코드 입력" />

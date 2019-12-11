@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -148,7 +149,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public void onStart() {
         super.onStart();
 
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override
@@ -179,6 +180,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             case R.id.btn_ok_dialog:
                 if (isTitleSuitable() && isCommentSuitable()) {
                     addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
+                    progressON("방 생성 중...");
+                    confirmDialog.dismiss();
                 }
                 break;
         }
@@ -254,38 +257,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         return true;
     }
 
-    /*
-    private String getRealPathFromURI(Uri contentUri) {
-        int column_index = 0;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        cursor.moveToFirst();
-        column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-        Log.d("sssong:getPathFromURI", cursor.getString(column_index));
-        return cursor.getString(column_index);
-    }
-
-    private Bitmap rotate(Bitmap src, float degree) {
-        // Matrix 객체 생성
-        Matrix matrix = new Matrix();
-        // 회전 각도 셋팅
-        matrix.postRotate(degree); // 이미지와 Matrix 를 셋팅해서 Bitmap 객체 생성
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
-    }
-
-    // 이미지 각도 조절
-    private int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }*/
-
     // 앨범에서 이미지 가져오기
     private void doTakeAlbumAction() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -313,8 +284,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             public void onFailure(Exception e) {
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
-
-                confirmDialog.dismiss();
+                progressOFF();
             }
         });
         createRoomTask.execute();
@@ -327,19 +297,25 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                confirmDialog.dismiss();
-                dismiss(); // dismiss and update
+                progressOFF();
+                dismiss();
             }
 
             @Override
             public void onFailure(Exception e) {
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
-
-                confirmDialog.dismiss();
+                progressOFF();
             }
         });
         uploadFile.execute();
+    }
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 
     @Override

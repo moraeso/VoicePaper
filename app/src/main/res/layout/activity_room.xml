@@ -80,15 +80,26 @@
                 android:text="녹음하기" />
 
             <Button
+                android:id="@+id/btn_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/btn_setting"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="@color/colorWhite"
+                android:text="방 정보" />
+
+            <Button
                 android:id="@+id/btn_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:textColor="@color/colorWhite"
-                android:text="설정" />
+                android:text="방 설정" />
         </RelativeLayout>
 
 

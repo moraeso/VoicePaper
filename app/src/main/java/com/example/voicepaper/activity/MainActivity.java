@@ -34,6 +34,7 @@ import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.ExitRoomTask;
 import com.example.voicepaper.network.UpdateRoomListTask;
 import com.example.voicepaper.util.ConfirmDialog;
+import com.example.voicepaper.util.Constants;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView iv_userImage;
 
+    public static final int DELETE_OFF = -1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSwipeRefresh();
 
         AppManager.getInstance().setMainActivity(this);
+
+        selectedRoomPos = DELETE_OFF;
 
         // 앨범 접근 허용(나중에 옮기기)
         //checkPermission();
@@ -172,9 +177,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_createRoom:
-                createRoomFragment = CreateRoomFragment.newInstance();
-                createRoomFragment.show(getSupportFragmentManager(), "CreateRoom");
-                getSupportFragmentManager().executePendingTransactions();
+                if (AppManager.getInstance().getRoomList().size() >= 6) {
+                    showDialog("방을 더 생성할 수 없습니다.");
+                } else {
+                    createRoomFragment = CreateRoomFragment.newInstance();
+                    createRoomFragment.show(getSupportFragmentManager(), "CreateRoom");
+                    getSupportFragmentManager().executePendingTransactions();
+                }
                 break;
             case R.id.btn_inputRoomCode:
                 inputRoomCodeFragment = InputRoomCodeFragment.newInstance();
@@ -198,7 +207,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 enterRoomAt(roomPager.getCurrentItem() * 4 + 3);
                 break;
             case R.id.btn_ok_dialog:
-                deleteRoomAt(selectedRoomPos);
+                if (selectedRoomPos != DELETE_OFF) {
+                    deleteRoomAt(selectedRoomPos);
+                    selectedRoomPos = DELETE_OFF;
+                }
                 confirmDialog.dismiss();
                 break;
         }
@@ -273,6 +285,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showDeleteRoomDialog() {
         confirmDialog.setMessage("방을 삭제하시겠습니까?\n"
                 + "[" + AppManager.getInstance().getRoomList().get(selectedRoomPos).getTitle() + "]");
+        confirmDialog.show();
+    }
+
+    private void showDialog(String message) {
+        confirmDialog.setMessage(message);
         confirmDialog.show();
     }
 

@@ -184,7 +184,7 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
 
     private void about(){
         confirmDialog.setMessage(
-                "Voice Paper 1.0\n" +
+                "Voice Paper 1.0\n\n" +
                         "제작자: 김형수, 서유식, 송상현, 신명하\n");
         confirmDialog.show();
     }
