@@ -145,6 +145,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                     confirmDialog.show();
                 } else {
                     btn_signUp.setEnabled(false);
+                    progressON("아이디 생성중...");
                     doSignUpTask();
                 }
                 break;
@@ -204,6 +205,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 confirmDialog.setMessage("동일한 아이디가 존재합니다.");
                 confirmDialog.show();
                 btn_signUp.setEnabled(true);
+                progressOFF();
             }
         });
         signUpTask.execute();
@@ -219,6 +221,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
             public void onSuccess(Object object) {
                 confirmDialog.setMessage("회원가입 완료!");
                 confirmDialog.show();
+                progressOFF();
                 dismiss();
             }
 
@@ -227,9 +230,17 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
                 //confirmDialog.dismiss();
+                progressOFF();
             }
         });
         uploadFile.execute();
+    }
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 }
 

@@ -25,7 +25,7 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.data.RoomMember;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.fragment.room.RecordFragment;
-import com.example.voicepaper.fragment.room.RoomMemberFragment;
+import com.example.voicepaper.fragment.room.RoomInfoFragment;
 import com.example.voicepaper.fragment.room.RoomSettingFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
@@ -35,7 +35,6 @@ import com.example.voicepaper.network.RoomTask;
 import com.example.voicepaper.network.VoiceListTask;
 import com.example.voicepaper.util.ConfirmDialog;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
@@ -172,8 +171,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_member:
-                RoomMemberFragment roomMemberFragment = RoomMemberFragment.newInstance(room, roomMemberList);
-                roomMemberFragment.show(getSupportFragmentManager(), null);
+                RoomInfoFragment roomInfoFragment = RoomInfoFragment.newInstance(room, roomMemberList);
+                roomInfoFragment.show(getSupportFragmentManager(), null);
 
                 break;
 

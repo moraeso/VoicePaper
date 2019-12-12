@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.voicepaper.R;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.InputRoomCodeTask;
 
@@ -60,7 +61,13 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_createRoom:
-                participateRoom();
+                if (inputRoomCodeEt.getText().toString().equals("")) {
+                    Toast.makeText(AppManager.getInstance().getContext(), "코드를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    createRoomBtn.setEnabled(false);
+                    progressON("방 생성 중...");
+                    participateRoom();
+                }
                 break;
             case R.id.btn_cancel:
                 dismiss();
@@ -81,6 +88,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
                 AppManager.getInstance().getRoomList().add((Room)object);
 
                 dismiss();
+                progressOFF();
             }
 
             @Override
@@ -88,9 +96,18 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
                 dismiss();
+                progressOFF();
             }
         });
         inputRoomCodeTask.execute();
+    }
+
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 
     @Override
