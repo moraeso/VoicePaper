@@ -19,9 +19,6 @@ module.exports = (sequelize, Datatypes) => {
       type: Datatypes.STRING(45),
       allowNull: false
     },
-    roomTag: {
-      type: Datatypes.STRING(45)
-    },
     roomText: {
       type: Datatypes.STRING(100),
       allowNull: false
@@ -42,9 +39,33 @@ module.exports = (sequelize, Datatypes) => {
   });
 
   room.findRoomByRoomID = function(roomID) {
-    console.log('function \'findRoomByRoomID\' start!');
+    console.log('function \'findRoomByRoomID\' start!', roomID);
     return room.findOne({
       where: {roomID: roomID}
+    })
+  }
+
+  room.findRoomByRoomCode = function(roomCode) {
+    console.log('function \'findRoomByRoomCode\' start!');
+    return room.findOne({
+      where: {roomCode: roomCode}
+    })
+  }
+
+  room.updateRoomInfo = function(roomID, roomName, roomText, roomPermission) {
+    console.log('****room update start****');
+
+    return new Promise((resolve, reject)=> {
+      room.update({
+        roomName: roomName,
+        roomText: roomText,
+        roomPermission: roomPermission
+      },
+      {
+        where: {roomID: roomID}
+      })
+
+      resolve();
     })
   }
 

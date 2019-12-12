@@ -7,18 +7,20 @@ const {User} = require('../../models');
 
 const saltRounds = 10;
 
+
 exports.register = function(request, response) {
-  const userID = sanitizeHtml(request.body.ID);
-  const userPassword = sanitizeHtml(request.body.password);
+  const userID = sanitizeHtml(request.body.id);
+  const userPassword = sanitizeHtml(request.body.pw);
   const userName = sanitizeHtml(request.body.name)
-  const userImage = sanitizeHtml(request.body.image);
-  
+  const userImage = sanitizeHtml(request.body.profileString);
+
   let user;
 
   const encrypt = (foundResult) => {
-    if(foundResult){
+    if(foundResult != undefined){
       response.json({
-        registerStatus: 'existingEmail'
+        registerStatus: 'existingEmail',
+        code : 101
       })
     }
 
@@ -47,7 +49,7 @@ exports.register = function(request, response) {
   const assign = (count) => {
     console.log('****assigning process****');
     if(count){
-      return User.update({ admin: 1 }, 
+      return User.update({ admin: 1 },
         {
           where: {
             userID: user.userID
@@ -58,7 +60,8 @@ exports.register = function(request, response) {
 
   const respond = () => {
     response.json({
-      registerStatus: 'registerSuccess'
+      registerStatus: 'registerSuccess',
+      code: 100
     })
   }
 
@@ -69,40 +72,32 @@ exports.register = function(request, response) {
 }
 
 exports.login = (request, response) => {
-  const userID = sanitizeHtml(request.body.ID);
-  const userPassword = sanitizeHtml(request.body.password);
- 
+  const userID = sanitizeHtml(request.body.id);//*
+  const userPassword = sanitizeHtml(request.body.pw);
+  const secret = request.app.get('jwt-secret');
+
   let user;
   let participatingRoomList;
 
   const query = `
-  SELECT room.*, (SELECT count(*) FROM VoicePaper.roomMembership WHERE roomMembership.roomID = room.roomID) as countMember 
-  FROM VoicePaper.roomMembership 
-  WHERE room.roomID IN (
-    SELECT roomID 
-    FROM roomMembership 
-    WHERE 
-  )
-  `
-
-  const query2 = `
-  SELECT room.*,roomMembership.* , (SELECT count(*) FROM VoicePaper.roomMembership 
-  WHERE roomMembership.roomID = room.roomID) as ? 
-  FROM VoicePaper.roomMembership JOIN VoicePaper.room 
+  SELECT room.*,roomMembership.* , (SELECT count(*) FROM VoicePaper.roomMembership
+  WHERE roomMembership.roomID = room.roomID) as ?
+  FROM VoicePaper.roomMembership JOIN VoicePaper.room
   ON roomMembership.userID=? AND roomMembership.roomID = room.roomID
   `
 
   const decrypt = (foundResult) => {
-    if(foundResult){
+    if(foundResult != undefined){
       user = foundResult;
-
       console.log('****decrypting process****');
 
       return bcrypt.compareSync(userPassword, foundResult.userPassword)
     } else {
       response.json({
-        loginStatus: "invalidEmail"
+        loginStatus: "invalidEmail",
+        code: 201
       })
+      console.log('invalid email');
     }
   }
 
@@ -110,7 +105,7 @@ exports.login = (request, response) => {
     if(authenticated){
       console.log('****participating room getting process****');
 
-      return models.sequelize.query(query2, 
+      return models.sequelize.query(query,
         {
           replacements: ['CountMember', user.userID],
           type: models.sequelize.QueryTypes.SELECT,
@@ -118,7 +113,8 @@ exports.login = (request, response) => {
         });
     } else {
       response.json({
-        loginStatus: "inccorectPassword"
+        loginStatus: "inccorectPassword",
+        code: 202
       })
     }
   }
@@ -126,18 +122,18 @@ exports.login = (request, response) => {
   const createToken = (participatingRoomAndCountResult) => {
     console.log('****token creating process****');
 
-    console.log(participatingRoomAndCountResult);
-
     participatingRoomList = participatingRoomAndCountResult;
+  
+    //console.log("user : " , user);
 
     var token = jwt.sign(
       {
         ID: user.userID,
         name: user.userName
       },
-      'secret',
+      secret,
       {
-        expiresIn: '1h',
+        expiresIn: '5h',
         issuer: 'http://15011066.iptime.org',
         subject: 'userInfo'
       })
@@ -150,12 +146,15 @@ exports.login = (request, response) => {
   const respond = (token) => {
     response.json({
       loginStatus: "success",
-      ID: user.userID,
-      name: user.userName,
+      code: 200,
+      id: user.userID,
       pw: user.userPassword,
+      name: user.userName,
+      profileString: user.userImage,
       token: token,
       roomList: participatingRoomList
     })
+    console.log('login succeed');
   }
 
   User.findUserByID(userID)
