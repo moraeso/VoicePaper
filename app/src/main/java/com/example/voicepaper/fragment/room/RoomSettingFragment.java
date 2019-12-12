@@ -209,7 +209,10 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 break;
             case R.id.btn_ok_dialog:
                 if (isTitleSuitable() && isCommentSuitable()) {
+                    confirmDialog.dismiss();
                     settingRoomInfo(); //  임시 여기서 서버 호출해서 방 생성
+                    progressON("방 수정 중...");
+
                 }
                 break;
         }
@@ -321,7 +324,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
 
-                confirmDialog.dismiss();
+                progressOFF();
                 dismiss();
             }
         });
@@ -335,11 +338,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-
-                // 임시
-                Log.d("RSFragment:sssong","image changed");
-
-                confirmDialog.dismiss();
+                progressOFF();
                 dismiss(); // dismiss and update
             }
 
@@ -347,12 +346,18 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             public void onFailure(Exception e) {
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
-
-                confirmDialog.dismiss();
+                progressOFF();
                 dismiss();
             }
         });
         uploadFile.execute();
+    }
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 
     @Override

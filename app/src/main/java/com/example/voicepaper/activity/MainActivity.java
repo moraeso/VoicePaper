@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_createRoom:
-                if (AppManager.getInstance().getRoomList().size() >= 6) {
+                if (AppManager.getInstance().getRoomList().size() >= Constants.MAX_ROOMS) {
                     showDialog("방을 더 생성할 수 없습니다.");
                 } else {
                     createRoomFragment = CreateRoomFragment.newInstance();

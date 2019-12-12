@@ -35,6 +35,7 @@ import com.example.voicepaper.network.RoomTask;
 import com.example.voicepaper.network.VoiceListTask;
 import com.example.voicepaper.util.ConfirmDialog;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoomActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnDismissListener {
@@ -55,6 +56,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     private Room room;
     private int id;
 
+    private ArrayList<Voice> voiceList;
+
+    private ConfirmDialog confirmDialog;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_room);
 
         id = getIntent().getExtras().getInt("id");
+        voiceList = new ArrayList<>();
 
         initView();
         initListener();
@@ -153,11 +159,16 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 /*
                 녹음 기능
                  */
-                RecordFragment recordFragment = RecordFragment.newInstance();
-                recordFragment.setRoomId(room.getId());
+                if (hasAlreadyVoice()) {
+                    confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+                    confirmDialog.setMessage("이미 등록된 보이스가 있습니다.");
+                    confirmDialog.show();
+                } else {
+                    RecordFragment recordFragment = RecordFragment.newInstance();
+                    recordFragment.setRoomId(room.getId());
 
-                recordFragment.show(getSupportFragmentManager(),null);
-
+                    recordFragment.show(getSupportFragmentManager(), null);
+                }
                 break;
 
             case R.id.btn_member:
@@ -167,18 +178,31 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_setting:
-                if (AppManager.getInstance().getUser().getID().equals(room.getHostID())) {
+                if (isUserHost()) {
                     roomSettingFragment = RoomSettingFragment.newInstance(
                             room.getId(), room.getTitle(), room.getComment(),
                             room.getPermission(), room.getProfileString());
                     roomSettingFragment.show(getSupportFragmentManager(), "InputRoomCode");
                     getSupportFragmentManager().executePendingTransactions();
                 } else {
-                    ConfirmDialog cd = new ConfirmDialog(AppManager.getInstance().getContext());
-                    cd.setMessage("호스트만 사용 가능합니다.");
-                    cd.show();
+                    confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+                    confirmDialog.setMessage("호스트만 사용 가능합니다.");
+                    confirmDialog.show();
                 }
         }
+    }
+
+    boolean isUserHost() {
+        return AppManager.getInstance().getUser().getID().equals(room.getHostID());
+    }
+
+    private boolean hasAlreadyVoice() {
+        for (Voice item : voiceList) {
+            if (item.getUserId().equals(AppManager.getInstance().getUser().getID())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void loadRoomInfo() {
@@ -223,11 +247,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadVoiceData() {
-    /*
-
-    보이스 데이터 불러오기 통신
-
-     */
         ContentValues values = new ContentValues();
         values.put("userID", AppManager.getInstance().getUser().getID());
         values.put("roomID", id);
@@ -237,7 +256,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(Object object) {
                 if (object == null)
                     return;
-                voiceAdapter.addAll(((ArrayList<Voice>)object));
+                voiceAdapter.addAll((ArrayList<Voice>)object);
+                voiceList = ((ArrayList<Voice>)object);
             }
 
             @Override

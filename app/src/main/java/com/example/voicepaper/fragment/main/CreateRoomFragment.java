@@ -179,9 +179,9 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 break;
             case R.id.btn_ok_dialog:
                 if (isTitleSuitable() && isCommentSuitable()) {
+                    confirmDialog.dismiss();
                     addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
                     progressON("방 생성 중...");
-                    confirmDialog.dismiss();
                 }
                 break;
         }
@@ -277,7 +277,11 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
             public void onSuccess(Object object) {
                 Log.d("sssong:CRFragment", "onSuccess : create room / add list");
 
-                uploadRoomImage((Room)object);
+                if (albumImagePath != null) {
+                    uploadRoomImage((Room) object);
+                } else {
+                    dismiss();
+                }
             }
 
             @Override
@@ -285,6 +289,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
                 progressOFF();
+                dismiss();
             }
         });
         createRoomTask.execute();
@@ -306,6 +311,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 Toast.makeText(AppManager.getInstance().getContext(),
                         "error : " + e, Toast.LENGTH_SHORT).show();
                 progressOFF();
+                dismiss();
             }
         });
         uploadFile.execute();
