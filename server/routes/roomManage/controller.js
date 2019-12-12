@@ -276,7 +276,13 @@ exports.memberlist = function(request, response) {
         replacements: item,
         type:models.sequelize.QueryTypes.SELECT,
         raw:true
-      });
+      })
+      .catch(function(error){
+        response.json({
+          msg:'query error occcured',
+          code:500
+        })
+      })
     }
 
     const respond =(getMemberlist)=>{
@@ -317,14 +323,26 @@ exports.getGroupList = (request, response) => {
           replacements: ['CountMember', request.body.userID],
           type: models.sequelize.QueryTypes.SELECT,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
   const respond = (getParticipatingRoomAndCount) => {
     response.json({
               roomList:getParticipatingRoomAndCount,
               code:200
-            });
+            })
+            .catch(function(error){
+              response.json({
+                msg:'query error occcured',
+                code:500
+              })
+            })
   }
 
   auth.isLoggedIn(request, response)
@@ -354,7 +372,13 @@ exports.getVoiceData = (request, response) => {
           replacements: [request.body.roomID],
           type: models.sequelize.QueryTypes.SELECT,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
 
@@ -390,7 +414,13 @@ exports.deleteVoiceDataIndex = (request, response) => {
           replacements: [request.body.roomID,request.body.userID],
           type: models.sequelize.QueryTypes.DELETE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
     const respond = () => {
@@ -409,7 +439,6 @@ exports.deleteVoiceDataIndex = (request, response) => {
     })
     throw new Error('close');
   })
-
   delteVoiceData()
   .then(respond)
 }
@@ -447,7 +476,6 @@ exports.exitGroup = (request, response) => {
 
 
   const exitGroup = (host) => {
-
       console.log('**** EXIT GROUP process****');
       if(host){
         console.log("not host");
@@ -456,7 +484,13 @@ exports.exitGroup = (request, response) => {
             replacements: [request.body.userID,request.body.roomID],
             type: models.sequelize.QueryTypes.DELETE,
             raw: true
-          });
+          })
+          .catch(function(error){
+            response.json({
+              msg:'query error occcured',
+              code:500
+            })
+          })
       } else {
         console.log("host");
         models.sequelize.query(hostQuery1,
@@ -464,19 +498,37 @@ exports.exitGroup = (request, response) => {
           replacements: [request.body.roomID],
           type: models.sequelize.QueryTypes.DELETE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
         models.sequelize.query(hostQuery2,
           {
           replacements: [request.body.roomID],
           type: models.sequelize.QueryTypes.DELETE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
         models.sequelize.query(hostQuery3,
           {
           replacements: [request.body.roomID],
           type: models.sequelize.QueryTypes.DELETE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
         return 1;
       }
     }
@@ -499,6 +551,12 @@ exports.exitGroup = (request, response) => {
   })
 
   Room.findRoomByRoomID(request.body.roomID)
+  .catch(function(error){
+    response.json({
+      msg:'query error occcured',
+      code:500
+    })
+  })
   .then(isHost)
   .then(exitGroup)
   .then(respond)
@@ -523,5 +581,11 @@ exports.getroominfo = (request, response) => {
     })
 
     Room.findRoomByRoomID(request.body.roomID)
+    .catch(function(error){
+      response.json({
+        msg:'query error occcured',
+        code:500
+      })
+    })
     .then(respond)
 }

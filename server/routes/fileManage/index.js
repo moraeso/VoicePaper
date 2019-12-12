@@ -59,7 +59,13 @@ router.post('/uploaduserimage',userimgupload.single('image'),function(request, r
           replacements: [imagePath,request.body.userID],
           type: models.sequelize.QueryTypes.UPDATE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
 
@@ -92,7 +98,13 @@ router.post('/uploadgroupimage',groupimgupload.single('image'),function(request,
           replacements: [imagePath,request.body.roomID],
           type: models.sequelize.QueryTypes.UPDATE,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
     const respond = () => {
@@ -124,7 +136,13 @@ router.post('/uploadvoice',voiceupload.single('voice'),function(request, respons
           replacements: [request.body.userID,request.body.roomID,voicePath],
           type: models.sequelize.QueryTypes.INSERT,
           raw: true
-        });
+        })
+        .catch(function(error){
+          response.json({
+            msg:'query error occcured',
+            code:500
+          })
+        })
   }
 
 
@@ -138,11 +156,5 @@ router.post('/uploadvoice',voiceupload.single('voice'),function(request, respons
 
 });
 
-
-router.post('/',function(request,response){
-  response.send("hhh");
-})
-
-router.post('/testupload', controller.testupload);
 
 module.exports = router;
