@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
@@ -85,6 +86,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
             @Override
             public void onSuccess(Object object) {
                 AppManager.getInstance().getRoomList().add((Room)object);
+                ((MainActivity)AppManager.getInstance().getContext()).showRoomParticipateSuccessDialog();
                 dismiss();
                 progressOFF();
             }

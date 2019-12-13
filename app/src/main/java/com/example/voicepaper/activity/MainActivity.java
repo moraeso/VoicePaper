@@ -254,6 +254,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadUserRoomList();
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        AppManager.getInstance().onBackPressed();
+    }
+
+    public void showRoomParticipateSuccessDialog() {
+        showDialog("방 생성 완료!");
+    }
+
     private void setRoomPagerAdapter() {
 
         ArrayList<Room> rooms = AppManager.getInstance().getRoomList();

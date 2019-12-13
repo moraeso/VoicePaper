@@ -18,7 +18,7 @@ public class ExitRoomTask extends AsyncTask<Void, Void, Integer> {
 
     public ExitRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/room/exitgroup";
+        this.url = Constants.URL + "/member/leave";
         this.values = values;
     }
 

@@ -178,6 +178,12 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        AppManager.getInstance().onBackPressed();
+    }
+
     public void progressON(String message) {
         ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
     }

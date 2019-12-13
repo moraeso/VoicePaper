@@ -31,7 +31,7 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
 
     public UpdateRoomListTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/room/grouplist";
+        this.url = Constants.URL + "/user/myroomlist";
         this.values = values;
 
         updatedRoomList = new ArrayList<>();
