@@ -99,7 +99,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
 
         if (checkCurrentPassword() == true &&
                 checkNewPassword() == true &&
-                checkTextLength()) {
+                checkTextLength() == true) {
             ContentValues values = new ContentValues();
             values.put("userID", AppManager.getInstance().getUser().getID());
             values.put("oldPW", et_CurrentPassword.getText().toString());
@@ -148,7 +148,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
         if (et_CurrentPassword.getText().length() < 6) {
             confirmString = "비밀번호는 6자 이상 12자 이하입니다.";
             return false;
-        } else if (et_ChangePassword.getText().length() < 2) {
+        } else if (et_ChangePassword.getText().length() < 6) {
             confirmString = "새 비밀번호는 6자 이상 12자 이하로 작성해주세요.";
             return false;
         }
