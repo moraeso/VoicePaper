@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.voicepaper.R;
+import com.example.voicepaper.activity.RoomActivity;
 import com.example.voicepaper.adapter.viewholder.VoiceViewHolder;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
@@ -128,9 +129,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
             public void onSuccess(Object object) {
                 confirmDialog.setMessage("삭제 성공!");
                 confirmDialog.show();
-
                 voiceItems.remove(position);
-                notifyDataSetChanged();
             }
             @Override
             public void onFailure(Exception e) {

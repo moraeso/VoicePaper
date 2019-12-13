@@ -55,8 +55,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     private Room room;
     private int id;
 
-    private ArrayList<Voice> voiceList;
-
     private ConfirmDialog confirmDialog;
 
 
@@ -70,7 +68,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_room);
 
         id = getIntent().getExtras().getInt("id");
-        voiceList = new ArrayList<>();
 
         initView();
         initListener();
@@ -150,7 +147,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -196,7 +192,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean hasAlreadyVoice() {
-        for (Voice item : voiceList) {
+        for (Voice item : voiceAdapter.getVoiceItems()) {
             if (item.getUserId().equals(AppManager.getInstance().getUser().getID())) {
                 return true;
             }
@@ -256,7 +252,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
                 if (object == null)
                     return;
                 voiceAdapter.addAll((ArrayList<Voice>)object);
-                voiceList = ((ArrayList<Voice>)object);
             }
 
             @Override
