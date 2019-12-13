@@ -109,15 +109,12 @@ public class RoomSlidePageFragment extends Fragment {
         }
 
         for (int i = 0; i < roomNum; i++) {
-
             if (curPageRooms.get(i).getProfileString().equals("undefined") ||
                     curPageRooms.get(i).getProfileString().equals("")) {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
                 String url = ImageManager.getInstance().getFullImageString(curPageRooms.get(i).getProfileString(), "file/roomimage");
-
-                Log.d("smh:roomimage",""+url);
                 ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
             }
             roomNameTv[i].setText(curPageRooms.get(i).getTitle());
