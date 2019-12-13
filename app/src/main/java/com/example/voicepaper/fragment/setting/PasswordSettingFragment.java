@@ -60,7 +60,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_passwordsetting, container, false);
+            View view = inflater.inflate(R.layout.fragment_passwordsetting, container, false);
 
         initView(view);
         initListener();
