@@ -181,8 +181,8 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 if (isTitleSuitable() && isCommentSuitable()) {
                     createRoomBtn.setEnabled(false);
                     confirmDialog.dismiss();
-                    addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
                     progressON("방 생성 중...");
+                    addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
                 }
                 break;
         }
@@ -281,6 +281,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 if (albumImagePath != null) {
                     uploadRoomImage((Room) object);
                 } else {
+                    progressOFF();
                     confirmDialog.setMessage("방 생성 완료!");
                     confirmDialog.setOkBtnDismiss();
                     confirmDialog.show();

@@ -11,8 +11,10 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.viewholder.VoiceViewHolder;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
+
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.DeleteVoiceTask;
+
 import com.example.voicepaper.network.MusicPlayer;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
@@ -56,6 +58,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         ((VoiceViewHolder) holder).getHolder().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+
                 if (checkUserPermission(voice)) {
                     questionVoiceDelete(position);
                 }
@@ -67,11 +70,14 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         playVoice(voice, holder);
+
                     }
                 }
         );
     }
+
 
     @Override
     public int getItemCount() {
