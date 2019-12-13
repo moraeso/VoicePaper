@@ -34,13 +34,11 @@ public class SignUpTask extends AsyncTask<Void, Boolean, String> {
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-            Log.d("smh:signUp",""+code);
+
             if (!isSignUpDataValid(code)) {
-                Log.d("smh:signUp UserID","error");
                 throw new Exception("SignUp data is not valid");
             }
 
-            Log.d("smh:signUp UserID",""+values.get("id").toString());
             return values.get("id").toString();
         } catch (Exception e) {
             e.printStackTrace();

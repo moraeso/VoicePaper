@@ -36,22 +36,10 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-            Log.d("smh:signin",""+job.toString());
-            Log.d("smh:signin code",""+code);
+
             if (!isSignInDataValid(code)) {
                 throw new Exception("Signin data is not valid");
             }
-
-
-            String token = job.getString("token");
-            AppManager.getInstance().getUser().setToken(token);
-
-            // 유저 ID, Password 설정
-            AppManager.getInstance().getUser().setID(job.getString("id"));
-            AppManager.getInstance().getUser().setPw(job.getString("pw"));
-            AppManager.getInstance().getUser().setName(job.getString("name"));
-            AppManager.getInstance().getUser().setProfileString(job.getString("profileString"));
-            reseiveRoomList(job.getString("roomList"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,7 +47,7 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
             return false;
         }
 
-        return true; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
+        return true;
     }
 
     @Override
@@ -81,33 +69,5 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
         else{
             return false;
         }
-    }
-
-    private void reseiveRoomList(String _jsonArray){
-        ArrayList<Room> roomArrayList = new ArrayList<Room>();
-
-        try {
-            JSONArray jsonArray = new JSONArray(_jsonArray);
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                Room room = new Room(
-                        jsonObject.getInt("roomID"),
-                        jsonObject.getString("roomName"),
-                        jsonObject.getInt("roomPermission"),
-                        jsonObject.getString("roomText"),
-                        jsonObject.getString("hostID"),
-                        jsonObject.getString("roomCode")
-                );
-                room.setProfileString(jsonObject.getString("roomImage"));
-
-                roomArrayList.add(room);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        AppManager.getInstance().setRoomList(roomArrayList);
     }
 }

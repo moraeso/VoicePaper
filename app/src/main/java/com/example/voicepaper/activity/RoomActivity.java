@@ -131,7 +131,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
         voiceRecycleView.addItemDecoration(new VoiceRecyclerViewDecoration((RoomActivity) this));
 
         // 어뎁터 연결
-        voiceAdapter = new VoiceRecycleViewerAdapter();
+        voiceAdapter = new VoiceRecycleViewerAdapter(id);
         voiceRecycleView.setAdapter(voiceAdapter);
     }
 

@@ -22,11 +22,15 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     AsyncCallback asyncCallback;
     private Exception exception;
 
-    public SignInTask(ContentValues values, AsyncCallback asyncCallback){
+    static private final int SUCCESS = 200;
+    static private final int INVALIDEMAIL = 201;
+    static private final int INCORRECTPASSWORD = 202;
+
+    public SignInTask(ContentValues values, AsyncCallback asyncCallback) {
         this.url = Constants.URL + "/member/login";
         this.values = values;
         this.asyncCallback = asyncCallback;
-}
+    }
 
     @Override
     protected Boolean doInBackground(Void... params) {
@@ -38,22 +42,18 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-            Log.d("smh:signin",""+job.toString());
-            Log.d("smh:signin code",""+code);
+
             if (!isSignInDataValid(code)) {
-                throw new Exception("Signin data is not valid");
+                return false;
             }
 
+            setUser(job.getString("id"),
+                    job.getString("name"),
+                    job.getString("pw"),
+                    job.getString("profileString"),
+                    job.getString("token"));
 
-            String token = job.getString("token");
-            AppManager.getInstance().getUser().setToken(token);
-
-            // 유저 ID, Password 설정
-            AppManager.getInstance().getUser().setID(job.getString("id"));
-            AppManager.getInstance().getUser().setPw(job.getString("pw"));
-            AppManager.getInstance().getUser().setName(job.getString("name"));
-            AppManager.getInstance().getUser().setProfileString(job.getString("profileString"));
-            reseiveRoomList(job.getString("roomList"));
+            receiveRoomList(job.getString("roomList"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,24 +68,25 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
 
-        if(result == true){
+        if (result == true) {
             asyncCallback.onSuccess(true);
-        }else{
+        } else {
             asyncCallback.onFailure(exception);
         }
     }
 
     private boolean isSignInDataValid(int code) {
-        // 성공 : 200, 실패 : 204
-        if(code == 200){
+        if (code == SUCCESS) {
             return true;
-        }
-        else{
+        } else if (code == INVALIDEMAIL) {
+            return false;
+        } else if (code == INCORRECTPASSWORD) {
             return false;
         }
+        return false;
     }
 
-    private void reseiveRoomList(String _jsonArray){
+    private void receiveRoomList(String _jsonArray) {
         ArrayList<Room> roomArrayList = new ArrayList<Room>();
 
         try {
@@ -111,5 +112,13 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
         }
 
         AppManager.getInstance().setRoomList(roomArrayList);
+    }
+
+    private void setUser(String id, String name, String pw, String profileString,String token){
+        AppManager.getInstance().getUser().setID(id);
+        AppManager.getInstance().getUser().setName(name);
+        AppManager.getInstance().getUser().setPw(pw);
+        AppManager.getInstance().getUser().setProfileString(profileString);
+        AppManager.getInstance().getUser().setToken(token);
     }
 }

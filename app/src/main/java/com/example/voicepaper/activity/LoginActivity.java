@@ -145,8 +145,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
             @Override
             public void onFailure(Exception e) {
                 progressOFF();
-                confirmDialog.setMessage("로그인 실패");
-                //confirmDialog.getOkBtn().setOnClickListener(); -> ok버튼 클릭시 뭔가 하고 싶으면 이거 하십쇼
+                confirmDialog.setMessage("로그인 정보가 잘못되었습니다.");
+                confirmDialog.show();
             }
         });
         signInTask.execute();
@@ -166,10 +166,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
                     confirmDialog.show();
                     break;
                 }
-
                 progressON("로그인 중...");
                 loginTask();
-
                 break;
             case R.id.btn_signUp:
                 //회원가입 화면 띄우기
@@ -179,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         }
 
     }
-    
+
     public void progressON(String message) {
         ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
     }
