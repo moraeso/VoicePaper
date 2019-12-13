@@ -24,7 +24,7 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback){
         this.url = Constants.URL + "/member/login";
-            this.values = values;
+        this.values = values;
         this.asyncCallback = asyncCallback;
 }
 

@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.voicepaper.R;
+import com.example.voicepaper.fragment.login.SignUpFragment;
+import com.example.voicepaper.fragment.setting.PasswordSettingFragment;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
@@ -32,7 +34,6 @@ import com.example.voicepaper.util.ConfirmDialog;
 import java.io.IOException;
 
 public class SettingActivity extends AppCompatActivity implements Button.OnClickListener {
-
     ImageView iv_userImage;
 
     TextView tv_userId;
@@ -45,7 +46,6 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
     Button btn_signOut;
 
     private String albumImagePath;
-
     private ConfirmDialog confirmDialog;
 
     @Override
@@ -82,8 +82,6 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
         }
-
-
     }
 
     void initListener(){
@@ -103,8 +101,10 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
                 doTakeAlbumAction();
                 break;
             case R.id.btn_changePw:
+                changePassword();
                 break;
             case R.id.btn_inquire:
+                inquire();
                 break;
             case R.id.btn_about:
                 about();
@@ -187,5 +187,10 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
                 "Voice Paper 1.0\n\n" +
                         "제작자: 김형수, 서유식, 송상현, 신명하\n");
         confirmDialog.show();
+    }
+
+    private void changePassword(){
+        PasswordSettingFragment passwordSettingFragment = PasswordSettingFragment.newInstance();
+        passwordSettingFragment.show(getSupportFragmentManager(),null);
     }
 }
