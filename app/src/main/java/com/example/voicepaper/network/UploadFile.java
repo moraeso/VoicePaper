@@ -46,7 +46,7 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             Log.d("smh:userId",this.userId);
         }
         else if(type == UPLOAD_IMAGE_ROOM){
-            this.m_url = Constants.URL+"/file/uploadgroupimage";
+            this.m_url = Constants.URL+"/file/uploadroomimage";
             this.roomId = values.get("roomId").toString();
         }
         else if(type == UPLOAD_AUDIO){
@@ -55,6 +55,8 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             this.userId = AppManager.getInstance().getUser().getID();
             Log.d("smh:roomId",this.roomId);
         }
+
+
     }
 
     @Override
