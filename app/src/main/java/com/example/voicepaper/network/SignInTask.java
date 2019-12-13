@@ -23,7 +23,7 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     private Exception exception;
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL + "/auth/login";
+        this.url = Constants.URL + "/member/login";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }

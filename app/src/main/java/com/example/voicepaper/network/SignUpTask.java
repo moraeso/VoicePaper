@@ -19,7 +19,7 @@ public class SignUpTask extends AsyncTask<Void, Boolean, String> {
     User newUser;
 
     public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL+ "/auth/register";
+        this.url = Constants.URL+ "/member/register";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }

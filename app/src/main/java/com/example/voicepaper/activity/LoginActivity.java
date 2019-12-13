@@ -26,7 +26,7 @@ import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.SignInTask;
 import com.example.voicepaper.util.ConfirmDialog;
 
-public class LoginActivity extends AppCompatActivity implements Button.OnClickListener, View.OnFocusChangeListener {
+public class LoginActivity extends AppCompatActivity implements Button.OnClickListener {
     Button btn_signUp;
     Button btn_signIn;
     EditText et_id;
@@ -162,11 +162,6 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
                 break;
         }
 
-    }
-
-    @Override
-    public void onFocusChange(View view, boolean b) {
-        //리스너뺄지 고민중
     }
 
     //갤러리 접근 권한 설정
