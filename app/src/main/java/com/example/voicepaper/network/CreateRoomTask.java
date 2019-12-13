@@ -25,6 +25,12 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
+    public static final int SUCCESS_CODE = 300;
+    public static final int NO_USER_ID_FOR_HOST = 301;
+    public static final int MAXIMUM_ROOM_NUMBER_LIMIT = 302;
+    public static final int MAXIMUM_ROOM_NUMBER_FOR_USER_LIMIT = 303;
+    public static final int ROOM_CREATE_ERROR = 304;
+
     public CreateRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/roomCreate";
@@ -46,7 +52,7 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
             result = requestHttpURLConnection.request(url, values); // post token
 
             if (!isConnectionSuccess(result)) {
-                throw new Exception("Init room failed");
+                throw new Exception("Create room failed");
             }
             createRoomFromJson(result);
         } catch (Exception e) {
@@ -69,20 +75,12 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
     }
 
     private boolean isConnectionSuccess(String json_str) {
-        // 성공 : 300, 실패 : 301, 302, 303, 304
-        /*
-        room create success : 300
-        no user id for host : 301
-        maximum room number limit error : 302
-        maximum room number for user limit error : 303
-        room create error : 304
-         */
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
 
-            if (code == 300) {
+            if (code == SUCCESS_CODE) {
                 return true;
             } else {
                 return false;
@@ -93,22 +91,6 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
             exception = e;
         }
         return true;
-    }
-
-    public Bitmap getBitmapFromURL(String url, String srcName) {
-        InputStream is;
-        Drawable drawable = null;
-        Bitmap bitmap = null;
-
-        try {
-            is = (InputStream) new URL(url).getContent();
-            drawable = Drawable.createFromStream(is, srcName);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
     }
 
     private void createRoomFromJson(String json_str) {

@@ -20,6 +20,8 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
+    public static final int SUCCESS_CODE = 200;
+
     public SettingRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/roomSetting";
@@ -66,16 +68,12 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
     }
 
     private boolean isConnectionSuccess(String json_str) {
-        // 성공 : 200, 실패 :
-        /*
-        room setting success : 300
-         */
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
 
-            if (code == 200) {
+            if (code == SUCCESS_CODE) {
                 return true;
             } else {
                 return false;

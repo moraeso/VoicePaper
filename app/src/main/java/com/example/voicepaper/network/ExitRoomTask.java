@@ -14,6 +14,8 @@ public class ExitRoomTask extends AsyncTask<Void, Void, Integer> {
     String url;
     ContentValues values;
 
+    public static final int SUCCESS_CODE = 200;
+
     public ExitRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/exitgroup";
@@ -61,7 +63,7 @@ public class ExitRoomTask extends AsyncTask<Void, Void, Integer> {
 
             int code = jsonObj.getInt("code");
 
-            if (code == 200) {
+            if (code == SUCCESS_CODE) {
                 return true;
             } else {
                 return false;

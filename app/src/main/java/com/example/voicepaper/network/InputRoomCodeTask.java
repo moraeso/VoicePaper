@@ -18,6 +18,10 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
+    public static final int SUCCESS_CODE = 400;
+    public static final int NO_ROOM_FOUND = 401;
+    public static final int ROOM_PARTICIPATE_FAIL = 402;
+
     public InputRoomCodeTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/roomParticipate";
@@ -64,19 +68,13 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
     }
 
     private boolean isConnectionSuccess(String json_str) {
-        // 성공 : 400, 실패 : 401, 402
-        /*
-        room participate success : 400
-        no room found : 401
-        room participate fail : 402
-         */
         try {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
             Log.d("sssong:InputRoomFrgmt", "error code : " + code);
 
-            if (code == 400) {
+            if (code == SUCCESS_CODE) {
                 return true;
             } else {
                 return false;
