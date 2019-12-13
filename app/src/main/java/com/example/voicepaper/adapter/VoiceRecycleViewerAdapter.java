@@ -28,20 +28,17 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
     boolean isHost;
     int roomID;
 
-    public void isUserHost(boolean isHost) {
-        this.isHost = isHost;
-    }
-
     public VoiceRecycleViewerAdapter(int roomID) {
         voiceItems = new ArrayList<>();
         this.roomID = roomID;
     }
-
     public void setPermission(int permission) {
         this.permission = permission;
     }
-
     public void setIsUserHost(boolean isHost) {
+        this.isHost = isHost;
+    }
+    public void isUserHost(boolean isHost) {
         this.isHost = isHost;
     }
 
@@ -50,7 +47,6 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new VoiceViewHolder(LayoutInflater.from(AppManager.getInstance().getContext()).inflate(R.layout.item_voice, parent, false));
     }
-
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         final Voice voice = voiceItems.get(position);
@@ -79,22 +75,19 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         );
     }
 
-
+    //---------------------- 음성 리스트 관련 -------------------------
     @Override
     public int getItemCount() {
         return voiceItems.size();
     }
-
     public ArrayList<Voice> getVoiceItems() {
         return voiceItems;
     }
-
     public void addAll(ArrayList<com.example.voicepaper.data.Voice> items) {
         voiceItems.clear();
         voiceItems.addAll(items);
         notifyDataSetChanged();
     }
-
     public void clearItems() {
         voiceItems.clear();
     }
