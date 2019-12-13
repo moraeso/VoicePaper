@@ -164,7 +164,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             roomProfileIv.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(imgStr, "groupImage");
+            String url = ImageManager.getInstance().getFullImageString(imgStr, "file/roomimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
         }
     }
