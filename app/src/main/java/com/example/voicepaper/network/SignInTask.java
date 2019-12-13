@@ -27,7 +27,7 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     static private final int INCORRECTPASSWORD = 202;
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback) {
-        this.url = Constants.URL + "/member/login";
+        this.url = Constants.URL + "/user/login";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }

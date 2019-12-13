@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "file/userimage");
+            Log.d("smh:userimage",""+url);
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
         }
     }
@@ -171,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadUserRoomList();
 
         roomPagerAdapter.notifyDataSetChanged();
+
+        String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "file/userimage");
+        ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
     }
 
     @Override
