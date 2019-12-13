@@ -26,6 +26,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.UploadFile;
 import com.example.voicepaper.util.ConfirmDialog;
@@ -72,7 +73,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        permissinCheck();
+        permissionCheck();
 
         state = RECODE_START;
 
@@ -127,7 +128,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         tv_content.setText("목소리를 녹음할게요.\n버튼을 눌러 시작해 주세요.");
     }
 
-    public void permissinCheck(){
+    public void permissionCheck(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1);
@@ -162,41 +163,49 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 else if(state == PLAY_STOP){
                     onPlay(false);
                 }
-
                 break;
+
             case R.id.btn_cancel:
                 dismiss();//취소시 프레그먼트 종료
                 break;
+
             case R.id.btn_submit:
                 /*
                 여기부근에 통신 넣어야합니다.
                  */
-                if(state==RECODE_STOP){
+                if(state == RECODE_STOP){
                     onRecord(false);
                 }
 
-                ContentValues values = new ContentValues();
-                values.put("userId",AppManager.getInstance().getUser().getID());
-                values.put("roomId",roomId);
-
-                UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_AUDIO,values,filePath, new AsyncCallback() {
-                    @Override
-                    public void onSuccess(Object object) {
-                        confirmDialog.setMessage("녹음 완료!");
-                        confirmDialog.show();
-                        dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(AppManager.getInstance().getContext(), "error : " + e, Toast.LENGTH_SHORT).show();
-                        //confirmDialog.dismiss();
-                    }
-                });
-
-                uploadFile.execute();
+                uploadVoice();
                 break;
         }
+    }
+
+    private void uploadVoice() {
+        progressON("보이스 등록 중...");
+
+        ContentValues values = new ContentValues();
+        values.put("userId",AppManager.getInstance().getUser().getID());
+        values.put("roomId",roomId);
+
+        UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_AUDIO,values,filePath, new AsyncCallback() {
+            @Override
+            public void onSuccess(Object object) {
+                progressOFF();
+                confirmDialog.setMessage("녹음 완료!");
+                confirmDialog.show();
+                dismiss();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                progressOFF();
+                Toast.makeText(AppManager.getInstance().getContext(), "error : " + e, Toast.LENGTH_SHORT).show();
+                //confirmDialog.dismiss();
+            }
+        });
+        uploadFile.execute();
     }
 
     private void onRecord(boolean start){
@@ -297,5 +306,12 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             player.release();
             player = null;
         }
+    }
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 }

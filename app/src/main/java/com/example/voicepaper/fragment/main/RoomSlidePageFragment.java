@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 public class RoomSlidePageFragment extends Fragment {
 
+    private ArrayList<Room> allRooms;
+
     private ImageView[] roomProfile = new ImageView[Constants.ROOMS];
     private TextView[] roomNameTv = new TextView[Constants.ROOMS];
     //private ArrayList<Room> roomList;
@@ -68,37 +70,17 @@ public class RoomSlidePageFragment extends Fragment {
         roomNameTv[3] = (TextView) view.findViewById(R.id.tv_roomName4);
     }
 
-    private void initViewContents() {
 
-        //Log.d("sssong:RoomSlideFrgmt", "list size : " + roomList.size());
-        ArrayList<Room> allRooms = AppManager.getInstance().getRoomList();
-        ArrayList<Room> curRooms = new ArrayList<Room>();
+    private void initViewContents() {
+        allRooms = AppManager.getInstance().getRoomList();
+
         roomNum = Constants.ROOMS;
 
-        if (((allRooms.size() - 1) / Constants.ROOMS) == page
-                && allRooms.size() % Constants.ROOMS != 0) {
+        if (isLastPage() && isNotFullPage()) {
             roomNum = allRooms.size() % Constants.ROOMS;
         }
 
-        for (int i = 0; i < roomNum; i++) {
-            curRooms.add(allRooms.get(page * Constants.ROOMS + i));
-        }
-
-        for (int i = 0; i < roomNum; i++) {
-
-            if (curRooms.get(i).getProfileString().equals("undefined") ||
-                    curRooms.get(i).getProfileString().equals("")) {
-                Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
-                roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
-            } else {
-                String url = ImageManager.getInstance().getFullImageString(curRooms.get(i).getProfileString(), "groupImage");
-                ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
-            }
-            roomNameTv[i].setText(curRooms.get(i).getTitle());
-        }
-
-        //Log.d("sssong:RoomSlideFrgmt", "page : " + page);
-        //Log.d("sssong:RoomSlideFrgmt", "roomNum : " + roomNum);
+        initCurPage();
     }
 
     private void initListener() {
@@ -108,4 +90,35 @@ public class RoomSlidePageFragment extends Fragment {
             roomProfile[i].setOnLongClickListener((MainActivity) getActivity());
         }
     }
+
+    private boolean isLastPage() {
+        return ((allRooms.size() - 1) / Constants.ROOMS) == page;
+    }
+
+    private boolean isNotFullPage() {
+        return allRooms.size() % Constants.ROOMS != 0;
+    }
+
+
+    private void initCurPage() {
+        ArrayList<Room> curPageRooms = new ArrayList<Room>();
+
+        for (int i = 0; i < roomNum; i++) {
+            curPageRooms.add(allRooms.get(page * Constants.ROOMS + i));
+        }
+
+        for (int i = 0; i < roomNum; i++) {
+
+            if (curPageRooms.get(i).getProfileString().equals("undefined") ||
+                    curPageRooms.get(i).getProfileString().equals("")) {
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
+                roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
+            } else {
+                String url = ImageManager.getInstance().getFullImageString(curPageRooms.get(i).getProfileString(), "groupImage");
+                ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
+            }
+            roomNameTv[i].setText(curPageRooms.get(i).getTitle());
+        }
+    }
+
 }

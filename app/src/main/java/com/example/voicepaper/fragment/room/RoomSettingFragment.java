@@ -93,7 +93,10 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         View view = inflater.inflate(R.layout.fragment_roomsetting, container, false);
 
         initView(view);
+        initViewContents();
         initListener();
+
+
 
         roomCommentEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -137,19 +140,20 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
         settingRoomBtn = (Button) view.findViewById(R.id.btn_settingRoom);
 
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+    }
+
+    private void initViewContents() {
+        voicePermission = Constants.VOICE_PUBLIC;
+
+        roomTitleEt.setText(title);
+        roomCommentEt.setText(comment);
+
         publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorMainBold));
         privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorLightGray));
 
-        setCancelable(false);
-
-        voicePermission = Constants.VOICE_PUBLIC;
-
-        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-
-        roomTitleEt.setText(title);
-        roomCommentEt.setText(comment);
         if (permission == Constants.VOICE_PRIVATE) {
             voicePermission = Constants.VOICE_PUBLIC;
             publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
@@ -175,6 +179,22 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         settingRoomBtn.setOnClickListener(this);
     }
 
+    private void changePermissionToPublic() {
+        voicePermission = Constants.VOICE_PUBLIC;
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorMainBold));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+    }
+    private void changePermissionToPrivate() {
+        voicePermission = Constants.VOICE_PRIVATE;
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorMainBold));
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -186,18 +206,10 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_privateVoice:
-                voicePermission = Constants.VOICE_PRIVATE;
-                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorLightGray));
-                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMainBold));
+                changePermissionToPrivate();
                 break;
             case R.id.btn_publicVoice:
-                voicePermission = Constants.VOICE_PUBLIC;
-                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMainBold));
-                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorLightGray));
+                changePermissionToPublic();
                 break;
             case R.id.ib_roomProfile:
                 doTakeAlbumAction();
@@ -212,7 +224,6 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                     confirmDialog.dismiss();
                     settingRoomInfo(); //  임시 여기서 서버 호출해서 방 생성
                     progressON("방 수정 중...");
-
                 }
                 break;
         }
