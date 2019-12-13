@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,7 +68,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
         return view;
     }
 
-    void initView(View view){
+    void initView(View view) {
         et_CurrentPassword = view.findViewById(R.id.et_CurrentPassword);
         et_ChangePassword = view.findViewById(R.id.et_ChangePassword);
         et_reChangePassword = view.findViewById(R.id.et_reChangePassword);
@@ -76,14 +77,14 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
         btn_cancel = view.findViewById(R.id.btn_cancel);
     }
 
-    void initListener(){
+    void initListener() {
         btn_cancel.setOnClickListener(this);
         btn_changePW.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_changePW:
                 changePassword();
                 break;
@@ -93,12 +94,14 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
         }
     }
 
-    void changePassword(){
+    void changePassword() {
         final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
 
-        if(checkCurrentPassword() == true && checkNewPassword() == true){
+        if (checkCurrentPassword() == true &&
+                checkNewPassword() == true &&
+                checkTextLength()) {
             ContentValues values = new ContentValues();
-            values.put("userID",AppManager.getInstance().getUser().getID());
+            values.put("userID", AppManager.getInstance().getUser().getID());
             values.put("oldPW", et_CurrentPassword.getText().toString());
             values.put("newPW", et_ChangePassword.getText().toString());
 
@@ -109,6 +112,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
                     confirmDialog.show();
                     dismiss();
                 }
+
                 @Override
                 public void onFailure(Exception e) {
                     confirmDialog.setMessage("비밀번호 변경을 실패하였습니다.");
@@ -116,27 +120,38 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
                 }
             });
             changePasswordTask.execute();
-        }
-        else{
+        } else {
             confirmDialog.setMessage(confirmString);
             confirmDialog.show();
         }
     }
 
-    Boolean checkNewPassword(){
-        if(et_CurrentPassword.getText().toString().equals(et_ChangePassword.getText().toString())){
+    Boolean checkNewPassword() {
+        if (et_CurrentPassword.getText().toString().equals(et_ChangePassword.getText().toString())) {
             confirmString = "새 비밀번호가 기존 비밀번호와 일치합니다.";
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    Boolean checkCurrentPassword(){
-        if(et_ChangePassword.getText().toString().equals(et_reChangePassword.getText().toString())){
+
+    Boolean checkCurrentPassword() {
+        if (et_ChangePassword.getText().toString().equals(et_reChangePassword.getText().toString())) {
             return true;
-        }else{
+        } else {
             confirmString = "새 비밀번호 입력이 서로 일치하지 않습니다.";
             return false;
         }
+    }
+
+    private boolean checkTextLength() {
+        if (et_CurrentPassword.getText().length() < 6) {
+            confirmString = "비밀번호는 6자 이상 12자 이하입니다.";
+            return false;
+        } else if (et_ChangePassword.getText().length() < 2) {
+            confirmString = "새 비밀번호는 6자 이상 12자 이하로 작성해주세요.";
+            return false;
+        }
+        return true;
     }
 }
