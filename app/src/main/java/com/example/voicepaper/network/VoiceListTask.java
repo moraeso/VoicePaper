@@ -22,7 +22,7 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
     private String url;
 
     public VoiceListTask(ContentValues values, AsyncCallback callback) {
-        this.url = Constants.URL +"/file/vocielist";
+        this.url = Constants.URL +"/file/voicelist";
         this.values = values;
         this.callback = callback;
     }
