@@ -13,6 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,7 +46,10 @@ import com.example.voicepaper.util.ConfirmDialog;
 
 import java.io.IOException;
 
-public class SignUpFragment extends DialogFragment implements Button.OnClickListener {
+public class SignUpFragment extends DialogFragment implements Button.OnClickListener, View.OnFocusChangeListener {
+
+    private ScrollView scrollView;
+
     //image view
     private ImageView iv_userImage;
     //edit text
@@ -111,6 +116,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
     }
 
     public void initView(View view) {
+        scrollView = (ScrollView) view.findViewById(R.id.sv_root);
         //view
         iv_userImage = view.findViewById(R.id.iv_userImage);
 
@@ -128,6 +134,15 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         btn_imageSet.setOnClickListener(this);
         btn_signUp.setOnClickListener(this);
 
+        et_name.setOnClickListener(this);
+        et_id.setOnClickListener(this);
+        et_pw.setOnClickListener(this);
+        et_rePw.setOnClickListener(this);
+
+        et_name.setOnFocusChangeListener(this);
+        et_id.setOnFocusChangeListener(this);
+        et_pw.setOnFocusChangeListener(this);
+        et_rePw.setOnFocusChangeListener(this);
     }
 
     @Override
@@ -139,6 +154,37 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
             case R.id.btn_signUp:
                 signup();
                 break;
+
+            case R.id.et_id:
+            case R.id.et_name:
+            case R.id.et_pw:
+            case R.id.et_rePw:
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0, scrollView.getBottom());
+                    }
+                }, 500);
+        }
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        switch (view.getId()) {
+            case R.id.et_id:
+            case R.id.et_name:
+            case R.id.et_pw:
+            case R.id.et_rePw:
+                if (hasFocus) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollTo(0, scrollView.getBottom());
+                        }
+                    }, 500);
+                }
         }
     }
 

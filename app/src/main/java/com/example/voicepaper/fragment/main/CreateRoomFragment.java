@@ -46,7 +46,7 @@ import com.example.voicepaper.util.Constants;
 
 import java.io.IOException;
 
-public class CreateRoomFragment extends DialogFragment implements View.OnClickListener {
+public class CreateRoomFragment extends DialogFragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private ScrollView scrollView;
 
@@ -83,35 +83,6 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         initView(view);
         initListener();
 
-        roomCommentEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollView.scrollTo(0, scrollView.getBottom());
-                        }
-                    }, 500);
-                }
-            }
-        });
-
-        roomCommentEt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollView.scrollTo(0, scrollView.getBottom());
-                    }
-                }, 500);
-            }
-
-        });
-
         return view;
     }
 
@@ -125,14 +96,7 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         roomCommentEt = (EditText) view.findViewById(R.id.et_roomComment);
         createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
 
-        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorMainBold));
-        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                R.color.colorLightGray));
-
-        setCancelable(false);
-
-        voicePermission = Constants.VOICE_PUBLIC;
+        changeVoicePermissionToPublic();
 
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }
@@ -143,6 +107,9 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
         publicVoiceBtn.setOnClickListener(this);
         roomProfileIb.setOnClickListener(this);
         createRoomBtn.setOnClickListener(this);
+        roomCommentEt.setOnClickListener(this);
+
+        roomCommentEt.setOnFocusChangeListener(this);
     }
 
     @Override
@@ -156,18 +123,10 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_privateVoice:
-                voicePermission = Constants.VOICE_PRIVATE;
-                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorLightGray));
-                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMainBold));
+                changeVoicePermissionToPrivate();
                 break;
             case R.id.btn_publicVoice:
-                voicePermission = Constants.VOICE_PUBLIC;
-                publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorMainBold));
-                privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
-                        R.color.colorLightGray));
+                changeVoicePermissionToPublic();
                 break;
             case R.id.ib_roomProfile:
                 doTakeAlbumAction();
@@ -183,6 +142,32 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                     confirmDialog.dismiss();
                     progressON("방 생성 중...");
                     addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
+                }
+                break;
+            case R.id.et_roomComment:
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.scrollTo(0, scrollView.getBottom());
+                    }
+                }, 500);
+                break;
+        }
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        switch (view.getId()) {
+            case R.id.et_roomComment:
+                if (hasFocus) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollTo(0, scrollView.getBottom());
+                        }
+                    }, 500);
                 }
                 break;
         }
@@ -226,6 +211,22 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 roomProfileIb.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
             }
         }
+    }
+
+    private void changeVoicePermissionToPublic() {
+        voicePermission = Constants.VOICE_PUBLIC;
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorMainBold));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+    }
+
+    private void changeVoicePermissionToPrivate() {
+        voicePermission = Constants.VOICE_PRIVATE;
+        publicVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorLightGray));
+        privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
+                R.color.colorMainBold));
     }
 
     private void setDialogListener() {
@@ -326,8 +327,9 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     }
 
     public void progressON(String message) {
-        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+        ImageManager.getInstance().progressON((Activity) AppManager.getInstance().getContext(), message);
     }
+
     public void progressOFF() {
         ImageManager.getInstance().progressOFF();
     }
