@@ -34,8 +34,8 @@ public class ExitRoomTask extends AsyncTask<Void, Void, Integer> {
         try {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values);
-
-            if (!isConnectionSuccess(result)) {
+            JSONObject jobResult = new JSONObject(result);
+            if (!isConnectionSuccess(jobResult.getInt("code"))) {
                 throw new Exception("Exit room failed");
             }
 
@@ -57,22 +57,11 @@ public class ExitRoomTask extends AsyncTask<Void, Void, Integer> {
         }
     }
 
-    private boolean isConnectionSuccess(String json_str) {
-        try {
-            JSONObject jsonObj = new JSONObject(json_str);
-
-            int code = jsonObj.getInt("code");
-
-            if (code == SUCCESS) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            exception = e;
+    private boolean isConnectionSuccess(int code) {
+        if (code == SUCCESS) {
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 }

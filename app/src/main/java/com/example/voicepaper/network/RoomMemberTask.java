@@ -24,7 +24,7 @@ public class RoomMemberTask extends AsyncTask<Void, Void, Void> {
     public static final int SUCCESS_CODE = 200;
 
     public RoomMemberTask(ContentValues values, AsyncCallback asyncCallback) {
-        this.url = Constants.URL + "/room/memberlist";
+        this.url = Constants.URL + "/member/list";
         this.values = values;
         this.callback = asyncCallback;
 

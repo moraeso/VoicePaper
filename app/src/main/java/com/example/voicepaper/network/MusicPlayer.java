@@ -34,7 +34,7 @@ public class MusicPlayer extends AsyncTask<Void, Void, Boolean>{
         String buf;
         buf = _filePath;
         String buf2[] = buf.split("/");
-        url = Constants.URL + "/voicefile/" + buf2[2]; // your URL here
+        url = Constants.URL + "/file/voice/" + buf2[2]; // your URL here
     }
 
     @Override

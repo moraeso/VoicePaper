@@ -19,7 +19,7 @@ public class RoomTask extends AsyncTask<Void, Void, Void> {
     public static final int SUCCESS = 200;
 
     public RoomTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL + "/room/roominfo";
+        this.url = Constants.URL + "/room/info";
         this.values = values;
         this.callback = asyncCallback;
     }

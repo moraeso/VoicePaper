@@ -24,7 +24,7 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
 
     public InputRoomCodeTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/member/roomParticipate";
+        this.url = Constants.URL + "/member/join";
         this.values = values;
     }
 

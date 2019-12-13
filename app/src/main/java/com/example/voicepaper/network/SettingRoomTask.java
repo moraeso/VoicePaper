@@ -23,7 +23,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
 
     public SettingRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/room/roomSetting";
+        this.url = Constants.URL + "/room/setting";
         this.values = values;
         roomSettingValues = new ContentValues();
         roomSettingValues = null;

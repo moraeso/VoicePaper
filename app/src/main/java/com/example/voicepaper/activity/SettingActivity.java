@@ -79,7 +79,7 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             iv_userImage.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "userimage");
+            String url = ImageManager.getInstance().getFullImageString(AppManager.getInstance().getUser().getProfileString(), "file/userimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), iv_userImage, url);
         }
     }

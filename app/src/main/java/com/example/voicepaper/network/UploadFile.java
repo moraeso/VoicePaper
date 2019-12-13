@@ -76,7 +76,7 @@ public class UploadFile extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        Log.d("smh:exception",""+result+exception.toString());
+        //Log.d("smh:exception",""+result+exception.toString());
 
         if (callback != null && exception == null) {
             Log.d("smh:returnt",""+result);
