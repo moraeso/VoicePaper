@@ -142,7 +142,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
             roomProfileIv.setImageBitmap(((BitmapDrawable) drawable).getBitmap());
         } else {
-            String url = ImageManager.getInstance().getFullImageString(room.getProfileString(), "groupImage");
+            String url = ImageManager.getInstance().getFullImageString(room.getProfileString(), "file/roomimage");
             ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfileIv, url);
         }
     }
