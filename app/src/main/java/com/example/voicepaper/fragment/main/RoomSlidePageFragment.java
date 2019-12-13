@@ -4,6 +4,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,7 +116,9 @@ public class RoomSlidePageFragment extends Fragment {
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_user_main);
                 roomProfile[i].setImageBitmap(((BitmapDrawable) drawable).getBitmap());
             } else {
-                String url = ImageManager.getInstance().getFullImageString(curPageRooms.get(i).getProfileString(), "groupImage");
+                String url = ImageManager.getInstance().getFullImageString(curPageRooms.get(i).getProfileString(), "file/roomimage");
+
+                Log.d("smh:roomimage",""+url);
                 ImageManager.getInstance().GlideInto(AppManager.getInstance().getContext(), roomProfile[i], url);
             }
             roomNameTv[i].setText(curPageRooms.get(i).getTitle());

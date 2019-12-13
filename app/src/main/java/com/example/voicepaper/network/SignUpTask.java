@@ -11,12 +11,12 @@ import com.example.voicepaper.util.Constants;
 import org.json.JSONObject;
 
 public class SignUpTask extends AsyncTask<Void, Boolean, String> {
-    String url;
-    ContentValues values;
-    AsyncCallback asyncCallback;
+    private String url;
+    private ContentValues values;
+    private AsyncCallback asyncCallback;
     private Exception exception;
+    private static final int SUCCESS = 200;
 
-    User newUser;
 
     public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
         this.url = Constants.URL+ "/member/register";
@@ -60,8 +60,7 @@ public class SignUpTask extends AsyncTask<Void, Boolean, String> {
     }
 
     private boolean isSignUpDataValid(int code) {
-        // 성공 : 100, 실패 : 101
-        if (code == 100) {
+        if (code == SUCCESS) {
             return true;
         } else {
             return false;
