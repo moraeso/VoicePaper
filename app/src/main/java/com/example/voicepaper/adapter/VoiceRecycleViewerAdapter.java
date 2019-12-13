@@ -130,6 +130,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                 confirmDialog.setMessage("삭제 성공!");
                 confirmDialog.show();
                 voiceItems.remove(position);
+                notifyDataSetChanged();
             }
             @Override
             public void onFailure(Exception e) {
