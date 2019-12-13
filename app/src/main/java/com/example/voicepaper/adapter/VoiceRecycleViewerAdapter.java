@@ -13,7 +13,6 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.adapter.viewholder.VoiceViewHolder;
 import com.example.voicepaper.data.Voice;
 import com.example.voicepaper.manager.AppManager;
-import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.MusicPlayer;
 import com.example.voicepaper.util.ConfirmDialog;
 import com.example.voicepaper.util.Constants;
@@ -21,13 +20,14 @@ import com.example.voicepaper.util.Constants;
 import java.util.ArrayList;
 
 public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private ArrayList<com.example.voicepaper.data.Voice> voiceItems;
     int permission;
     boolean isHost;
+    int roomID;
 
-    public VoiceRecycleViewerAdapter() {
+    public VoiceRecycleViewerAdapter(int roomID) {
         voiceItems = new ArrayList<>();
+        this.roomID = roomID;
     }
 
     public void setPermission(int permission) {
@@ -43,35 +43,18 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         return new VoiceViewHolder(LayoutInflater.from(AppManager.getInstance().getContext()).inflate(R.layout.item_voice, parent, false));
     }
 
-
-    //----------------------------------------------음성파일 재생------------------------------------------------------------------//
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof VoiceViewHolder) {
-            final Voice voice = voiceItems.get(position);
+        final Voice voice = voiceItems.get(position);
 
-            ((VoiceViewHolder) holder).getUserNameTv().setText("" + voice.getUserName());
-            ((VoiceViewHolder) holder).getHolder().setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if(voice.getUserId().equals(AppManager.getInstance().getUser().getID())) {
-                        ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-                        confirmDialog.setMessage("기록을 삭제하시겠습니까?");
-                        confirmDialog.getOkBtn().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //삭제 통신 넣음 됨.
-
-                            }
-                        });
-                        confirmDialog.show();
-                    }
-                    return false;
-                }
-            });
-
-            ((VoiceViewHolder) holder).getPlayerBtn().setOnClickListener(
-                    new View.OnClickListener() {
+        ((VoiceViewHolder) holder).getUserNameTv().setText("" + voice.getUserName());
+        ((VoiceViewHolder) holder).getHolder().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (voice.getUserId().equals(AppManager.getInstance().getUser().getID())) {
+                    ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+                    confirmDialog.setMessage("기록을 삭제하시겠습니까?");
+                    confirmDialog.getOkBtn().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (canListenVoice(voice)) {
@@ -83,13 +66,33 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                                 Toast.makeText(AppManager.getInstance().getContext(), "권환이 없습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    });
+                    confirmDialog.show();
+                }
+                return false;
+            }
+        });
+
+        ((VoiceViewHolder) holder).getPlayerBtn().setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (canListenVoice(voice)) {
+                            Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
+
+                            final MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile(), ((VoiceViewHolder) holder).getPlayerBtn());
+                            musicPlayer.execute();
+                        } else {
+                            Toast.makeText(AppManager.getInstance().getContext(), "권환이 없습니다.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-            );
-        }
+                }
+        );
     }
 
+
     private boolean canListenVoice(Voice voice) {
-        return  isPermissionPublic() || isYourVoice(voice) || isHost;
+        return isPermissionPublic() || isYourVoice(voice) || isHost;
     }
 
     private boolean isPermissionPublic() {
@@ -115,7 +118,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
         notifyDataSetChanged();
     }
 
-    public void clearItems(){
+    public void clearItems() {
         voiceItems.clear();
     }
 }

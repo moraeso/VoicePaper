@@ -29,30 +29,33 @@
         android:text="이미지 등록"
         android:textSize="15sp"/>
     <EditText
-        android:id="@+id/et_name"
+        android:id="@+id/et_id"
         android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_below="@id/iv_userImage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:hint=" 이름을 입력해주세요."/>
+        android:hint="ID를 입력해주세요."
+        android:maxLength="10"/>
     <EditText
-        android:id="@+id/et_id"
+        android:id="@+id/et_name"
         android:layout_width="240dp"
         android:layout_height="50dp"
-        android:layout_below="@id/et_name"
+        android:layout_below="@id/et_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:hint="ID를 입력해주세요." />
+        android:hint=" 이름을 입력해주세요."
+        android:maxLength="10"/>
     <EditText
         android:id="@+id/et_pw"
         android:layout_width="240dp"
         android:layout_height="50dp"
-        android:layout_below="@id/et_id"
+        android:layout_below="@id/et_name"
         android:inputType="textPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:hint="비밀번호를 입력해주세요." />
+        android:hint="비밀번호를 입력해주세요."
+        android:maxLength="12"/>
 
     <EditText
         android:id="@+id/et_rePw"
@@ -62,7 +65,8 @@
         android:inputType="textPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:hint="비밀번호 확인" />
+        android:hint="비밀번호 확인"
+        android:maxLength="12"/>
 
     <Button
         android:id="@+id/btn_signUp"

@@ -79,17 +79,12 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
         setVoiceFilePath();
 
-
         confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     } //프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
 
     private void setVoiceFilePath() {
         filePath = getActivity().getExternalCacheDir().getAbsolutePath();
         filePath += "/audiorecordtest.mp3";
-
-
-        //fileName = "audiorecordtest.mp3";
-        //Log.d("smh:file path",fileName);
     }
 
     public void setRoomId(int roomId){
@@ -124,6 +119,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
         btn_record.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+        btn_submit.setEnabled(false);
 
         tv_content.setText("목소리를 녹음할게요.\n버튼을 눌러 시작해 주세요.");
     }
@@ -138,8 +134,6 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-
         super.onDismiss(dialog);
         final Activity activity = getActivity();
         if (activity instanceof DialogInterface.OnDismissListener) {
@@ -170,21 +164,15 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
                 break;
 
             case R.id.btn_submit:
-                /*
-                여기부근에 통신 넣어야합니다.
-                 */
-                if(state == RECODE_STOP){
-                    onRecord(false);
-                }
-
                 uploadVoice();
                 break;
         }
     }
 
     private void uploadVoice() {
-        progressON("보이스 등록 중...");
+        btn_submit.setEnabled(false);
 
+        progressON("보이스 등록 중...");
         ContentValues values = new ContentValues();
         values.put("userId",AppManager.getInstance().getUser().getID());
         values.put("roomId",roomId);
@@ -201,22 +189,16 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             @Override
             public void onFailure(Exception e) {
                 progressOFF();
-                Toast.makeText(AppManager.getInstance().getContext(), "error : " + e, Toast.LENGTH_SHORT).show();
-                //confirmDialog.dismiss();
+                confirmDialog.setMessage("음성 전송 실패!");
+                confirmDialog.show();
+
+                btn_submit.setEnabled(true);
             }
         });
         uploadFile.execute();
     }
 
-    private void onRecord(boolean start){
-        if(start){
-            startRecording();
-        }
-        else {
-            stopRecording();
-        }
-    }
-
+    //음성 재생
     private void onPlay(boolean start) {
         if (start) {
             startPlaying();
@@ -224,7 +206,6 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             stopPlaying();
         }
     }
-
     private void startPlaying() {
         player = new MediaPlayer();
         try {
@@ -245,19 +226,26 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
             Log.e("smh:record", "prepare() failed");
         }
     }
-
     private void stopPlaying() {
         player.release();
         player = null;
         btn_record.setImageResource(R.drawable.ic_playing);
         state = PLAY_START;
+
     }
 
+    //녹음
+    private void onRecord(boolean start){
+        if(start){
+            startRecording();
+        }
+        else {
+            stopRecording();
+        }
+    }
     private void startRecording() {
         recorder = new MediaRecorder();
-        /*
-        음성 녹음 시작, 압축해야한다.
-         */
+
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         recorder.setOutputFile(filePath);
@@ -284,16 +272,15 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
         recorder.start();
     }
-
     private void stopRecording() {
         recorder.stop();
         recorder.release();
         recorder = null;
         btn_record.setImageResource(R.drawable.ic_playing);
         state = PLAY_START;
+        btn_submit.setEnabled(true);
     }
 
-    //프레그먼트 종료할때, 캐시저장해야하나? 모르겠다... 잘..
     @Override
     public void onStop() {
         super.onStop();

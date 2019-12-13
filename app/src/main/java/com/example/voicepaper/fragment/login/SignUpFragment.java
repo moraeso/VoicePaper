@@ -61,6 +61,9 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
 
     private Boolean imageSetting;
 
+    private String errorMessage;
+
+
     public SignUpFragment() {
     }
 
@@ -133,21 +136,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 doTakeAlbumAction();
                 break;
             case R.id.btn_signUp:
-
-                confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-
-                if (et_pw.getText().toString().equals(et_rePw.getText().toString()) == false) {
-                    Log.d("smh:pw and repw", "" + et_pw.getText().toString() + et_rePw.getText().toString());
-                    confirmDialog.setMessage("비밀번호가 일치하지 않습니다.");
-                    confirmDialog.show();
-                } else if(imageSetting == false){
-                    confirmDialog.setMessage("사진을 등록해주세요.");
-                    confirmDialog.show();
-                } else {
-                    btn_signUp.setEnabled(false);
-                    progressON("아이디 생성중...");
-                    doSignUpTask();
-                }
+                signup();
                 break;
         }
     }
@@ -214,7 +203,6 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
     private void uploadUserImage(String userId) {
         ContentValues values = new ContentValues();
         values.put("userId", userId);
-        Log.d("sssong:SignUpFragment", "image path : " + albumImagePath);
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_USER, values,
                 albumImagePath, new AsyncCallback() {
             @Override
@@ -227,9 +215,9 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
-                //confirmDialog.dismiss();
+                //이미지 업로드 실패시
+                confirmDialog.setMessage("이미지 업로드 실패!");
+                confirmDialog.show();
                 progressOFF();
             }
         });
@@ -241,6 +229,65 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
     }
     public void progressOFF() {
         ImageManager.getInstance().progressOFF();
+    }
+
+    private boolean checkTextLength(){
+        if(et_id.getText().length() < 6){
+            errorMessage = "아이디는 6글자 이상 10글자 이하여야합니다.";
+            return false;
+        }
+        else if(et_name.getText().length() < 2){
+            errorMessage = "이름은 2글자 이상 10글자 이하여야합니다.";
+            return false;
+        }
+        else if(et_pw.getText().length() < 6){
+            errorMessage = "비밀번호는 6글자 이상 12글자 이하여야합니다.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkRepassward(){
+        if (et_pw.getText().toString().equals(et_rePw.getText().toString()) == false) {
+            errorMessage = "비밀번호 확인이 일치하지 않습니다.";
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkExistImage(){
+        if(imageSetting == false){
+            errorMessage ="사진을 등록해주세요.";
+            return false;
+        }
+        return true;
+    }
+
+    private void signup(){
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+        if(checkTextLength() == false){
+            confirmDialog.setMessage(errorMessage);
+            confirmDialog.show();
+            return;
+        }
+
+        if(checkRepassward() == false){
+            confirmDialog.setMessage(errorMessage);
+            confirmDialog.show();
+            return;
+        }
+
+        if(checkExistImage() == false){
+            confirmDialog.setMessage(errorMessage);
+            confirmDialog.show();
+            return;
+        }
+
+        btn_signUp.setEnabled(false);
+        progressON("아이디 생성중...");
+        doSignUpTask();
     }
 }
 
