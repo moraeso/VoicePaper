@@ -162,6 +162,8 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
             public void onSuccess(Object object) {
                 confirmDialog.setMessage("이미지 변경 완료!");
                 confirmDialog.show();
+                Log.d("smh:changeimageurl",""+(String)object);
+                AppManager.getInstance().getUser().setProfileString((String)object);
             }
             @Override
             public void onFailure(Exception e) {

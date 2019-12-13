@@ -7,6 +7,8 @@ import android.util.Log;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
@@ -17,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class UploadFile extends AsyncTask<Void, Void, Void> {
+public class UploadFile extends AsyncTask<Void, Void, String> {
     private AsyncCallback callback;
     private Exception exception;
 
@@ -38,7 +40,6 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
         this.callback = callback;
         this.values = _values;
         this.filePath = filePath;
-        this.callback = callback;
 
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
@@ -55,14 +56,17 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             this.userId = AppManager.getInstance().getUser().getID();
             Log.d("smh:roomId",this.roomId);
         }
-
-
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected String doInBackground(Void... voids) {
+        String result;
         try {
-            upload();
+            result = upload();
+            JSONObject jsonObject = new JSONObject(result);
+            String path = jsonObject.getString("path");
+            Log.d("smh:return",""+result);
+            return path;
         } catch (Exception e){
             exception = e;
         }
@@ -70,11 +74,15 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        Log.d("smh:exception",""+result+exception.toString());
+
         if (callback != null && exception == null) {
-            callback.onSuccess(aVoid);
+            Log.d("smh:returnt",""+result);
+            callback.onSuccess(result);
         } else {
+            Log.d("smh:returnf",""+result);
             callback.onFailure(exception);
         }
     }
@@ -139,18 +147,17 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             wr.writeBytes("\r\n--" + boundary + "--\r\n");
             wr.flush();
 
-            Log.d("smh:getResponsecode", "" + con.getResponseCode());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 
-            BufferedReader rd = null;
-            rd = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+            String line;
+            String result = "";
 
-            String line = null;
-            while ((line = rd.readLine()) != null) {
-                Log.d("smh:ConnectionResult", line);
+            // 라인을 받아와 합친다.
+            while ((line = reader.readLine()) != null){
+                result += line;
             }
 
-            Log.d("sssong:UploadFile", "result : " + con.getInputStream().toString());
-            return con.getInputStream().toString();
+            return result;
             //나중에 결과 반환 정리할 필요가 잇을듯
 
         } catch (MalformedURLException e) {
