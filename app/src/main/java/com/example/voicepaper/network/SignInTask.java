@@ -49,7 +49,6 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
 
             setUser(job.getString("id"),
                     job.getString("name"),
-                    job.getString("pw"),
                     job.getString("profileString"),
                     job.getString("token"));
 
@@ -114,10 +113,9 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
         AppManager.getInstance().setRoomList(roomArrayList);
     }
 
-    private void setUser(String id, String name, String pw, String profileString,String token){
+    private void setUser(String id, String name, String profileString,String token){
         AppManager.getInstance().getUser().setID(id);
         AppManager.getInstance().getUser().setName(name);
-        AppManager.getInstance().getUser().setPw(pw);
         AppManager.getInstance().getUser().setProfileString(profileString);
         AppManager.getInstance().getUser().setToken(token);
     }

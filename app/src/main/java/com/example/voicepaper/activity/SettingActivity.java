@@ -155,7 +155,7 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
     private void uploadUserImage(String userId) {
         ContentValues values = new ContentValues();
         values.put("userId", userId);
-        Log.d("sssong:SignUpFragment", "image path : " + albumImagePath);
+
         UploadFile uploadFile = new UploadFile(UploadFile.UPLOAD_IMAGE_USER, values,
                 albumImagePath, new AsyncCallback() {
             @Override
@@ -163,11 +163,8 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
                 confirmDialog.setMessage("이미지 변경 완료!");
                 confirmDialog.show();
             }
-
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
                 confirmDialog.setMessage("이미지 변경 실패!");
                 confirmDialog.show();
             }
