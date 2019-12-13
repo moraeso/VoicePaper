@@ -221,6 +221,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 GradientDrawable drawable =
                         (GradientDrawable) AppManager.getInstance().getContext().getDrawable(R.drawable.custom_rounded);
                 iv_userImage.setBackground(drawable);
+                iv_userImage.setClipToOutline(true);
 
                 imageSetting = true;
             }

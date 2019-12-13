@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -146,6 +147,11 @@ public class SettingActivity extends AppCompatActivity implements Button.OnClick
                 iv_userImage.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 iv_userImage.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+
+                GradientDrawable drawable =
+                        (GradientDrawable) AppManager.getInstance().getContext().getDrawable(R.drawable.custom_rounded);
+                iv_userImage.setBackground(drawable);
+                iv_userImage.setClipToOutline(true);
 
                 uploadUserImage(AppManager.getInstance().getUser().getID());
             }

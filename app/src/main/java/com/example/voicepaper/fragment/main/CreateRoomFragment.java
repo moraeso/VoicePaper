@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -209,6 +210,11 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 roomProfileIb.setBackgroundColor(Color.WHITE);
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 roomProfileIb.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+
+                GradientDrawable drawable =
+                        (GradientDrawable) AppManager.getInstance().getContext().getDrawable(R.drawable.custom_rounded);
+                roomProfileIb.setBackground(drawable);
+                roomProfileIb.setClipToOutline(true);
             }
         }
     }

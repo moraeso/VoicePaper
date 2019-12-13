@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/iv_logo_top"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:src="@drawable/logo_top"
             android:background="@color/colorWhite"/>
 
@@ -30,7 +30,7 @@
         <RelativeLayout
             android:id="@+id/layout_topMenu"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="70dp"
             android:layout_below="@id/layout_gradient"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/roomViewPager"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 생성하기" />
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_createRoom"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/colorWhite"
             android:text="방 코드 입력" />

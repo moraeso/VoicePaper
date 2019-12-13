@@ -1,11 +1,18 @@
 package com.example.voicepaper.fragment.room;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,12 +30,13 @@ import com.example.voicepaper.manager.ImageManager;
 
 import java.util.ArrayList;
 
-public class RoomInfoFragment extends DialogFragment {
+public class RoomInfoFragment extends DialogFragment implements View.OnClickListener {
 
     private ArrayList<RoomMember> roomMemberList;
     private Room room;
 
     private TextView roomCodeTv;
+    private ImageButton copyCodeBtn;
 
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView memberRecyclerView;
@@ -54,13 +62,32 @@ public class RoomInfoFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_roominfo, container, false);
 
         initView(view);
+        initListener();
         initRoomMemberAdapter(view);
 
         return view;
     }
 
+    private void initListener() {
+        copyCodeBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.btn_copyCode:
+                ClipboardManager clipboard = (ClipboardManager)AppManager.getInstance().getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Room Code Copy", room.getCode());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(AppManager.getInstance().getContext(), "방 코드 복사 완료!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
     public void initView(View view) {
         roomCodeTv = (TextView) view.findViewById(R.id.tv_roomCode);
+        copyCodeBtn = (ImageButton) view.findViewById(R.id.btn_copyCode);
+
         roomCodeTv.setText(room.getCode());
     }
 
