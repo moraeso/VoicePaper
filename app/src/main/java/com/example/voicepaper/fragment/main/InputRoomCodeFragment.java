@@ -84,9 +84,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
         InputRoomCodeTask inputRoomCodeTask = new InputRoomCodeTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                Log.d("sssong:InputRoomFrgmt", "onSuccess : participate room");
                 AppManager.getInstance().getRoomList().add((Room)object);
-
                 dismiss();
                 progressOFF();
             }

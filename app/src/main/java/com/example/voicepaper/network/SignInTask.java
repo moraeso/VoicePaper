@@ -23,11 +23,11 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     private Exception exception;
 
     static private final int SUCCESS = 200;
-    static private final int INVALIDEMAIL = 201;
-    static private final int INCORRECTPASSWORD = 202;
+    static private final int INVALID_MAIL = 201;
+    static private final int INCORRECT_PASSWORD = 202;
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback) {
-        this.url = Constants.URL + "/member/login";
+        this.url = Constants.URL + "/user/login";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }
@@ -78,9 +78,9 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     private boolean isSignInDataValid(int code) {
         if (code == SUCCESS) {
             return true;
-        } else if (code == INVALIDEMAIL) {
+        } else if (code == INVALID_MAIL) {
             return false;
-        } else if (code == INCORRECTPASSWORD) {
+        } else if (code == INCORRECT_PASSWORD) {
             return false;
         }
         return false;

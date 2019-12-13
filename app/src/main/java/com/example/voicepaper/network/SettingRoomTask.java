@@ -3,14 +3,9 @@ package com.example.voicepaper.network;
 import android.content.ContentValues;
 import android.os.AsyncTask;
 
-import com.example.voicepaper.data.Room;
-import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
 
@@ -23,7 +18,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
 
     int code;
 
-    public static final int SUCCESS_CODE = 200;
+    public static final int SUCCESS = 200;
     public static final int NOT_CHANGED = 601;
 
     public SettingRoomTask(ContentValues values, AsyncCallback callback) {
@@ -53,7 +48,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
                 throw new Exception("Setting room failed");
             }
 
-            if (code == SUCCESS_CODE)
+            if (code == SUCCESS)
                 settingRoomFromJson(jsonObj);
 
         } catch (Exception e) {
@@ -78,7 +73,7 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
     private boolean isConnectionSuccess(JSONObject json_str) {
         try {
             code = json_str.getInt("code");
-            if (code == SUCCESS_CODE || code == NOT_CHANGED) {
+            if (code == SUCCESS || code == NOT_CHANGED) {
                 return true;
             }
             else {

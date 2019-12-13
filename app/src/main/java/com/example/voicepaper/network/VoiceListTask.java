@@ -21,6 +21,8 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
     private Exception exception;
     private String url;
 
+    static private final int SUCCESS = 200;
+
     public VoiceListTask(ContentValues values, AsyncCallback callback) {
         this.url = Constants.URL +"/file/voicelist";
         this.values = values;
@@ -66,7 +68,7 @@ public class VoiceListTask extends AsyncTask<Void,Void,ArrayList<Voice>> {
 
     private boolean isSignInDataValid(int code) {
         // 성공 : 200, 실패 : 204
-        if (code == 200) {
+        if (code == SUCCESS) {
             return true;
         } else {
             return false;

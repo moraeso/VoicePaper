@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -171,6 +172,10 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 iv_userImage.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
 
+                GradientDrawable drawable =
+                        (GradientDrawable) AppManager.getInstance().getContext().getDrawable(R.drawable.custom_rounded);
+                iv_userImage.setBackground(drawable);
+
                 imageSetting = true;
             }
         }
@@ -286,7 +291,7 @@ public class SignUpFragment extends DialogFragment implements Button.OnClickList
         }
 
         btn_signUp.setEnabled(false);
-        progressON("아이디 생성중...");
+        progressON("아이디 생성 중...");
         doSignUpTask();
     }
 }

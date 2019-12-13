@@ -138,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         updateRoomListTask.execute();
@@ -249,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        Log.d("sssong:MainActivity", "dismiss event / adapter update");
         AppManager.getInstance().setContext(this);
         AppManager.getInstance().setResources(getResources());
 

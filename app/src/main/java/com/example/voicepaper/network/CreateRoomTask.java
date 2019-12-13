@@ -25,7 +25,7 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
-    public static final int SUCCESS_CODE = 300;
+    public static final int SUCCESS = 200;
     public static final int NO_USER_ID_FOR_HOST = 301;
     public static final int MAXIMUM_ROOM_NUMBER_LIMIT = 302;
     public static final int MAXIMUM_ROOM_NUMBER_FOR_USER_LIMIT = 303;
@@ -80,7 +80,7 @@ public class CreateRoomTask extends AsyncTask<Void, Void, Void> {
 
             int code = jsonObj.getInt("code");
 
-            if (code == SUCCESS_CODE) {
+            if (code == SUCCESS) {
                 return true;
             } else {
                 return false;

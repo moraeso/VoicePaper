@@ -21,6 +21,8 @@ public class RoomMemberTask extends AsyncTask<Void, Void, Void> {
     private AsyncCallback callback;
     private Exception exception;
 
+    public static final int SUCCESS_CODE = 200;
+
     public RoomMemberTask(ContentValues values, AsyncCallback asyncCallback) {
         this.url = Constants.URL + "/room/memberlist";
         this.values = values;
@@ -38,6 +40,10 @@ public class RoomMemberTask extends AsyncTask<Void, Void, Void> {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values);
 
+            if (!isConnectionSuccess(result)) {
+                throw new Exception("Participate room failed");
+            }
+
             loadRoomMemberFromJson(new JSONObject(result).getString("memberlist"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,6 +52,24 @@ public class RoomMemberTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    private boolean isConnectionSuccess(String json_str) {
+        try {
+            JSONObject jsonObj = new JSONObject(json_str);
+
+            int code = jsonObj.getInt("code");
+
+            if (code == SUCCESS_CODE) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            exception = e;
+        }
+        return true;
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {

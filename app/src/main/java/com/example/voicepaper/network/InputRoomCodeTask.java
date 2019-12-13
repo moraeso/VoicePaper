@@ -18,13 +18,13 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
-    public static final int SUCCESS_CODE = 400;
+    public static final int SUCCESS = 200;
     public static final int NO_ROOM_FOUND = 401;
     public static final int ROOM_PARTICIPATE_FAIL = 402;
 
     public InputRoomCodeTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
-        this.url = Constants.URL + "/room/roomParticipate";
+        this.url = Constants.URL + "/member/roomParticipate";
         this.values = values;
     }
 
@@ -41,8 +41,6 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values); // post token
 
-            Log.d("sssong:InputRoomFrgmt", "result : " + result);
-
             if (!isConnectionSuccess(result)) {
                 throw new Exception("Participate room failed");
             }
@@ -50,7 +48,6 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
-            Log.d("sssong:InputRoomFrgmt", "error(doInbackground) : " + e);
 
         }
 
@@ -72,9 +69,8 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
             JSONObject jsonObj = new JSONObject(json_str);
 
             int code = jsonObj.getInt("code");
-            Log.d("sssong:InputRoomFrgmt", "error code : " + code);
 
-            if (code == SUCCESS_CODE) {
+            if (code == SUCCESS) {
                 return true;
             } else {
                 return false;
@@ -93,13 +89,12 @@ public class InputRoomCodeTask extends AsyncTask<Void, Void, Void> {
 
             int roomId = jsonObj.getInt("id");
             String roomName = jsonObj.getString("roomName");
-            String roomCode = jsonObj.getString("roomCode");
             String roomProfileString = jsonObj.getString("profileString");
-            String roomComment = jsonObj.getString("comment");
+            String roomComment = jsonObj.getString("roomText");
             int roomPermission = jsonObj.getInt("roomPermission");
             String hostId = jsonObj.getString("hostID");
 
-            participatedRoom = new Room(roomId, roomName, roomPermission, roomComment, hostId, roomCode);
+            participatedRoom = new Room(roomId, roomName, roomPermission, roomComment, hostId, values.getAsString("roomCode"));
             participatedRoom.setProfileString(roomProfileString);
 
         } catch (Exception e) {

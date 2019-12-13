@@ -15,11 +15,11 @@ public class SignUpTask extends AsyncTask<Void, Boolean, String> {
     private ContentValues values;
     private AsyncCallback asyncCallback;
     private Exception exception;
+
     private static final int SUCCESS = 200;
 
-
     public SignUpTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL+ "/member/register";
+        this.url = Constants.URL+ "/user/register";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }

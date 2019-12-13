@@ -151,9 +151,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_record:
-                /*
-                녹음 기능
-                 */
                 if (hasAlreadyVoice()) {
                     confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
                     confirmDialog.setMessage("이미 등록된 보이스가 있습니다.");
@@ -256,7 +253,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                //Toast.makeText(RoomActivity.this, "error : " + e, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RoomActivity.this, "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         voiceListTask.execute();

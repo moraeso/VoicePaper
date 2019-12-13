@@ -27,6 +27,8 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
     private String url;
     private ContentValues values;
 
+    static private final int SUCCESS = 200;
+
     public UpdateRoomListTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/grouplist";
@@ -77,7 +79,7 @@ public class UpdateRoomListTask extends AsyncTask<Void, Void, Void> {
 
             int code = jsonObj.getInt("code");
 
-            if (code == 200) {
+            if (code == SUCCESS) {
                 return true;
             } else {
                 return false;

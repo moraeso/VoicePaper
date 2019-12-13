@@ -11,7 +11,7 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     AsyncCallback asyncCallback;
     private Exception exception;
 
-    private static final int SUCCESS = 200;
+    private static final int SUCCESS_CODE = 200;
 
     public DeleteVoiceTask(ContentValues values, AsyncCallback asyncCallback){
         this.url = Constants.URL + "/file/deletevoice";
@@ -51,7 +51,7 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     }
 
     private boolean isSuccess(int code) {
-        if(code == SUCCESS){
+        if(code == SUCCESS_CODE){
             return true;
         }
         else{

@@ -16,6 +16,8 @@ public class RoomTask extends AsyncTask<Void, Void, Void> {
     private AsyncCallback callback;
     private Exception exception;
 
+    public static final int SUCCESS = 200;
+
     public RoomTask(ContentValues values, AsyncCallback asyncCallback){
         this.url = Constants.URL + "/room/roominfo";
         this.values = values;
@@ -29,6 +31,10 @@ public class RoomTask extends AsyncTask<Void, Void, Void> {
         try {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
+
+            if (!isConnectionSuccess(result)) {
+                throw new Exception("Room load failed");
+            }
 
             loadRoomInfoFromJson(new JSONObject(result).getString("roomInfo"));
         } catch (Exception e) {
@@ -48,6 +54,24 @@ public class RoomTask extends AsyncTask<Void, Void, Void> {
         } else {
             callback.onFailure(exception);
         }
+    }
+
+    private boolean isConnectionSuccess(String json_str) {
+        try {
+            JSONObject jsonObj = new JSONObject(json_str);
+
+            int code = jsonObj.getInt("code");
+
+            if (code == SUCCESS) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     private void loadRoomInfoFromJson(String json_str) {
