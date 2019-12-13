@@ -40,7 +40,6 @@ public class UploadFile extends AsyncTask<Void, Void, String> {
         this.callback = callback;
         this.values = _values;
         this.filePath = filePath;
-        this.callback = callback;
 
         if(type == UPLOAD_IMAGE_USER){
             this.m_url = Constants.URL+"/file/uploaduserimage";
@@ -57,8 +56,6 @@ public class UploadFile extends AsyncTask<Void, Void, String> {
             this.userId = AppManager.getInstance().getUser().getID();
             Log.d("smh:roomId",this.roomId);
         }
-
-
     }
 
     @Override
@@ -79,6 +76,8 @@ public class UploadFile extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        Log.d("smh:exception",""+result+exception.toString());
+
         if (callback != null && exception == null) {
             Log.d("smh:returnt",""+result);
             callback.onSuccess(result);
@@ -148,16 +147,17 @@ public class UploadFile extends AsyncTask<Void, Void, String> {
             wr.writeBytes("\r\n--" + boundary + "--\r\n");
             wr.flush();
 
-            Log.d("smh:getResponsecode", "" + con.getResponseCode());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 
-            BufferedReader rd = null;
-            rd = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+            String line;
+            String result = "";
 
-            String line = null;
-            while ((line = rd.readLine()) != null) {
-                Log.d("smh:ConnectionResult", line);
+            // 라인을 받아와 합친다.
+            while ((line = reader.readLine()) != null){
+                result += line;
             }
-            return con.getInputStream().toString();
+
+            return result;
             //나중에 결과 반환 정리할 필요가 잇을듯
 
         } catch (MalformedURLException e) {
