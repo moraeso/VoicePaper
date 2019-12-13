@@ -14,7 +14,7 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     private static final int SUCCESS = 200;
 
     public DeleteVoiceTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL + "/room/deletevoicedata";
+        this.url = Constants.URL + "/file/deletevoice";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }

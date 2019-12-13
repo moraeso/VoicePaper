@@ -7,6 +7,7 @@ import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,13 +21,17 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
     String url;
     ContentValues values;
 
+    int code;
+
     public static final int SUCCESS_CODE = 200;
+    public static final int NOT_CHANGED = 601;
 
     public SettingRoomTask(ContentValues values, AsyncCallback callback) {
         this.callback = callback;
         this.url = Constants.URL + "/room/roomSetting";
         this.values = values;
         roomSettingValues = new ContentValues();
+        roomSettingValues = null;
     }
 
     @Override
@@ -42,12 +47,15 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         try {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values); // post token
+            JSONObject jsonObj = new JSONObject(result);
 
-            if (!isConnectionSuccess(result)) {
-                // 수정할 것 601만 받음
-                //throw new Exception("Setting room failed");
+            if (!isConnectionSuccess(jsonObj)) {
+                throw new Exception("Setting room failed");
             }
-            settingRoomFromJson(result);
+
+            if (code == SUCCESS_CODE)
+                settingRoomFromJson(jsonObj);
+
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
@@ -67,18 +75,15 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private boolean isConnectionSuccess(String json_str) {
+    private boolean isConnectionSuccess(JSONObject json_str) {
         try {
-            JSONObject jsonObj = new JSONObject(json_str);
-
-            int code = jsonObj.getInt("code");
-
-            if (code == SUCCESS_CODE) {
+            code = json_str.getInt("code");
+            if (code == SUCCESS_CODE || code == NOT_CHANGED) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
@@ -86,14 +91,12 @@ public class SettingRoomTask extends AsyncTask<Void, Void, Void> {
         return true;
     }
 
-    private void settingRoomFromJson(String json_str) {
+    private void settingRoomFromJson(JSONObject jsonObj) {
 
         try {
-            JSONObject jsonObj = new JSONObject(json_str);
-
-            //roomSettingValues.put("title", jsonObj.getString("roomName"));
-            //roomSettingValues.put("comment", jsonObj.getString("roomText"));
-            //roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
+            roomSettingValues.put("title", jsonObj.getString("roomName"));
+            roomSettingValues.put("comment", jsonObj.getString("roomText"));
+            roomSettingValues.put("permission", jsonObj.getInt("roomPermission"));
         } catch (Exception e) {
             e.printStackTrace();
         }

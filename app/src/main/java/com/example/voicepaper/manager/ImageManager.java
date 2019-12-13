@@ -12,12 +12,16 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.textclassifier.TextLinks;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDialog;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.voicepaper.R;
 import com.example.voicepaper.util.Constants;
 
@@ -38,8 +42,13 @@ public class ImageManager {
     }
 
     public void GlideInto(Context context, ImageView iv, String url) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(8));
+
         Glide.with(context)
                 .load(url)
+                .apply(requestOptions)
                 .placeholder(R.drawable.ic_user_main) // loading img
                 .error(R.drawable.ic_user_main) // error img
                 .into(iv);

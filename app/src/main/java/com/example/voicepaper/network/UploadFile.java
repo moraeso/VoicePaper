@@ -55,6 +55,8 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
             this.userId = AppManager.getInstance().getUser().getID();
             Log.d("smh:roomId",this.roomId);
         }
+
+
     }
 
     @Override

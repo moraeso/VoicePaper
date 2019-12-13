@@ -2,6 +2,7 @@ package com.example.voicepaper.fragment.main;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

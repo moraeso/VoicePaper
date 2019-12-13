@@ -96,8 +96,6 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         initViewContents();
         initListener();
 
-
-
         roomCommentEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -193,7 +191,6 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         privateVoiceBtn.setBackgroundTintList(ContextCompat.getColorStateList(AppManager.getInstance().getContext(),
                 R.color.colorMainBold));
     }
-
 
     @Override
     public void onStart() {
