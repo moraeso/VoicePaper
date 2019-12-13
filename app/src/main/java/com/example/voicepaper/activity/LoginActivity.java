@@ -1,6 +1,7 @@
 package com.example.voicepaper.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import com.example.voicepaper.R;
 import com.example.voicepaper.fragment.login.SignUpFragment;
 import com.example.voicepaper.fragment.room.RecordFragment;
 import com.example.voicepaper.manager.AppManager;
+import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.SignInTask;
 import com.example.voicepaper.util.ConfirmDialog;
@@ -32,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     EditText et_id;
     EditText et_pw;
     ScrollView scrollView;
+
+    ConfirmDialog confirmDialog;
 
     private final static int MY_PERMISSIONS_READ_EXTERNAL_STORAGE = 1;
 
@@ -55,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         et_id = findViewById(R.id.et_id);
         et_pw = findViewById(R.id.et_pw);
         scrollView = findViewById(R.id.sv_root);
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
     }
 
     void initListener(){
@@ -119,40 +125,50 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
         });
     }
 
+    private void loginTask() {
+        final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+        ContentValues values = new ContentValues();
+        values.put("id",et_id.getText().toString());
+        values.put("pw",et_pw.getText().toString());
+
+        //로그인 통신
+        SignInTask signInTask = new SignInTask(values, new AsyncCallback(){
+            @Override
+            public void onSuccess(Object object) {
+                progressOFF();
+                Intent intent = new Intent(AppManager.getInstance().getContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                progressOFF();
+                confirmDialog.setMessage("로그인 실패");
+                //confirmDialog.getOkBtn().setOnClickListener(); -> ok버튼 클릭시 뭔가 하고 싶으면 이거 하십쇼
+            }
+        });
+        signInTask.execute();
+    }
+
+    private boolean isLoginDataEmpty() {
+        return et_id.getText().toString().length() == 0 || et_pw.getText().toString().length() == 0;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_signIn:
                 //아이디 비밀번호를 받아와 서버와 통신
-                final ConfirmDialog confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-
-                if(et_id.getText().toString().length() == 0 || et_pw.getText().toString().length() == 0){
+                if (isLoginDataEmpty()) {
                     confirmDialog.setMessage("아이디 혹은 비밀번호를 확인해주세요");
                     confirmDialog.show();
                     break;
                 }
 
-                ContentValues values = new ContentValues();
-                values.put("id",et_id.getText().toString());
-                values.put("pw",et_pw.getText().toString());
-
-                //로그인 통신
-                SignInTask signInTask = new SignInTask(values, new AsyncCallback(){
-                    @Override
-                    public void onSuccess(Object object) {
-                        Intent intent = new Intent(AppManager.getInstance().getContext(),MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        confirmDialog.setMessage("로그인 실패");
-                        //confirmDialog.getOkBtn().setOnClickListener(); -> ok버튼 클릭시 뭔가 하고 싶으면 이거 하십쇼
-                    }
-                });
-
-                signInTask.execute();
+                progressON("로그인 중...");
+                loginTask();
 
                 break;
             case R.id.btn_signUp:
@@ -167,6 +183,13 @@ public class LoginActivity extends AppCompatActivity implements Button.OnClickLi
     @Override
     public void onFocusChange(View view, boolean b) {
         //리스너뺄지 고민중
+    }
+
+    public void progressON(String message) {
+        ImageManager.getInstance().progressON((Activity)AppManager.getInstance().getContext(), message);
+    }
+    public void progressOFF() {
+        ImageManager.getInstance().progressOFF();
     }
 
     //갤러리 접근 권한 설정

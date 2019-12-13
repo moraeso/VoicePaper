@@ -23,10 +23,10 @@ public class SignInTask extends AsyncTask<Void, Boolean, Boolean> {
     private Exception exception;
 
     public SignInTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL + "/auth/login";
-        this.values = values;
+        this.url = Constants.URL + "/member/login";
+            this.values = values;
         this.asyncCallback = asyncCallback;
-    }
+}
 
     @Override
     protected Boolean doInBackground(Void... params) {

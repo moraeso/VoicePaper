@@ -32,7 +32,6 @@ import com.example.voicepaper.util.ConfirmDialog;
 
 import java.io.IOException;
 
-
 /*
 음성파일 전송 작업
 재생버튼 start and stop 할때 소리
@@ -50,7 +49,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     private MediaRecorder recorder; // 음성 기록
     private MediaPlayer player; // 음성 재생
 
-    private String fileName = null;
+    //private String fileName = null;
     private String filePath = null;
 
     private static final int RECODE_START = 1;
@@ -63,7 +62,7 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
     //임시
     private String roomId;
 
-    public RecordFragment(){ }
+    public RecordFragment(){}
 
     public static RecordFragment newInstance(){
         RecordFragment fragment = new RecordFragment();
@@ -77,15 +76,20 @@ public class RecordFragment extends DialogFragment implements Button.OnClickList
 
         state = RECODE_START;
 
+        setVoiceFilePath();
+
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+    } //프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
+
+    private void setVoiceFilePath() {
         filePath = getActivity().getExternalCacheDir().getAbsolutePath();
         filePath += "/audiorecordtest.mp3";
 
-        fileName = "audiorecordtest.mp3";
 
-        Log.d("smh:file path",fileName);
-
-        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
-    }//프레그 먼트가 생성될때 호출됨. //그래픽이 아닌 초기화
+        //fileName = "audiorecordtest.mp3";
+        //Log.d("smh:file path",fileName);
+    }
 
     public void setRoomId(int roomId){
         this.roomId = ""+roomId;

@@ -261,7 +261,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(RoomActivity.this, "error : " + e, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RoomActivity.this, "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         voiceListTask.execute();

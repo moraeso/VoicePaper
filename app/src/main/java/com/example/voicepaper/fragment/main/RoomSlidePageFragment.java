@@ -42,6 +42,21 @@ public class RoomSlidePageFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(
                 R.layout.fragment_room_slide_page, container, false);
 
+        initView(view);
+
+        if (!isRoomListEmpty()) {
+            initViewContents();
+            initListener();
+        }
+
+        return view;
+    }
+
+    private boolean isRoomListEmpty() {
+        return AppManager.getInstance().getRoomList().size() == 0;
+    }
+
+    private void initView(View view) {
         roomProfile[0] = (ImageView) view.findViewById(R.id.iv_roomProfile1);
         roomProfile[1] = (ImageView) view.findViewById(R.id.iv_roomProfile2);
         roomProfile[2] = (ImageView) view.findViewById(R.id.iv_roomProfile3);
@@ -51,16 +66,9 @@ public class RoomSlidePageFragment extends Fragment {
         roomNameTv[1] = (TextView) view.findViewById(R.id.tv_roomName2);
         roomNameTv[2] = (TextView) view.findViewById(R.id.tv_roomName3);
         roomNameTv[3] = (TextView) view.findViewById(R.id.tv_roomName4);
-
-        if (AppManager.getInstance().getRoomList().size() > 0) {
-            initView();
-            initListener();
-        }
-
-        return view;
     }
 
-    public void initView() {
+    private void initViewContents() {
 
         //Log.d("sssong:RoomSlideFrgmt", "list size : " + roomList.size());
         ArrayList<Room> allRooms = AppManager.getInstance().getRoomList();
@@ -93,7 +101,7 @@ public class RoomSlidePageFragment extends Fragment {
         //Log.d("sssong:RoomSlideFrgmt", "roomNum : " + roomNum);
     }
 
-    public void initListener() {
+    private void initListener() {
 
         for (int i = 0; i < roomNum; i++) {
             roomProfile[i].setOnClickListener((MainActivity) getActivity());
