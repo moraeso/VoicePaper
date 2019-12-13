@@ -213,7 +213,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
             public void onSuccess(Object object) {
                 room = (Room)object;
                 voiceAdapter.setPermission(room.getPermission());
-                voiceAdapter.isUserHost(AppManager.getInstance().getUser().getID().equals(room.getHostID()));
+                voiceAdapter.setIsUserHost(AppManager.getInstance().getUser().getID().equals(room.getHostID()));
                 initViewContents();
             }
 

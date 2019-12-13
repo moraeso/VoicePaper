@@ -223,7 +223,6 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 if (isTitleSuitable() && isCommentSuitable()) {
                     confirmDialog.dismiss();
                     settingRoomInfo(); //  임시 여기서 서버 호출해서 방 생성
-                    progressON("방 수정 중...");
                 }
                 break;
         }
@@ -309,6 +308,8 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
     }
 
     private void settingRoomInfo() {
+        progressON("방 수정 중...");
+
         ContentValues values = new ContentValues();
         values.put("roomID", id);
         values.put("roomName", roomTitleEt.getText().toString());
@@ -325,6 +326,7 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                     // 이미지 통신
                     uploadRoomImage();
                 else {
+                    progressOFF();
                     confirmDialog.dismiss();
                     dismiss();
                 }

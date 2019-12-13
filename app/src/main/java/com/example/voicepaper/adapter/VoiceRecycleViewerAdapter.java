@@ -33,7 +33,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
     public void setPermission(int permission) {
         this.permission = permission;
     }
-    public void isUserHost(boolean isHost) {
+    public void setIsUserHost(boolean isHost) {
         this.isHost = isHost;
     }
 
@@ -74,7 +74,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (permission == Constants.VOICE_PUBLIC || isHost) {
+                            if (canListenVoice(voice)) {
                                 Toast.makeText(AppManager.getInstance().getContext(), "Voice " + voice.getUserName(), Toast.LENGTH_SHORT).show();
 
                                 final MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile(), ((VoiceViewHolder) holder).getPlayerBtn());
@@ -86,6 +86,18 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
                     }
             );
         }
+    }
+
+    private boolean canListenVoice(Voice voice) {
+        return  isPermissionPublic() || isYourVoice(voice) || isHost;
+    }
+
+    private boolean isPermissionPublic() {
+        return permission == Constants.VOICE_PUBLIC;
+    }
+
+    private boolean isYourVoice(Voice voice) {
+        return voice.getUserId().equals(AppManager.getInstance().getUser().getID());
     }
 
     @Override
