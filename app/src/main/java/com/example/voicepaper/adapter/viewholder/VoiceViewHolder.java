@@ -42,13 +42,5 @@ public class VoiceViewHolder extends RecyclerView.ViewHolder {
         this.playerBtn = playerBtn;
     }
 
-//    public ProgressBar getProgressBar() {
-//        return progressBar;
-//    }
-//
-//    public void setProgressBar(ProgressBar progressBar) {
-//        this.progressBar = progressBar;
-//    }
-
     public View getHolder(){ return holder; }
 }

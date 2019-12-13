@@ -1,18 +1,9 @@
 package com.example.voicepaper.network;
-
 import android.content.ContentValues;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.voicepaper.data.Room;
-import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.util.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     String url;
@@ -20,8 +11,10 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     AsyncCallback asyncCallback;
     private Exception exception;
 
+    private static final int SUCCESS = 200;
+
     public DeleteVoiceTask(ContentValues values, AsyncCallback asyncCallback){
-        this.url = Constants.URL + "/auth/login";
+        this.url = Constants.URL + "/room/deletevoicedata";
         this.values = values;
         this.asyncCallback = asyncCallback;
     }
@@ -29,25 +22,21 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         String result;
-
         try {
             HttpConnection requestHttpConnection = new HttpConnection();
             result = requestHttpConnection.request(url, values); // post token
 
             JSONObject job = new JSONObject(result);
             int code = job.getInt("code");
-
-            if (!isSignInDataValid(code)) {
-                throw new Exception("Signin data is not valid");
+            if (!isSuccess(code)) {
+                throw new Exception("voice delete error");
             }
-
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             exception = e;
             return false;
         }
-
-        return true;
     }
 
     @Override
@@ -61,9 +50,8 @@ public class DeleteVoiceTask extends AsyncTask<Void, Boolean, Boolean> {
         }
     }
 
-    private boolean isSignInDataValid(int code) {
-        // 성공 : 200, 실패 : 204
-        if(code == 200){
+    private boolean isSuccess(int code) {
+        if(code == SUCCESS){
             return true;
         }
         else{

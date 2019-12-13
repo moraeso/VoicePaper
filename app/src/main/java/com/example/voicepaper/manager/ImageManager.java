@@ -40,8 +40,8 @@ public class ImageManager {
     public void GlideInto(Context context, ImageView iv, String url) {
         Glide.with(context)
                 .load(url)
-                .placeholder(R.drawable.img_user) // loading img
-                .error(R.drawable.img_user) // error img
+                .placeholder(R.drawable.ic_user_main) // loading img
+                .error(R.drawable.ic_user_main) // error img
                 .into(iv);
     }
 

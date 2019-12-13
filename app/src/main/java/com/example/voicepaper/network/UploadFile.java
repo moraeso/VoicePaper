@@ -59,7 +59,6 @@ public class UploadFile extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String result;
         try {
             upload();
         } catch (Exception e){

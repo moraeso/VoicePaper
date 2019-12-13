@@ -28,8 +28,6 @@ public class MusicPlayer extends AsyncTask<Void, Void, Boolean>{
 
     public MusicPlayer(String _filePath, ImageButton imageButton) {
         this.imageButton = imageButton;
-        //this.progressBar = progressBar;
-
 
         state = PLAY_STOP;
 
@@ -74,8 +72,6 @@ public class MusicPlayer extends AsyncTask<Void, Void, Boolean>{
         Log.d("shin progress",""+progress);
         Log.d("shin current",""+m_MediaPlayer.getCurrentPosition());
         Log.d("shin dura",""+m_MediaPlayer.getDuration());
-
-        //progressBar.setProgress((int)progress);
     }
 
     private void onPlay(boolean start) {

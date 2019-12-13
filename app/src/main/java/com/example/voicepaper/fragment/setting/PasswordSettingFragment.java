@@ -99,7 +99,7 @@ public class PasswordSettingFragment extends DialogFragment implements Button.On
         if(checkCurrentPassword() == true && checkNewPassword() == true){
             ContentValues values = new ContentValues();
             values.put("userID",AppManager.getInstance().getUser().getID());
-            //values.put("oldPW", et_CurrentPassword.getText().toString());
+            values.put("oldPW", et_CurrentPassword.getText().toString());
             values.put("newPW", et_ChangePassword.getText().toString());
 
             ChangePasswordTask changePasswordTask = new ChangePasswordTask(values, new AsyncCallback() {

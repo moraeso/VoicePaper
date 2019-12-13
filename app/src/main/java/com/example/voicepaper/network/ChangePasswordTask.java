@@ -2,18 +2,16 @@ package com.example.voicepaper.network;
 
 import android.content.ContentValues;
 import android.os.AsyncTask;
-
 import com.example.voicepaper.util.Constants;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ChangePasswordTask extends AsyncTask<Void, Void,  Boolean> {
     private AsyncCallback callback;
     private Exception exception;
-    String url;
-    ContentValues values;
+    private String url;
+    private ContentValues values;
 
+    private static final int SUCCESS = 200;
 
     //newPW. userID 바디에 newPW랑 userID 보내면 이전값이랑 비교하고 같으면 202 다르면 200 성공
 
@@ -32,10 +30,9 @@ public class ChangePasswordTask extends AsyncTask<Void, Void,  Boolean> {
         try {
             HttpConnection requestHttpURLConnection = new HttpConnection();
             result = requestHttpURLConnection.request(url, values); // post token
-
             JSONObject resultObject = new JSONObject(result);
-
-            if (isConnectionSuccess(resultObject)) {
+            int code = resultObject.getInt("code");
+            if (isConnectionSuccess(code)) {
                 return true;
             }
             else {
@@ -59,17 +56,8 @@ public class ChangePasswordTask extends AsyncTask<Void, Void,  Boolean> {
         }
     }
 
-    private boolean isConnectionSuccess(JSONObject resultObject) {
-        // 성공 : 200, 실패 : 202 같다.
-        int code = 0;
-
-        try {
-            code = resultObject.getInt("code");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        if (code == 200) {
+    private boolean isConnectionSuccess(int code) {
+        if (code == SUCCESS) {
             return true;
         } else {
             return false;
