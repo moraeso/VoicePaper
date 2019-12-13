@@ -37,7 +37,8 @@
         android:layout_marginTop="80dp"
         android:ems="10"
         android:hint=" ID"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:maxLength="10"/>
 
     <!--Password EditText-->
     <EditText
@@ -49,7 +50,8 @@
         android:layout_centerHorizontal="true"
         android:ems="10"
         android:hint=" PASSWORD"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:maxLength="12"/>
 
     <!--Sign in button-->
     <Button
