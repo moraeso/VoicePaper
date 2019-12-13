@@ -17,26 +17,9 @@ public class User {
 
     //private Room class list를 가질 필요있음.
 
-    public User(String token, String id, String name, String profileString, String pw){
-        this.token = token;
-
-        this.id = id;
-        this.pw = pw;
-        this.name = name;
-
-        this.profileString = profileString;
-        //로그인 성공시 user객체를 생성함.
-        //추가 해야하는것. room class list
-    }
-
-    /*
-    --------------------getter, setter --------------------
-     */
+    //--------------------getter, setter --------------------
     public String getID() { return id; }
     public void setID(String id) { this.id = id; }
-
-    public String getPw(){ return pw;}
-    public void setPw(String pw){ this.pw = pw;}
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
