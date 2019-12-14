@@ -55,17 +55,14 @@ module.exports = (sequelize, Datatypes) => {
   room.updateRoomInfo = function(roomID, roomName, roomText, roomPermission) {
     console.log('****room update start****');
 
-    return new Promise((resolve, reject)=> {
-      room.update({
-        roomName: roomName,
-        roomText: roomText,
-        roomPermission: roomPermission
-      },
-      {
-        where: {roomID: roomID}
-      })
-
-      resolve();
+    return room.update({
+      roomName: roomName,
+      roomText: roomText,
+      roomPermission: roomPermission
+    },
+    {
+      where: {roomID: roomID},
+      returning: true
     })
   }
 

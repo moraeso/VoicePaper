@@ -8,7 +8,6 @@ module.exports = {
 
     console.log("****token exists?****")
     if(!token) {
-      console.log('code: 501')
       response.json({
         authStatus: 'not logged in',
         code: 501
@@ -33,9 +32,9 @@ module.exports = {
       const decoded = jwt.verify(token2, auth.secret);
       
       console.log('decoded id: ', decoded.ID);
-      console.log(request.body);
+      console.log('request.body: ', request.body);
       if(request.body.userID == decoded.ID){
-        console.log('aaa');
+        console.log('authenticated');
         return 1;
       } else {
         console.log('code: 501')
