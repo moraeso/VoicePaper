@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         UpdateRoomListTask updateRoomListTask = new UpdateRoomListTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                Log.d("sssong:MainActivity", "onSuccess : update room list");
                 AppManager.getInstance().getRoomList().clear();
                 AppManager.getInstance().getRoomList().addAll((ArrayList<Room>)object);
                 setRoomPagerAdapter();                            }
@@ -315,13 +314,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ExitRoomTask exitRoomTask = new ExitRoomTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object pos) {
+                showDialog("방이 삭제되었습니다.");
                 loadUserRoomList();
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(MainActivity.this, "error : " + e,
-                        Toast.LENGTH_SHORT).show();
+                showDialog("방 삭제에 실패하였습니다.");
             }
         });
         exitRoomTask.execute();

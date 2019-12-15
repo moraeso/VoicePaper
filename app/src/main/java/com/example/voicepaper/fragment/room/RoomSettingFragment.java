@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,8 +62,8 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
     private int voicePermission;
 
     private ConfirmDialog confirmDialog;
+    private boolean isModified;
 
-    //수정필요
     private String albumImagePath;
 
 
@@ -72,6 +73,8 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         this.comment = comment;
         this.permission = permission;
         this.imgStr = imgStr;
+
+        isModified = false;
 
         albumImagePath = null;
     }
@@ -217,9 +220,12 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 confirmDialog.show();
                 break;
             case R.id.btn_ok_dialog:
-                if (isTitleSuitable() && isCommentSuitable()) {
+                if (isTitleSuitable() && isCommentSuitable() && !isModified) {
+                    isModified = true;
                     confirmDialog.dismiss();
                     settingRoomInfo(); //  임시 여기서 서버 호출해서 방 생성
+                } else {
+                    confirmDialog.dismiss();
                 }
                 break;
         }
@@ -262,6 +268,11 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 Bitmap bitmap = BitmapFactory.decodeFile(albumImagePath);
                 bitmapTmp = bitmap;
                 roomProfileIv.setImageBitmap(ImageManager.getInstance().rotate(bitmap, exifDegree));
+
+                GradientDrawable drawable =
+                        (GradientDrawable) AppManager.getInstance().getContext().getDrawable(R.drawable.custom_rounded);
+                roomProfileIv.setBackground(drawable);
+                roomProfileIv.setClipToOutline(true);
             }
         }
     }
@@ -317,23 +328,19 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
         SettingRoomTask settingRoomTask = new SettingRoomTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                Log.d("sssong:SRFragment", "onSuccess : setting room");
-
                 if (albumImagePath != null)
                     // 이미지 통신
                     uploadRoomImage();
                 else {
                     progressOFF();
-                    confirmDialog.dismiss();
+                    confirmDialog.setMessageAndShow("방 정보가 변경되었습니다.");
                     dismiss();
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
-
+                confirmDialog.setMessageAndShow("방 정보 수정에 실패했습니다.");
                 progressOFF();
                 dismiss();
             }
@@ -348,14 +355,14 @@ public class RoomSettingFragment extends DialogFragment implements View.OnClickL
                 albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
+                confirmDialog.setMessageAndShow("방 정보가 변경되었습니다.");
                 progressOFF();
                 dismiss(); // dismiss and update
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
+                confirmDialog.setMessageAndShow("방 정보 수정에 실패했습니다.");
                 progressOFF();
                 dismiss();
             }

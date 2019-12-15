@@ -5,13 +5,9 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -26,16 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.voicepaper.R;
-import com.example.voicepaper.activity.MainActivity;
 import com.example.voicepaper.data.Room;
 import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
@@ -58,12 +51,14 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
     private int voicePermission;
 
     private ConfirmDialog confirmDialog;
+    private boolean isCreated;
 
     //수정필요
     private String albumImagePath;
 
 
     private CreateRoomFragment() {
+        isCreated = false;
     }
 
     public static CreateRoomFragment newInstance() {
@@ -138,11 +133,14 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 confirmDialog.show();
                 break;
             case R.id.btn_ok_dialog:
-                if (isTitleSuitable() && isCommentSuitable()) {
+                if (isTitleSuitable() && isCommentSuitable() && !isCreated) {
+                    isCreated = true;
                     createRoomBtn.setEnabled(false);
                     confirmDialog.dismiss();
                     progressON("방 생성 중...");
                     addRoomInList(); //  임시 여기서 서버 호출해서 방 생성
+                } else {
+                    confirmDialog.dismiss();
                 }
                 break;
             case R.id.et_roomComment:
@@ -289,17 +287,14 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                     uploadRoomImage((Room) object);
                 } else {
                     progressOFF();
-                    confirmDialog.setMessage("방 생성 완료!");
-                    confirmDialog.setOkBtnDismiss();
-                    confirmDialog.show();
+                    confirmDialog.setMessageAndShow("방 생성에 성공했습니다.");
                     dismiss();
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
+                confirmDialog.setMessageAndShow("방 생성에 실패했습니다.");
                 progressOFF();
                 dismiss();
             }
@@ -314,18 +309,14 @@ public class CreateRoomFragment extends DialogFragment implements View.OnClickLi
                 albumImagePath, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
+                confirmDialog.setMessageAndShow("방 생성에 성공했습니다.");
                 progressOFF();
-                confirmDialog.setMessage("방 생성 완료!");
-                confirmDialog.setOkBtnDismiss();
-                confirmDialog.show();
                 dismiss();
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
-                progressOFF();
+                confirmDialog.setMessageAndShow("방 생성에 실패했습니다.");
                 dismiss();
             }
         });

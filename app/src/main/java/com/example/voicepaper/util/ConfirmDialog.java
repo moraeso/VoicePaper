@@ -45,6 +45,11 @@ public class ConfirmDialog extends Dialog implements View.OnClickListener {
         }
     }
 
+    public void setMessageAndShow(String message) {
+        setMessage(message);
+        show();
+    }
+
     public Button getOkBtn() {
         return okBtn;
     }

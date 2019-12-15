@@ -24,11 +24,15 @@ import com.example.voicepaper.manager.AppManager;
 import com.example.voicepaper.manager.ImageManager;
 import com.example.voicepaper.network.AsyncCallback;
 import com.example.voicepaper.network.InputRoomCodeTask;
+import com.example.voicepaper.util.ConfirmDialog;
 
 public class InputRoomCodeFragment extends DialogFragment implements View.OnClickListener {
 
     Button createRoomBtn, cancelBtn;
     EditText inputRoomCodeEt;
+
+    private ConfirmDialog confirmDialog;
+
 
     private InputRoomCodeFragment() {
     }
@@ -48,12 +52,8 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inputroomcode, container, false);
 
-        createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
-        cancelBtn = (Button) view.findViewById(R.id.btn_cancel);
-        inputRoomCodeEt = (EditText) view.findViewById(R.id.et_inputRoomCode);
-
-        createRoomBtn.setOnClickListener(this);
-        cancelBtn.setOnClickListener(this);
+        initView(view);
+        initListener();
 
         return view;
     }
@@ -76,6 +76,20 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
         }
     }
 
+    private void initView(View view) {
+        createRoomBtn = (Button) view.findViewById(R.id.btn_createRoom);
+        cancelBtn = (Button) view.findViewById(R.id.btn_cancel);
+        inputRoomCodeEt = (EditText) view.findViewById(R.id.et_inputRoomCode);
+
+        confirmDialog = new ConfirmDialog(AppManager.getInstance().getContext());
+
+    }
+
+    private void initListener() {
+        createRoomBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);
+    }
+
     private void participateRoom() {
         ContentValues values = new ContentValues();
         //values.put("id", AppManager.getInstance().getUser().getID());
@@ -85,6 +99,9 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
         InputRoomCodeTask inputRoomCodeTask = new InputRoomCodeTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
+                confirmDialog.setMessage("방 생성 완료!");
+                confirmDialog.setOkBtnDismiss();
+                confirmDialog.show();
                 AppManager.getInstance().getRoomList().add((Room)object);
                 ((MainActivity)AppManager.getInstance().getContext()).showRoomParticipateSuccessDialog();
                 dismiss();
@@ -93,8 +110,9 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
+                confirmDialog.setMessage("방 생성 실패!");
+                confirmDialog.setOkBtnDismiss();
+                confirmDialog.show();
                 dismiss();
                 progressOFF();
             }

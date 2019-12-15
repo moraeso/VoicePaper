@@ -212,8 +212,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         roomTask.execute();
@@ -231,8 +229,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(AppManager.getInstance().getContext(),
-                        "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         roomMemberTask.execute();
@@ -253,7 +249,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(RoomActivity.this, "error : " + e, Toast.LENGTH_SHORT).show();
             }
         });
         voiceListTask.execute();
