@@ -19,6 +19,14 @@
             android:src="@drawable/logo_top"
             android:background="@color/colorWhite"/>
 
+
+        <!--View
+            android:id="@+id/layout_gradient"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/iv_logo_top"
+            android:background="@color/colorLightGray"/-->
+
         <LinearLayout
             android:id="@+id/layout_gradient"
             android:layout_width="match_parent"
@@ -27,93 +35,105 @@
             android:background="@drawable/custom_gradient"
             android:orientation="vertical" />
 
-        <RelativeLayout
-            android:id="@+id/layout_topMenu"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@id/layout_gradient"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorWhite">
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_gradient">
 
             <RelativeLayout
-                android:id="@+id/layout_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/iv_profile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="70dp"
-                    android:src="@drawable/img_user" />
-
-                <TextView
-                    android:id="@+id/tv_intro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/iv_profile"
-                    android:text="User님 반갑습니다.\n목소리를 공유해 보세요!"
-                    android:textColor="@color/colorBlack" />
-            </RelativeLayout>
-
-
-            <ImageButton
-                android:id="@+id/btn_setting"
-                style="@android:style/Widget.ImageButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@id/layout_profile"
-                android:layout_marginRight="10dp"
-                android:background="#00FFFFFF"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/img_setting" />
-        </RelativeLayout>
-
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/roomViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_below="@id/layout_topMenu"
-            android:background="@color/colorBackground">
-
-            <!-- Add as a direct child of your ViewPager -->
-            <com.itsronald.widget.ViewPagerIndicator
-                android:id="@+id/view_pager_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:background="@color/colorBackground"
-                android:gravity="center_vertical" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <RelativeLayout
+                    android:id="@+id/layout_topMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/colorWhite">
 
-        </androidx.viewpager.widget.ViewPager>
+                    <RelativeLayout
+                        android:id="@+id/layout_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_createRoom"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/roomViewPager"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@color/colorWhite"
-            android:text="방 생성하기" />
+                        <ImageView
+                            android:id="@+id/iv_profile"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="70dp"
+                            android:src="@drawable/img_user" />
 
-        <Button
-            android:id="@+id/btn_inputRoomCode"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_createRoom"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@color/colorWhite"
-            android:text="방 코드 입력" />
+                        <TextView
+                            android:id="@+id/tv_intro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/iv_profile"
+                            android:text="User님 반갑습니다.\n목소리를 공유해 보세요!"
+                            android:textColor="@color/colorBlack" />
+                    </RelativeLayout>
+
+
+                    <ImageButton
+                        android:id="@+id/btn_setting"
+                        style="@android:style/Widget.ImageButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignBottom="@id/layout_profile"
+                        android:layout_marginRight="10dp"
+                        android:background="#00FFFFFF"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/img_setting" />
+                </RelativeLayout>
+
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/roomViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_below="@id/layout_topMenu"
+                    android:background="@color/colorBackground">
+
+                    <!-- Add as a direct child of your ViewPager -->
+                    <com.itsronald.widget.ViewPagerIndicator
+                        android:id="@+id/view_pager_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:background="@color/colorBackground"
+                        android:gravity="center_vertical" />
+
+                </androidx.viewpager.widget.ViewPager>
+
+                <Button
+                    android:id="@+id/btn_createRoom"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/roomViewPager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textColor="@color/colorWhite"
+                    android:text="방 생성하기" />
+
+                <Button
+                    android:id="@+id/btn_inputRoomCode"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_createRoom"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:textColor="@color/colorWhite"
+                    android:text="방 코드 입력" />
+
+            </RelativeLayout>
+        </ScrollView>
 
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -99,7 +99,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
         InputRoomCodeTask inputRoomCodeTask = new InputRoomCodeTask(values, new AsyncCallback() {
             @Override
             public void onSuccess(Object object) {
-                confirmDialog.setMessage("방 생성 완료!");
+                confirmDialog.setMessage("방 참가에 성공했습니다.");
                 confirmDialog.setOkBtnDismiss();
                 confirmDialog.show();
                 AppManager.getInstance().getRoomList().add((Room)object);
@@ -110,7 +110,7 @@ public class InputRoomCodeFragment extends DialogFragment implements View.OnClic
 
             @Override
             public void onFailure(Exception e) {
-                confirmDialog.setMessage("방 생성 실패!");
+                confirmDialog.setMessage("방 참가에 실패했습니다.");
                 confirmDialog.setOkBtnDismiss();
                 confirmDialog.show();
                 dismiss();

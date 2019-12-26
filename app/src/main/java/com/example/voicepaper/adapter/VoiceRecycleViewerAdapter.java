@@ -140,7 +140,7 @@ public class VoiceRecycleViewerAdapter extends RecyclerView.Adapter<RecyclerView
             final MusicPlayer musicPlayer = new MusicPlayer(voice.getVoiceFile(), ((VoiceViewHolder) holder).getPlayerBtn());
             musicPlayer.execute();
         }else{
-            Toast.makeText(AppManager.getInstance().getContext(), "권환이 없습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppManager.getInstance().getContext(), "권한이 없습니다.", Toast.LENGTH_SHORT).show();
         }
     }
     //---------------------- 음성 듣기 권한 확인 ---------------------------
