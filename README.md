@@ -2,7 +2,7 @@
 온라인 음성 방명록 서비스 in Android(server-client)
 
 Screen Shot
--------------
+------------
 
 <div>
 <img width="200" src="https://user-images.githubusercontent.com/45632773/73134429-c6473f80-4079-11ea-8a17-a0618d4ead07.png">
